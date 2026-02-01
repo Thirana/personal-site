@@ -2,6 +2,14 @@ import Link from "next/link";
 import type { ProjectMeta } from "@/lib/content";
 import StatusBadge from "./StatusBadge";
 import Tag from "./Tag";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 type ProjectCardProps = {
   project: ProjectMeta;
@@ -9,54 +17,46 @@ type ProjectCardProps = {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <div className="flex h-full flex-col gap-4 rounded-2xl border border-border/80 bg-panel/40 p-6">
-      <div className="flex items-start justify-between gap-4">
+    <Card className="flex h-full flex-col border-border/80 bg-panel/40">
+      <CardHeader className="flex flex-row items-start justify-between gap-4">
         <div className="space-y-2">
-          <Link
-            href={`/projects/${project.slug}`}
-            className="text-lg font-semibold text-neutral-100 hover:underline"
-          >
-            {project.title}
-          </Link>
+          <CardTitle className="text-lg text-neutral-100">
+            <Link href={`/projects/${project.slug}`} className="hover:underline">
+              {project.title}
+            </Link>
+          </CardTitle>
           <p className="text-sm text-neutral-300">{project.summary}</p>
         </div>
         <StatusBadge status={project.status} />
-      </div>
+      </CardHeader>
 
-      <div className="flex flex-wrap gap-2">
-        {project.tech.map((tech) => (
-          <Tag key={tech}>{tech}</Tag>
-        ))}
-      </div>
+      <CardContent>
+        <div className="flex flex-wrap gap-2">
+          {project.tech.map((tech) => (
+            <Tag key={tech}>{tech}</Tag>
+          ))}
+        </div>
+      </CardContent>
 
-      <div className="mt-auto flex flex-wrap gap-3 text-sm">
-        <Link
-          href={`/projects/${project.slug}`}
-          className="rounded-full border border-border/80 px-3 py-1 text-neutral-200 hover:border-neutral-500 hover:text-neutral-100"
-        >
-          Details
-        </Link>
+      <CardFooter className="mt-auto flex flex-wrap gap-3">
+        <Button variant="outline" size="sm" asChild>
+          <Link href={`/projects/${project.slug}`}>Details</Link>
+        </Button>
         {project.links.live ? (
-          <a
-            href={project.links.live}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full border border-border/80 px-3 py-1 text-neutral-200 hover:border-neutral-500 hover:text-neutral-100"
-          >
-            Live
-          </a>
+          <Button variant="outline" size="sm" asChild>
+            <a href={project.links.live} target="_blank" rel="noreferrer">
+              Live
+            </a>
+          </Button>
         ) : null}
         {project.links.code ? (
-          <a
-            href={project.links.code}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full border border-border/80 px-3 py-1 text-neutral-200 hover:border-neutral-500 hover:text-neutral-100"
-          >
-            Code
-          </a>
+          <Button variant="outline" size="sm" asChild>
+            <a href={project.links.code} target="_blank" rel="noreferrer">
+              Code
+            </a>
+          </Button>
         ) : null}
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }

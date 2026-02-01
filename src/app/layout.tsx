@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className="bg-background text-foreground antialiased">
         <div className="page flex min-h-screen flex-col gap-10 py-14 sm:py-16">
           <header className="border-b border-border pb-6">

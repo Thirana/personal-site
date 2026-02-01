@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { ProjectMeta } from "@/lib/content";
 import ProjectCard from "./ProjectCard";
+import { Button } from "@/components/ui/button";
 
 type ProjectGridProps = {
   featured: ProjectMeta[];
@@ -22,13 +23,9 @@ export default function ProjectGrid({ featured, all }: ProjectGridProps) {
         ))}
       </div>
       {canExpand ? (
-        <button
-          type="button"
-          onClick={() => setShowAll(true)}
-          className="rounded-full border border-border/80 px-4 py-2 text-sm text-neutral-200 hover:border-neutral-500 hover:text-neutral-100"
-        >
+        <Button type="button" variant="outline" onClick={() => setShowAll(true)}>
           Load more
-        </button>
+        </Button>
       ) : null}
     </div>
   );

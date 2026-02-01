@@ -1,4 +1,6 @@
 import type { ProjectStatus } from "@/lib/content";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 type StatusBadgeProps = {
   status: ProjectStatus;
@@ -12,12 +14,11 @@ const statusStyles: Record<ProjectStatus, string> = {
 
 export default function StatusBadge({ status }: StatusBadgeProps) {
   return (
-    <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs ${
-        statusStyles[status]
-      }`}
+    <Badge
+      variant="secondary"
+      className={cn("border", statusStyles[status])}
     >
       {status}
-    </span>
+    </Badge>
   );
 }

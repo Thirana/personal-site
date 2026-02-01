@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Badge } from "@/components/ui/badge";
 
 type TagProps = {
   children: ReactNode;
@@ -6,8 +7,8 @@ type TagProps = {
 
 export default function Tag({ children }: TagProps) {
   return (
-    <span className="inline-flex items-center rounded-full border border-border/80 bg-panel/60 px-3 py-1 text-xs text-neutral-200">
+    <Badge variant="secondary" className="border border-border/80 bg-panel/60">
       {children}
-    </span>
+    </Badge>
   );
 }

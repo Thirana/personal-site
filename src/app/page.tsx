@@ -3,6 +3,7 @@ import { getAllProjects, getFeaturedProjects } from "@/lib/content";
 import ProjectGrid from "@/components/ProjectGrid";
 import Section from "@/components/Section";
 import Tag from "@/components/Tag";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default async function Home() {
   const [featuredProjects, allProjects] = await Promise.all([
@@ -23,28 +24,30 @@ export default async function Home() {
         )}
       </div>
 
-      <div className="panel space-y-4">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-neutral-100">
-              {profile.name}
-            </h1>
-            <p className="text-sm text-neutral-400">{profile.handle}</p>
+      <Card className="border-border/80 bg-panel/40">
+        <CardContent className="space-y-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="text-2xl font-semibold text-neutral-100">
+                {profile.name}
+              </h1>
+              <p className="text-sm text-neutral-400">{profile.handle}</p>
+            </div>
+            <div className="flex flex-wrap gap-3 text-sm">
+              {socials.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  className="text-neutral-300 hover:text-neutral-100"
+                >
+                  {social.label}
+                </a>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-wrap gap-3 text-sm">
-            {socials.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                className="text-neutral-300 hover:text-neutral-100"
-              >
-                {social.label}
-              </a>
-            ))}
-          </div>
-        </div>
-        <p className="text-base text-neutral-300">{profile.headline}</p>
-      </div>
+          <p className="text-base text-neutral-300">{profile.headline}</p>
+        </CardContent>
+      </Card>
 
       <Section title="Skills & Tools">
         <div className="flex flex-wrap gap-2">
