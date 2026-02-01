@@ -27,7 +27,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <Card
-      className="group flex h-full cursor-pointer flex-col border-border/80 bg-panel/40"
+      className="group flex h-full cursor-pointer flex-col border-border/80 bg-panel/40 transition-all duration-200 hover:-translate-y-1 hover:border-neutral-500/70 hover:shadow-[0_20px_40px_-30px_rgba(15,23,42,0.8)]"
       role="button"
       tabIndex={0}
       onClick={handleNavigate}
@@ -40,7 +40,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     >
       <CardHeader className="flex flex-row items-start justify-between gap-4">
         <div className="space-y-2">
-          <CardTitle className="text-lg text-neutral-100">
+          <CardTitle className="text-lg text-neutral-100 transition-colors group-hover:text-white">
             {project.title}
           </CardTitle>
           <p className="min-h-[3rem] text-sm text-neutral-300">

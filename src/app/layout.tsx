@@ -15,11 +15,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="bg-background text-foreground antialiased">
-        <div className="page flex min-h-screen flex-col gap-10 py-14 sm:py-16">
+        <div className="page flex min-h-screen flex-col gap-10 py-10 sm:py-12">
           <header className="border-b border-border pb-6">
-            <div className="flex flex-col gap-4">
-              <div className="text-xs font-semibold uppercase tracking-[0.4em] text-neutral-500">
-                Personal Site
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="text-sm font-bold uppercase tracking-[0.35em] text-neutral-100">
+                THIRANA'S PERSONAL BLOG
               </div>
               <Nav />
             </div>
@@ -27,7 +27,7 @@ export default function RootLayout({
 
           <main className="flex-1">{children}</main>
 
-          <footer className="border-t border-border pt-6 text-xs text-neutral-500">
+          <footer className="border-t border-border pt-6 text-xs text-neutral-100">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <span>© 2026 Your Name. All rights reserved.</span>
               <span className="muted">Twitter · GitHub · LinkedIn</span>

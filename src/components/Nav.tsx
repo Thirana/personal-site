@@ -25,13 +25,13 @@ export default function Nav() {
           <Link
             key={link.href}
             href={link.href}
-            className={`relative pb-1 text-neutral-400 transition-colors hover:text-neutral-100 hover:underline hover:underline-offset-4 ${
-              isActive ? "text-neutral-100" : ""
+            className={`relative pb-1 transition-colors hover:text-neutral-100 ${
+              isActive ? "text-neutral-100" : "text-neutral-400"
             }`}
           >
             {link.label}
             {isActive ? (
-              <span className="absolute inset-x-0 -bottom-0.5 h-px bg-neutral-600" />
+              <span className="absolute inset-x-0 -bottom-0.5 h-px bg-neutral-100" />
             ) : null}
           </Link>
         );

@@ -13,7 +13,7 @@ export default async function Home() {
   ]);
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-8">
       <div className="flex items-center gap-3 text-sm text-neutral-300">
         {profile.availableForWork ? (
           <span className="flex items-center gap-2">
@@ -26,26 +26,26 @@ export default async function Home() {
       </div>
 
       <Card className="border-border/80 bg-panel/40">
-        <CardContent className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+        <CardContent className="flex flex-col items-center gap-6 py-5 sm:flex-row sm:items-center sm:gap-8">
           <div className="flex-shrink-0">
-            <div className="rounded-2xl border border-border/80 bg-black/40 p-2">
+            <div className="overflow-hidden rounded-lg">
               <Image
-                src="/images/avatar_side_profile.png"
+                src="/images/square.png"
                 alt={profile.name}
                 width={96}
                 height={96}
-                className="rounded-xl object-cover"
+                className="object-cover"
               />
             </div>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-4 text-center sm:text-left">
             <div>
               <h1 className="text-2xl font-semibold text-neutral-100">
                 {profile.name}
               </h1>
               <p className="text-sm text-neutral-400">{profile.handle}</p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap justify-center gap-3 sm:justify-start">
               {socials.map((social) => {
                 const Icon = social.icon;
                 return (
@@ -85,16 +85,20 @@ export default async function Home() {
       </Section>
 
       <Section title="Reach Out">
-        <div className="flex flex-wrap gap-4 text-sm text-neutral-300">
-          {socials.map((social) => (
-            <a
-              key={social.label}
-              href={social.href}
-              className="hover:text-neutral-100"
-            >
-              {social.label}
-            </a>
-          ))}
+        <div className="flex flex-wrap gap-3">
+          {socials.map((social) => {
+            const Icon = social.icon;
+            return (
+              <a
+                key={social.label}
+                href={social.href}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/80 text-neutral-300 hover:text-neutral-100"
+                aria-label={social.label}
+              >
+                <Icon className="h-4 w-4" />
+              </a>
+            );
+          })}
         </div>
       </Section>
     </div>
