@@ -13,7 +13,7 @@ export default function Tag({ children, icon, className }: TagProps) {
     <Badge
       variant="secondary"
       className={cn(
-        "inline-flex items-center gap-2 border border-border/80 bg-panel/60 px-3 py-1 text-xs text-foreground",
+        "inline-flex items-center gap-2 border border-border/80 bg-panel/60 px-3 py-1 text-xs text-foreground transition-colors hover:border-neutral-500 hover:text-neutral-50",
         className
       )}
     >

@@ -13,7 +13,7 @@ export default async function Home() {
   ]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <div className="flex items-center gap-3 text-sm text-neutral-300">
         {profile.availableForWork ? (
           <span className="flex items-center gap-2">

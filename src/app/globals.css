@@ -128,8 +128,12 @@ body {
 }
 
 @layer base {
-  .prose :where(h1, h2, h3) {
+  .prose :where(h1) {
     letter-spacing: -0.02em;
+  }
+
+  .prose :where(h2, h3) {
+    letter-spacing: -0.015em;
   }
 
   .prose a {
