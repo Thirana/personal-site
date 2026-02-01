@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { profile, skills, socials } from "@/content/profile";
 import { getAllProjects, getFeaturedProjects } from "@/lib/content";
 import ProjectGrid from "@/components/ProjectGrid";
@@ -25,34 +26,56 @@ export default async function Home() {
       </div>
 
       <Card className="border-border/80 bg-panel/40">
-        <CardContent className="space-y-4">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <CardContent className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+          <div className="flex-shrink-0">
+            <div className="rounded-2xl border border-border/80 bg-black/40 p-2">
+              <Image
+                src="/images/avatar_side_profile.png"
+                alt={profile.name}
+                width={96}
+                height={96}
+                className="rounded-xl object-cover"
+              />
+            </div>
+          </div>
+          <div className="space-y-4">
             <div>
               <h1 className="text-2xl font-semibold text-neutral-100">
                 {profile.name}
               </h1>
               <p className="text-sm text-neutral-400">{profile.handle}</p>
             </div>
-            <div className="flex flex-wrap gap-3 text-sm">
-              {socials.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  className="text-neutral-300 hover:text-neutral-100"
-                >
-                  {social.label}
-                </a>
-              ))}
+            <div className="flex flex-wrap gap-3">
+              {socials.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/80 text-neutral-300 hover:text-neutral-100"
+                    aria-label={social.label}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                );
+              })}
             </div>
           </div>
-          <p className="text-base text-neutral-300">{profile.headline}</p>
         </CardContent>
       </Card>
+
+      <p className="text-base text-neutral-300">{profile.headline}</p>
 
       <Section title="Skills & Tools">
         <div className="flex flex-wrap gap-2">
           {skills.map((skill) => (
-            <Tag key={skill}>{skill}</Tag>
+            <Tag
+              key={skill.label}
+              icon={<skill.icon className="h-4 w-4" />}
+              className="px-3.5 py-1.5 text-sm"
+            >
+              {skill.label}
+            </Tag>
           ))}
         </div>
       </Section>
