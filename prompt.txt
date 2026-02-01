@@ -1,77 +1,100 @@
-You are a coding agent working in my Next.js App Router repo.
+Goal: Build the portfolio homepage (like the reference) using MDX frontmatter as the single source of truth.
 
-Goal (ONE step): Add local MDX content support for:
-- /blog (index) and /blog/[slug]
-- /projects (index) and /projects/[slug]
-Content should live in the repo as .mdx files and support headings, links, images, code blocks.
+Context:
+- MDX is already set up (App Router).
+- content/projects/*.mdx and content/blog/*.mdx exist.
+- gray-matter is available.
+- Typography styling is good.
 
-Requirements:
-- Use official Next.js MDX support with App Router.
-- Add mdx-components.tsx (required by Next.js) so we can style and map elements (especially images).
-- Use frontmatter for metadata (title, date, summary, tags). Parse it via gray-matter.
-- Keep rendering server-side (no client runtime for MDX).
-- Do not add code highlighting yet (we’ll do rehype-pretty-code later).
+Scope (ONLY this step):
+- Build Home sections + Project cards + Skills tags.
+- Use frontmatter fields in project MDX files to drive UI.
+- Do NOT add code highlighting yet.
+- Do NOT add shadcn/ui yet.
 
-1) Install deps
-- Add: @next/mdx, gray-matter
-- (If Next.js requires additional MDX-related packages per docs, add them.)
+1) Define project frontmatter shape (standardize it)
+Update (or create) a few sample project MDX files under content/projects:
+Each must include frontmatter fields:
+---
+title: "Personal Site"
+date: "2026-02-01"
+summary: "Minimal personal site with MDX blog and project writeups."
+status: "Live" # one of: Live | WIP | Paused
+tech: ["Next.js", "TypeScript", "Tailwind"]
+links:
+  live: "https://example.com"
+  code: "https://github.com/you/repo"
+featured: true
+---
+Body can be short for now.
 
-2) Configure MDX
-- Update next.config.ts to enable MDX for .mdx files (App Router compatible).
-- Ensure pageExtensions includes ts/tsx/mdx if needed.
+Create at least 3 project mdx files so we can render a grid.
 
-3) Add MDX components mapping
-- Create mdx-components.tsx in the correct location for this repo (per Next.js convention).
-- Map:
-  - a -> styled link
-  - pre/code -> keep default prose styling
-  - img -> use next/image (with width/height defaults) OR a simple wrapper that uses <img> safely for now.
-  Keep it minimal and consistent with the current prose prose-invert styling.
+2) Create content config for profile + skills (NOT in MDX)
+Create: src/content/profile.ts
+Export:
+- profile: { name, handle, headline, availableForWork: boolean }
+- socials: array of { label, href } (email, github, linkedin, twitter, etc.)
+- skills: string[] (skills & tools tags)
 
-4) Create content folders + sample content
-- Create:
-  - content/blog/hello-world.mdx
-  - content/projects/personal-site.mdx
-Each should include frontmatter:
-  ---
-  title: "..."
-  date: "2026-02-01"
-  summary: "..."
-  tags: ["nextjs", "mdx"]
-  ---
-And body content with:
-  - h1/h2
-  - a code block
-  - a link
-  - an image reference (use /public/... and add a placeholder image file if needed)
+3) Extend the existing content loader to return typed project metadata
+Update src/lib/content.ts (or create helpers inside it) to:
+- getAllProjects(): returns array of:
+  { slug, title, date, summary, status, tech, links, featured }
+  sorted by date desc.
+- getFeaturedProjects(): filters featured === true (limit 4 by default)
 
-5) Build a small content loader
-- Create src/lib/content.ts with functions:
-  - getAllBlogPosts(): returns metadata list sorted by date desc (slug + title/date/summary/tags)
-  - getBlogPostBySlug(slug): returns { meta, Content } where Content is the compiled MDX component
-  - getAllProjects(): same
-  - getProjectBySlug(slug): same
-Implementation notes:
-  - Read files from content/blog and content/projects using fs/promises.
-  - Parse frontmatter using gray-matter.
-  - For MDX compilation/rendering in App Router, follow the official Next.js MDX approach (import .mdx or compile based on their guide).
-  - Add generateStaticParams in [slug] pages so routes are static.
+Important:
+- Validate required fields; if missing, throw a clear error with filename.
+- Keep functions server-safe (fs/promises usage).
 
-6) Implement routes
-- Update:
-  - src/app/blog/page.tsx (list posts)
-  - src/app/blog/[slug]/page.tsx (render post)
-  - src/app/projects/page.tsx (list projects)
-  - src/app/projects/[slug]/page.tsx (render project)
-Each page should use existing layout and render content inside:
-  <article className="prose prose-invert max-w-none"> ... </article>
+4) Build minimal reusable UI components (Tailwind only)
+Create:
+- src/components/Section.tsx
+  - props: title, children
+  - renders title as h2 and a divider spacing
+- src/components/Tag.tsx
+  - simple pill tag style like reference
+- src/components/StatusBadge.tsx
+  - shows Live/WIP/Paused with subtle styles
+- src/components/ProjectCard.tsx
+  - shows title, status badge, summary, tech tags
+  - bottom row: Live + Code buttons/links (only if present)
+  - whole card clickable to /projects/[slug] (optional), but keep explicit link buttons too
 
-7) Confirm working
-- npm run dev should work
-- Visiting /blog shows list
-- Clicking a post opens /blog/hello-world
-- Visiting /projects shows list
-- Clicking opens /projects/personal-site
+Keep design minimal and consistent with current dark theme.
 
-Keep changes clean, minimal, and scalable.
-After implementing, output a concise summary of files created/edited.
+5) Update pages
+A) src/app/page.tsx (Home)
+Render sections in order:
+- Availability line (green dot + "Available for work" if profile.availableForWork)
+- Profile panel (name + handle + socials)
+- Short intro paragraph (headline)
+- Skills & Tools section: render skills as <Tag />
+- Proof-of-Work section:
+  - render featured projects in a 2-column grid on desktop, 1-column on mobile
+  - add a “Load more” button that expands to show all projects:
+    - implement this ONLY as a tiny client component under src/components/ProjectGrid.tsx
+    - default show 4, on click show all
+- Reach out section: show socials
+
+B) src/app/projects/page.tsx
+- Render all projects in the same grid (no load more).
+
+C) Keep blog pages unchanged for now.
+
+6) Ensure all pages keep the “markdown/prose” feel
+- Use prose only for rich text areas.
+- For card grids and tag rows, use normal Tailwind (not inside prose), otherwise prose styles will fight layout.
+
+7) Confirm:
+- npm run dev works
+- Home looks like a real portfolio page
+- /projects lists all projects
+- /projects/[slug] still renders MDX body
+
+Deliverables:
+- components added
+- profile content file added
+- project mdx files updated/added
+- content loader updated with typed metadata

@@ -23,7 +23,7 @@ export default async function ProjectPage({ params }: PageProps) {
   return (
     <article className="prose prose-invert max-w-none">
       <p className="muted">
-        {meta.date} · {meta.tags.join(", ")}
+        {meta.date} · {meta.status} · {meta.tech.join(", ")}
       </p>
       <Content />
     </article>

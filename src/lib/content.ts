@@ -10,6 +10,24 @@ export type ContentMeta = {
   tags: string[];
 };
 
+export type ProjectStatus = "Live" | "WIP" | "Paused";
+
+export type ProjectLinks = {
+  live?: string;
+  code?: string;
+};
+
+export type ProjectMeta = {
+  slug: string;
+  title: string;
+  date: string;
+  summary: string;
+  status: ProjectStatus;
+  tech: string[];
+  links: ProjectLinks;
+  featured: boolean;
+};
+
 const blogDir = path.join(process.cwd(), "content", "blog");
 const projectsDir = path.join(process.cwd(), "content", "projects");
 
@@ -22,6 +40,72 @@ function normalizeMeta(slug: string, data: Record<string, unknown>): ContentMeta
     tags: Array.isArray(data.tags)
       ? data.tags.filter((tag) => typeof tag === "string")
       : [],
+  };
+}
+
+function assertProjectField(
+  condition: boolean,
+  fileName: string,
+  message: string
+) {
+  if (!condition) {
+    throw new Error(`[content/projects/${fileName}] ${message}`);
+  }
+}
+
+function normalizeProjectMeta(
+  slug: string,
+  data: Record<string, unknown>,
+  fileName: string
+): ProjectMeta {
+  const title = data.title;
+  const date = data.date;
+  const summary = data.summary;
+  const status = data.status;
+  const tech = data.tech;
+  const links = data.links;
+  const featured = data.featured;
+
+  assertProjectField(typeof title === "string", fileName, "Missing title");
+  assertProjectField(typeof date === "string", fileName, "Missing date");
+  assertProjectField(
+    typeof summary === "string",
+    fileName,
+    "Missing summary"
+  );
+  assertProjectField(
+    status === "Live" || status === "WIP" || status === "Paused",
+    fileName,
+    "Status must be Live, WIP, or Paused"
+  );
+  assertProjectField(Array.isArray(tech), fileName, "Missing tech array");
+  assertProjectField(
+    tech.every((item) => typeof item === "string"),
+    fileName,
+    "Tech must be an array of strings"
+  );
+
+  let normalizedLinks: ProjectLinks = {};
+  if (links && typeof links === "object" && !Array.isArray(links)) {
+    const live = (links as { live?: unknown }).live;
+    const code = (links as { code?: unknown }).code;
+    if (typeof live === "string") {
+      normalizedLinks.live = live;
+    }
+    if (typeof code === "string") {
+      normalizedLinks.code = code;
+    }
+  }
+
+  return {
+    slug,
+    title,
+    date,
+    summary,
+    status,
+    tech,
+    links: normalizedLinks,
+    featured: typeof featured === "boolean" ? featured : false,
   };
 }
 
@@ -43,12 +127,35 @@ async function readMdxMeta(dir: string) {
   );
 }
 
+async function readProjectMetaList() {
+  const files = await fs.readdir(projectsDir);
+  const entries = await Promise.all(
+    files
+      .filter((file) => file.endsWith(".mdx"))
+      .map(async (file) => {
+        const slug = file.replace(/\.mdx$/, "");
+        const raw = await fs.readFile(path.join(projectsDir, file), "utf8");
+        const { data } = matter(raw);
+        return normalizeProjectMeta(slug, data, file);
+      })
+  );
+
+  return entries.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+}
+
 export async function getAllBlogPosts() {
   return readMdxMeta(blogDir);
 }
 
 export async function getAllProjects() {
-  return readMdxMeta(projectsDir);
+  return readProjectMetaList();
+}
+
+export async function getFeaturedProjects(limit = 4) {
+  const projects = await readProjectMetaList();
+  return projects.filter((project) => project.featured).slice(0, limit);
 }
 
 export async function getBlogPostBySlug(slug: string) {
@@ -79,10 +186,16 @@ export async function getProjectBySlug(slug: string) {
     );
 
     return {
-      meta: normalizeMeta(slug, data),
+      meta: normalizeProjectMeta(slug, data, `${slug}.mdx`),
       Content,
     };
   } catch (error) {
-    return null;
+    if (error instanceof Error && "code" in error) {
+      const maybeCode = (error as Error & { code?: string }).code;
+      if (maybeCode === "ENOENT") {
+        return null;
+      }
+    }
+    throw error;
   }
 }
