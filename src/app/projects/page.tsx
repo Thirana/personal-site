@@ -1,16 +1,20 @@
-export default function ProjectsPage() {
+import Link from "next/link";
+import { getAllProjects } from "@/lib/content";
+
+export default async function ProjectsPage() {
+  const projects = await getAllProjects();
+
   return (
     <article className="prose prose-invert max-w-none">
       <h1>Projects</h1>
-      <p>
-        A curated list of work will live here. Each entry will include the goal,
-        the approach, and a short reflection on what changed.
-      </p>
-      <h2>Coming Soon</h2>
+      <p>Selected work with notes on outcomes, trade-offs, and lessons learned.</p>
       <ul>
-        <li>Case studies with clear outcomes.</li>
-        <li>Notes on stack choices and trade-offs.</li>
-        <li>Links to demos, repos, and write-ups.</li>
+        {projects.map((project) => (
+          <li key={project.slug}>
+            <Link href={`/projects/${project.slug}`}>{project.title}</Link>
+            <p className="muted">{project.summary}</p>
+          </li>
+        ))}
       </ul>
     </article>
   );

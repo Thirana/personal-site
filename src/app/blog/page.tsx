@@ -1,16 +1,20 @@
-export default function BlogPage() {
+import Link from "next/link";
+import { getAllBlogPosts } from "@/lib/content";
+
+export default async function BlogPage() {
+  const posts = await getAllBlogPosts();
+
   return (
     <article className="prose prose-invert max-w-none">
       <h1>Blog</h1>
-      <p>
-        Essays and notes will be published here. Expect short, practical writing
-        focused on building clean systems and thoughtful interfaces.
-      </p>
-      <h2>Topics</h2>
+      <p>Writing about building calm interfaces and resilient systems.</p>
       <ul>
-        <li>Design systems, typography, and layout.</li>
-        <li>Engineering notes and tooling.</li>
-        <li>Process, clarity, and working in public.</li>
+        {posts.map((post) => (
+          <li key={post.slug}>
+            <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+            <p className="muted">{post.summary}</p>
+          </li>
+        ))}
       </ul>
     </article>
   );

@@ -1,52 +1,77 @@
-Goal: Fix “markdown feeling” by making Tailwind Typography plugin actually generate prose styles in Tailwind v4.
+You are a coding agent working in my Next.js App Router repo.
 
-1) Update src/app/globals.css
-Right after:
-  @import "tailwindcss";
+Goal (ONE step): Add local MDX content support for:
+- /blog (index) and /blog/[slug]
+- /projects (index) and /projects/[slug]
+Content should live in the repo as .mdx files and support headings, links, images, code blocks.
 
-Add:
-  @plugin "@tailwindcss/typography";
-  @config "../../tailwind.config.ts";
+Requirements:
+- Use official Next.js MDX support with App Router.
+- Add mdx-components.tsx (required by Next.js) so we can style and map elements (especially images).
+- Use frontmatter for metadata (title, date, summary, tags). Parse it via gray-matter.
+- Keep rendering server-side (no client runtime for MDX).
+- Do not add code highlighting yet (we’ll do rehype-pretty-code later).
 
-Notes:
-- globals.css is at src/app/, so ../../tailwind.config.ts should point to repo root.
-- Keep existing CSS variables and background gradient.
+1) Install deps
+- Add: @next/mdx, gray-matter
+- (If Next.js requires additional MDX-related packages per docs, add them.)
 
-2) Simplify prose overrides (very important)
-In globals.css, remove the large block that sets:
-  .prose { --tw-prose-body: ... --tw-prose-headings: ... etc }
-Because prose-invert already sets dark-mode typography palettes and we want the plugin defaults for spacing + type scale.
+2) Configure MDX
+- Update next.config.ts to enable MDX for .mdx files (App Router compatible).
+- Ensure pageExtensions includes ts/tsx/mdx if needed.
 
-Keep ONLY small, safe overrides like:
-- link underline behavior
-- inline code styling (border + background)
-- pre styling (border + radius)
-- maybe heading letter spacing if you want
+3) Add MDX components mapping
+- Create mdx-components.tsx in the correct location for this repo (per Next.js convention).
+- Map:
+  - a -> styled link
+  - pre/code -> keep default prose styling
+  - img -> use next/image (with width/height defaults) OR a simple wrapper that uses <img> safely for now.
+  Keep it minimal and consistent with the current prose prose-invert styling.
 
-Example target:
-@layer base {
-  .prose :where(h1, h2, h3) { letter-spacing: -0.02em; }
-  .prose a { text-decoration: none; text-underline-offset: 4px; }
-  .prose a:hover { text-decoration: underline; }
+4) Create content folders + sample content
+- Create:
+  - content/blog/hello-world.mdx
+  - content/projects/personal-site.mdx
+Each should include frontmatter:
+  ---
+  title: "..."
+  date: "2026-02-01"
+  summary: "..."
+  tags: ["nextjs", "mdx"]
+  ---
+And body content with:
+  - h1/h2
+  - a code block
+  - a link
+  - an image reference (use /public/... and add a placeholder image file if needed)
 
-  .prose code { border: 1px solid var(--border); border-radius: 0.375rem; background: color-mix(in srgb, var(--code) 70%, transparent); padding: 0.15rem 0.4rem; }
-  .prose pre { border: 1px solid var(--border); border-radius: 0.75rem; }
-}
+5) Build a small content loader
+- Create src/lib/content.ts with functions:
+  - getAllBlogPosts(): returns metadata list sorted by date desc (slug + title/date/summary/tags)
+  - getBlogPostBySlug(slug): returns { meta, Content } where Content is the compiled MDX component
+  - getAllProjects(): same
+  - getProjectBySlug(slug): same
+Implementation notes:
+  - Read files from content/blog and content/projects using fs/promises.
+  - Parse frontmatter using gray-matter.
+  - For MDX compilation/rendering in App Router, follow the official Next.js MDX approach (import .mdx or compile based on their guide).
+  - Add generateStaticParams in [slug] pages so routes are static.
 
-Remove the custom margin rules you added for p/ul/ol as well — let the typography plugin control spacing.
+6) Implement routes
+- Update:
+  - src/app/blog/page.tsx (list posts)
+  - src/app/blog/[slug]/page.tsx (render post)
+  - src/app/projects/page.tsx (list projects)
+  - src/app/projects/[slug]/page.tsx (render project)
+Each page should use existing layout and render content inside:
+  <article className="prose prose-invert max-w-none"> ... </article>
 
-3) Ensure pages use typography correctly
-In each page component, ensure wrapper is:
-  <article className="prose prose-invert max-w-none">
+7) Confirm working
+- npm run dev should work
+- Visiting /blog shows list
+- Clicking a post opens /blog/hello-world
+- Visiting /projects shows list
+- Clicking opens /projects/personal-site
 
-4) Verify expected output
-After changes:
-- h1 should be noticeably larger than paragraph
-- h2 should be smaller than h1 but clearly styled
-- lists should have proper indentation and spacing
-- paragraphs should have consistent vertical rhythm
-
-Deliverables:
-- globals.css updated with @plugin and @config
-- prose overrides simplified
-- app still runs with npm run dev
+Keep changes clean, minimal, and scalable.
+After implementing, output a concise summary of files created/edited.
