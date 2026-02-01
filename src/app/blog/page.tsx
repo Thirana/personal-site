@@ -1,11 +1,17 @@
 export default function BlogPage() {
   return (
-    <section className="space-y-4">
-      <h1 className="text-2xl font-semibold text-neutral-900">Blog</h1>
-      <p className="max-w-2xl text-base leading-7 text-neutral-600">
-        Posts will live here soon. I plan to share short essays, progress notes,
-        and lessons learned from building projects.
+    <article className="prose prose-invert max-w-none">
+      <h1>Blog</h1>
+      <p>
+        Essays and notes will be published here. Expect short, practical writing
+        focused on building clean systems and thoughtful interfaces.
       </p>
-    </section>
+      <h2>Topics</h2>
+      <ul>
+        <li>Design systems, typography, and layout.</li>
+        <li>Engineering notes and tooling.</li>
+        <li>Process, clarity, and working in public.</li>
+      </ul>
+    </article>
   );
 }
