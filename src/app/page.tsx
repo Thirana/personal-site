@@ -42,26 +42,34 @@ export default async function Home() {
             </div>
           </div>
           <div className="space-y-4 text-center sm:text-left">
-            <div>
+            <div className="space-y-1">
               <h1 className="text-2xl font-semibold text-neutral-100">
                 {profile.name}
               </h1>
               <p className="text-sm text-neutral-400">{profile.handle}</p>
             </div>
-            <div className="flex flex-wrap justify-center gap-3 sm:justify-start">
-              {socials.map((social) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/80 text-neutral-300 hover:text-neutral-100"
-                    aria-label={social.label}
-                  >
-                    <Icon className="h-4 w-4" />
-                  </a>
-                );
-              })}
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <span className="h-4 w-1 rounded-full bg-emerald-400/80" />
+                <p className="text-xs uppercase tracking-[0.3em] text-neutral-400">
+                  Reach Out
+                </p>
+              </div>
+              <div className="flex flex-wrap justify-center gap-3 sm:justify-start">
+                {socials.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/80 text-neutral-300 hover:text-neutral-100"
+                      aria-label={social.label}
+                    >
+                      <Icon className="h-4 w-4" />
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </CardContent>
@@ -73,7 +81,7 @@ export default async function Home() {
           <span className="mt-2 h-full w-0.5 bg-neutral-100/70" />
         </div>
         <div>
-          <p className="text-sm italic leading-7 text-neutral-200">
+          <p className="text-sm italic font-medium leading-7 text-neutral-200">
             {profile.headline}
           </p>
         </div>
@@ -99,24 +107,6 @@ export default async function Home() {
 
       <Section title="Experience">
         <WorkExperience className="w-full" experiences={WORK_EXPERIENCE} />
-      </Section>
-
-      <Section title="Reach Out">
-        <div className="flex flex-wrap gap-3">
-          {socials.map((social) => {
-            const Icon = social.icon;
-            return (
-              <a
-                key={social.label}
-                href={social.href}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/80 text-neutral-300 hover:text-neutral-100"
-                aria-label={social.label}
-              >
-                <Icon className="h-4 w-4" />
-              </a>
-            );
-          })}
-        </div>
       </Section>
     </div>
   );
