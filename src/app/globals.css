@@ -5,7 +5,7 @@
 @plugin "@tailwindcss/typography";
 
 @plugin "tailwindcss-animate";
-@config "../../tailwind.config.ts";
+@config "../../tailwind.config.mts";
 
 :root {
   --muted: oklch(0.968 0.007 247.896);

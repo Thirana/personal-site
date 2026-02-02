@@ -1,10 +1,13 @@
 import Image from "next/image";
+import { Quote } from "lucide-react";
 import { profile, skills, socials } from "@/content/profile";
+import { WORK_EXPERIENCE } from "@/content/experience";
 import { getAllProjects, getFeaturedProjects } from "@/lib/content";
 import ProjectGrid from "@/components/ProjectGrid";
 import Section from "@/components/Section";
 import Tag from "@/components/Tag";
 import { Card, CardContent } from "@/components/ui/card";
+import { WorkExperience } from "@/components/work-experience";
 
 export default async function Home() {
   const [featuredProjects, allProjects] = await Promise.all([
@@ -13,7 +16,7 @@ export default async function Home() {
   ]);
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       <div className="flex items-center gap-3 text-sm text-neutral-300">
         {profile.availableForWork ? (
           <span className="flex items-center gap-2">
@@ -64,7 +67,17 @@ export default async function Home() {
         </CardContent>
       </Card>
 
-      <p className="text-base text-neutral-300">{profile.headline}</p>
+      <div className="flex gap-4">
+        <div className="flex flex-col items-center text-emerald-300">
+          <Quote className="h-5 w-5" />
+          <span className="mt-2 h-full w-0.5 bg-neutral-100/70" />
+        </div>
+        <div>
+          <p className="text-sm italic leading-7 text-neutral-200">
+            {profile.headline}
+          </p>
+        </div>
+      </div>
 
       <Section title="Skills & Tools">
         <div className="flex flex-wrap gap-2">
@@ -82,6 +95,10 @@ export default async function Home() {
 
       <Section title="Proof of Work">
         <ProjectGrid featured={featuredProjects} all={allProjects} />
+      </Section>
+
+      <Section title="Experience">
+        <WorkExperience className="w-full" experiences={WORK_EXPERIENCE} />
       </Section>
 
       <Section title="Reach Out">

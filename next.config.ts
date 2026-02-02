@@ -13,6 +13,15 @@ const withMDX = createMDX({
 
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "mdx"],
+  images: {
+    qualities: [100, 75],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "assets.chanhdai.com",
+      },
+    ],
+  },
 };
 
 export default withMDX(nextConfig);
