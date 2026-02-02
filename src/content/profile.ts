@@ -18,7 +18,7 @@ export const profile = {
   name: "Thirana Embuldeniya",
   handle: "@_Thirana",
   headline:
-    "I build modern, reliable web experiences with a focus on performance, clarity, and craft.",
+    "I am an organized, self-motivated software engineer with 1 year of industry experience. Hands-on practical experience in cloud-native systems, DevOps practices, and full-stack development. Experience working with AWS, Kubernetes-based platforms, and building web applications. Reliable team player with a strong willingness to learn and grow.",
   availableForWork: true,
 };
 
