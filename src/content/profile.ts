@@ -23,10 +23,14 @@ export const profile = {
 };
 
 export const socials = [
-  { label: "Email", href: "mailto:hello@example.com", icon: Mail },
-  { label: "GitHub", href: "https://github.com/you", icon: Github },
-  { label: "LinkedIn", href: "https://linkedin.com/in/you", icon: Linkedin },
-  { label: "Twitter", href: "https://twitter.com/you", icon: Twitter },
+  { label: "Email", href: "mailto:t.embuldeniya@gmail.com", icon: Mail },
+  { label: "GitHub", href: "https://github.com/Thirana", icon: Github },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/thirana-embuldeniya/",
+    icon: Linkedin,
+  },
+  { label: "Twitter", href: "https://x.com/_Thirana", icon: Twitter },
 ];
 
 export const skills = [

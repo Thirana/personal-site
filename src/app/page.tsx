@@ -62,6 +62,8 @@ export default async function Home() {
                     <a
                       key={social.label}
                       href={social.href}
+                      target="_blank"
+                      rel="noreferrer"
                       className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/80 text-neutral-300 hover:text-neutral-100"
                       aria-label={social.label}
                     >

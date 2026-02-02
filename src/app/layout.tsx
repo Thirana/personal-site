@@ -31,7 +31,9 @@ export default function RootLayout({
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <span>© 2026 Thirana Embuldeniya. All rights reserved.</span>
               <a
-                href="https://github.com/you/repo"
+                href="https://github.com/Thirana/personal-site"
+                target="_blank"
+                rel="noreferrer"
                 className="inline-flex items-center gap-2 text-neutral-400 hover:text-neutral-200"
               >
                 <svg
