@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getAllBlogPosts, getBlogPostBySlug } from "@/lib/content";
+import ContentHero from "@/components/ContentHero";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -21,11 +22,16 @@ export default async function BlogPostPage({ params }: PageProps) {
   const { meta, Content } = result;
 
   return (
-    <article className="prose prose-invert max-w-none">
-      <p className="muted">
-        {meta.date} · {meta.tags.join(", ")}
-      </p>
-      <Content />
-    </article>
+    <div className="space-y-8">
+      <ContentHero
+        eyebrow="Blog"
+        title={meta.title}
+        summary={meta.summary}
+        chips={meta.tags}
+      />
+      <article className="prose prose-invert max-w-none content-with-hero">
+        <Content />
+      </article>
+    </div>
   );
 }

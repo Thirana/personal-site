@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Nav from "../components/Nav";
 import "./globals.css";
 
@@ -18,9 +19,12 @@ export default function RootLayout({
         <div className="page flex min-h-screen flex-col gap-10 py-10 sm:py-12">
           <header className="border-b border-border pb-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="text-sm font-bold uppercase tracking-[0.35em] text-neutral-100">
+              <Link
+                href="/"
+                className="text-sm font-bold uppercase tracking-[0.35em] text-neutral-100 hover:text-neutral-200"
+              >
                 THIRANA'S PERSONAL BLOG
-              </div>
+              </Link>
               <Nav />
             </div>
           </header>

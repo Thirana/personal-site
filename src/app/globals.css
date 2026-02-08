@@ -156,6 +156,10 @@ body {
     border: 1px solid var(--border);
     border-radius: 0.75rem;
   }
+
+  .content-with-hero > h1:first-child {
+    display: none;
+  }
 }
 
 .dark {

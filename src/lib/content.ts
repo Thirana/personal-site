@@ -10,7 +10,7 @@ export type ContentMeta = {
   tags: string[];
 };
 
-export type ProjectStatus = "Live" | "WIP" | "Paused";
+export type ProjectStatus = "Live" | "WIP" | "Paused" | "Completed";
 
 export type ProjectLinks = {
   live?: string;
@@ -74,9 +74,9 @@ function normalizeProjectMeta(
     "Missing summary"
   );
   assertProjectField(
-    status === "Live" || status === "WIP" || status === "Paused",
+    status === "Live" || status === "WIP" || status === "Paused" || status === "Completed",
     fileName,
-    "Status must be Live, WIP, or Paused"
+    "Status must be Live, WIP, Paused, or Completed"
   );
   assertProjectField(Array.isArray(tech), fileName, "Missing tech array");
   assertProjectField(
