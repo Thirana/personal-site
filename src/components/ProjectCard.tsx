@@ -38,16 +38,16 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         }
       }}
     >
-      <CardHeader className="flex flex-row items-start justify-between gap-4">
-        <div className="space-y-2">
+      <CardHeader className="space-y-2">
+        <div className="flex items-start justify-between gap-4">
           <CardTitle className="text-lg text-neutral-100 transition-colors group-hover:text-white">
             {project.title}
           </CardTitle>
-          <p className="min-h-[3rem] text-sm text-neutral-300">
-            {project.summary}
-          </p>
+          <StatusBadge status={project.status} />
         </div>
-        <StatusBadge status={project.status} />
+        <p className="min-h-[3rem] text-sm text-neutral-300">
+          {project.summary}
+        </p>
       </CardHeader>
 
       <CardContent className="flex-1">
