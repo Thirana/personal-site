@@ -10,7 +10,7 @@ type CapabilityMatrixProps = {
 
 export default function CapabilityMatrix({ rows }: CapabilityMatrixProps) {
   return (
-    <div className="overflow-hidden rounded-xl border border-border/70 bg-panel/30">
+    <div className="overflow-hidden rounded-xl bg-panel/30">
       <div className="hidden grid-cols-[1.1fr_1.3fr_1fr] border-b border-border/70 px-4 py-3 text-[10px] uppercase tracking-[0.2em] text-neutral-400 sm:grid">
         <span>Domain</span>
         <span>Focus</span>
