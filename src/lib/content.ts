@@ -8,6 +8,10 @@ export type ContentMeta = {
   date: string;
   summary: string;
   tags: string[];
+  level?: string;
+  track?: string;
+  appliesTo: string[];
+  takeaway?: string;
 };
 
 export type ProjectStatus = "Live" | "WIP" | "Paused" | "Completed";
@@ -26,10 +30,65 @@ export type ProjectMeta = {
   tech: string[];
   links: ProjectLinks;
   featured: boolean;
+  domains: string[];
+  constraints: string[];
+  metrics: ProjectMetric[];
+  evidence: ProjectEvidence[];
+  outcomes: string[];
+};
+
+export type ProjectMetric = {
+  label: string;
+  value: string;
+};
+
+export type ProjectEvidence = {
+  label: string;
+  href: string;
 };
 
 const blogDir = path.join(process.cwd(), "content", "blog");
 const projectsDir = path.join(process.cwd(), "content", "projects");
+
+function toStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter((item): item is string => typeof item === "string");
+}
+
+function toProjectMetrics(value: unknown): ProjectMetric[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .filter((item): item is Record<string, unknown> => {
+      return !!item && typeof item === "object" && !Array.isArray(item);
+    })
+    .map((item) => ({
+      label: typeof item.label === "string" ? item.label : "",
+      value: typeof item.value === "string" ? item.value : "",
+    }))
+    .filter((item) => item.label.length > 0 && item.value.length > 0);
+}
+
+function toProjectEvidence(value: unknown): ProjectEvidence[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .filter((item): item is Record<string, unknown> => {
+      return !!item && typeof item === "object" && !Array.isArray(item);
+    })
+    .map((item) => ({
+      label: typeof item.label === "string" ? item.label : "",
+      href: typeof item.href === "string" ? item.href : "",
+    }))
+    .filter((item) => item.label.length > 0 && item.href.length > 0);
+}
 
 function normalizeMeta(slug: string, data: Record<string, unknown>): ContentMeta {
   return {
@@ -37,9 +96,11 @@ function normalizeMeta(slug: string, data: Record<string, unknown>): ContentMeta
     title: typeof data.title === "string" ? data.title : slug,
     date: typeof data.date === "string" ? data.date : "",
     summary: typeof data.summary === "string" ? data.summary : "",
-    tags: Array.isArray(data.tags)
-      ? data.tags.filter((tag) => typeof tag === "string")
-      : [],
+    tags: toStringArray(data.tags),
+    level: typeof data.level === "string" ? data.level : undefined,
+    track: typeof data.track === "string" ? data.track : undefined,
+    appliesTo: toStringArray(data.appliesTo),
+    takeaway: typeof data.takeaway === "string" ? data.takeaway : undefined,
   };
 }
 
@@ -65,6 +126,11 @@ function normalizeProjectMeta(
   const tech = data.tech;
   const links = data.links;
   const featured = data.featured;
+  const domains = data.domains;
+  const constraints = data.constraints;
+  const metrics = data.metrics;
+  const evidence = data.evidence;
+  const outcomes = data.outcomes;
 
   assertProjectField(typeof title === "string", fileName, "Missing title");
   assertProjectField(typeof date === "string", fileName, "Missing date");
@@ -106,6 +172,11 @@ function normalizeProjectMeta(
     tech,
     links: normalizedLinks,
     featured: typeof featured === "boolean" ? featured : false,
+    domains: toStringArray(domains),
+    constraints: toStringArray(constraints),
+    metrics: toProjectMetrics(metrics),
+    evidence: toProjectEvidence(evidence),
+    outcomes: toStringArray(outcomes),
   };
 }
 

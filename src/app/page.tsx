@@ -91,7 +91,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <Section title="Skills & Tools">
+      <Section title="Technologies & Tools">
         <div className="flex flex-wrap gap-2">
           {skills.map((skill) => (
             <Tag
@@ -105,7 +105,7 @@ export default async function Home() {
         </div>
       </Section>
 
-      <Section title="Proof of Work">
+      <Section title="Systems Portfolio">
         <ProjectGrid featured={featuredProjects} all={allProjects} />
       </Section>
 

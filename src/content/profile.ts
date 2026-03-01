@@ -44,3 +44,45 @@ export const skills = [
   { label: "Backend", icon: BrickWall },
   { label: "DevOps", icon: Cog },
 ];
+
+export const opsSignals = [
+  { label: "Role", value: "Backend Engineer" },
+  { label: "Focus", value: "Reliability + Data Systems" },
+  { label: "Preferred Stack", value: "Node.js, Go, AWS" },
+  { label: "Delivery Style", value: "Metrics-first" },
+];
+
+export const capabilityRows = [
+  {
+    domain: "API & Auth",
+    focus: "Token rotation, RBAC, middleware-driven contracts.",
+    signal: "JWT + role guards",
+  },
+  {
+    domain: "Data & Modeling",
+    focus: "Schema validation, indexing, pagination, soft-delete safety.",
+    signal: "Indexes + cursor paging",
+  },
+  {
+    domain: "Reliability",
+    focus: "Error handling, idempotent flows, graceful shutdown.",
+    signal: "Operational resilience",
+  },
+  {
+    domain: "Observability",
+    focus: "Structured logging, request tracing, debugging workflows.",
+    signal: "Request IDs + logs",
+  },
+  {
+    domain: "Platform Delivery",
+    focus: "Kubernetes-style deployments and automation workflows.",
+    signal: "GitOps + autoscaling",
+  },
+];
+
+export const engineerSnapshot = [
+  { label: "Multi-tenant Infra", value: "EKS namespace isolation" },
+  { label: "Provisioning", value: "~4m -> ~2m onboarding" },
+  { label: "Cost Profile", value: "~40% infra reduction" },
+  { label: "Workflow", value: "GitOps + Helm + Argo CD" },
+];
