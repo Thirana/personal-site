@@ -7,26 +7,32 @@ tech: ["Node.js", "Express v5", "TypeScript", "MongoDB", "Zod", "JWT", "Winston"
 links:
   code: "https://github.com/Thirana/workspace-manager-api/tree/main"
 featured: true
-domains: ["API", "Auth", "Data", "Observability"]
-constraints: ["multi-tenant safety", "token lifecycle control", "consistency under concurrency"]
+domains: ["Auth & Sessions", "Authorization", "Data Integrity", "Observability"]
+constraints:
+  [
+    "token lifecycle safety",
+    "workspace role boundaries",
+    "consistency under concurrency",
+    "request traceability for debugging",
+  ]
 metrics:
-  - label: "Tenant Onboarding"
-    value: "~2m (from ~4m)"
-  - label: "Infra Cost"
-    value: "-40% via autoscaling"
   - label: "Auth Model"
     value: "Access + rotated refresh"
-  - label: "Pagination"
-    value: "Cursor-based"
+  - label: "Access Control"
+    value: "System + workspace roles"
+  - label: "Data Safety"
+    value: "Transactions + unique/partial indexes"
+  - label: "Traceability"
+    value: "Request IDs + structured logs"
 evidence:
   - label: "Repository"
     href: "https://github.com/Thirana/workspace-manager-api/tree/main"
   - label: "API Documentation"
     href: "https://github.com/Thirana/workspace-manager-api/tree/main/docs"
 outcomes:
-  - "Implemented production-style auth/session handling with token rotation and reuse detection."
-  - "Enforced data integrity with role checks, transactions, and indexing strategy."
-  - "Improved operational visibility through structured logging and request-level tracing."
+  - "Implemented production-style authentication with refresh token rotation, reuse detection, and secure cookie handling."
+  - "Built layered authorization (system roles + workspace membership roles) to enforce safe multi-tenant access."
+  - "Improved reliability with transactions, index-backed constraints, request IDs, and centralized error handling."
 ---
 
 # Backend Standards
