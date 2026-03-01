@@ -31,33 +31,33 @@ export default async function Home() {
       </div>
 
       <Card className="border-border/80 bg-panel/40">
-        <CardContent className="grid grid-cols-1 items-start gap-4 p-4 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-7 sm:p-6">
-          <div className="hidden flex-shrink-0 sm:block">
+        <CardContent className="grid grid-cols-[auto_1fr] items-start gap-4 p-4 sm:gap-7 sm:p-6">
+          <div className="flex-shrink-0">
             <div className="overflow-hidden rounded-lg border border-border/80">
               <Image
                 src="/images/square.png"
                 alt={profile.name}
                 width={96}
-                height={96}
-                className="h-20 w-20 object-cover sm:h-24 sm:w-24"
+                height={112}
+                className="h-20 w-16 object-cover object-top sm:h-28 sm:w-24"
               />
             </div>
           </div>
-          <div className="min-w-0 space-y-4">
+          <div className="min-w-0 space-y-3 sm:space-y-4">
             <div className="space-y-1">
               <h1 className="text-xl font-semibold leading-tight text-neutral-100 sm:text-2xl">
                 {profile.name}
               </h1>
               <p className="text-sm text-neutral-400">{profile.handle}</p>
             </div>
-            <div className="space-y-2.5">
-              <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex items-center gap-2.5 shrink-0">
                 <span className="h-4 w-1 rounded-full bg-emerald-400/80" />
-                <p className="text-[11px] uppercase tracking-[0.28em] text-neutral-400">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-400 sm:text-[11px] sm:tracking-[0.28em]">
                   Reach Out
                 </p>
               </div>
-              <div className="flex flex-wrap gap-2.5">
+              <div className="flex gap-1.5 sm:gap-2.5">
                 {socials.map((social) => {
                   const Icon = social.icon;
                   return (
@@ -66,10 +66,10 @@ export default async function Home() {
                       href={social.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/80 text-neutral-300 transition-colors hover:border-neutral-400/70 hover:text-neutral-100"
+                      className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-border/80 text-neutral-300 transition-colors hover:border-neutral-400/70 hover:text-neutral-100 sm:h-9 sm:w-9"
                       aria-label={social.label}
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     </a>
                   );
                 })}
