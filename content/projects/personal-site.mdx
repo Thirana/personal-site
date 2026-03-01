@@ -1,33 +1,119 @@
 ---
 title: "Personal Site"
 date: "2026-02-01"
-summary: "Minimal personal site with MDX blog and project writeups."
+summary: "A production-grade portfolio/blog platform on Vercel with typed MDX content, SEO automation, security hardening, and performance observability."
 status: "Live"
-tech: ["Next.js", "TypeScript", "Tailwind"]
+tech:
+  [
+    "Next.js 16",
+    "TypeScript",
+    "Tailwind CSS v4",
+    "MDX",
+    "shadcn/ui",
+    "Vercel",
+    "GitHub Actions",
+  ]
 links:
-  live: "https://example.com"
-  code: "https://github.com/you/repo"
+  code: "https://github.com/Thirana/personal-site"
 featured: true
-domains: ["Portfolio Platform", "Content System", "Frontend Architecture"]
-constraints: ["content maintainability", "clear navigation", "responsive consistency"]
+domains:
+  [
+    "Platform",
+    "Content Delivery",
+    "Security & Governance",
+    "Observability",
+  ]
+constraints:
+  [
+    "fast static delivery with controlled freshness",
+    "search/social readiness without manual metadata drift",
+    "secure public deployment defaults on Vercel",
+    "mobile-first consistency for dense project content",
+  ]
 metrics:
-  - label: "Content Source"
-    value: "MDX + frontmatter"
-  - label: "Routing Model"
-    value: "Static generation via App Router"
-  - label: "UI Direction"
-    value: "Backend operations aesthetic"
+  - label: "Rendering Strategy"
+    value: "Static-first + on-demand revalidation"
+  - label: "SEO Surface"
+    value: "Sitemap + robots + OG + JSON-LD"
+  - label: "Security Baseline"
+    value: "CSP + headers + WAF + protected previews"
+  - label: "Perf Telemetry"
+    value: "Web Analytics + Speed Insights + CWV budgets"
 evidence:
-  - label: "Live Site"
-    href: "https://example.com"
   - label: "Repository"
-    href: "https://github.com/you/repo"
+    href: "https://github.com/Thirana/personal-site"
+  - label: "Content Loader"
+    href: "https://github.com/Thirana/personal-site/blob/main/src/lib/content.ts"
 outcomes:
-  - "Built a repeatable structure for project/blog publishing with typed metadata."
-  - "Aligned UI across pages to highlight systems thinking and engineering depth."
+  - "Established a typed MDX content pipeline with consistent frontmatter validation for blog and project publishing."
+  - "Implemented a backend-first UI system across home, projects, blog, and detail pages with responsive behavior standards."
+  - "Defined a production-ready Vercel operating model covering SEO, observability, security hardening, CI quality gates, and controlled rollouts."
 ---
 
 # Personal Site
 
-A calm, minimal personal site focused on readability and craft. Built to keep
-content and projects easy to browse.
+This project is my own systems-focused portfolio/blog platform. I designed it as a production-grade product, not just a static personal page, so I can demonstrate backend thinking through content structure, delivery strategy, and operational standards.
+
+## Project overview
+
+The platform combines portfolio case studies, technical writing, and profile experience into one consistent system. Content is authored in MDX with typed metadata, rendered through Next.js App Router, and deployed on Vercel with a professional-grade operational baseline.
+
+## Tech stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript
+- **Styling/UI:** Tailwind CSS v4 + shadcn/ui primitives
+- **Content:** MDX + gray-matter frontmatter parsing
+- **Platform:** Vercel
+- **Delivery workflow:** GitHub + CI quality gates
+
+## Core platform capabilities
+
+- **Typed content model:** Blog and project entries are MDX-driven with frontmatter validation.
+- **Reusable rendering pipeline:** Shared metadata loaders power cards, detail pages, and route-level views.
+- **Backend-first presentation style:** Project pages expose outcomes, evidence, capability matrix signals, and constraints.
+- **Responsive UX baseline:** Mobile-first layout standards with progressive disclosure for dense card content.
+
+## Engineering practices and concepts
+
+I intentionally treated this portfolio like a production system. These are the concepts implemented in the platform architecture:
+
+### Rendering and cache strategy
+
+- Static-first route generation for blog/project pages, for low-latency delivery.
+- Controlled freshness through on-demand revalidation patterns, for safe content updates without full rebuild dependency.
+- Stable slug-based routing from MDX filenames, for deterministic URL behavior.
+
+### SEO and discoverability
+
+- Sitemap and robots generation, for clean crawler guidance.
+- Canonical URL and metadata discipline, for avoiding duplication and improving index quality.
+- Open Graph/Twitter cards and JSON-LD strategy, for strong social previews and structured search signals.
+
+### Security and deployment hardening
+
+- Strict security headers (including CSP strategy), for safer browser defaults.
+- Vercel WAF and protected preview deployments, for reducing exposure in non-production environments.
+- Environment and secret hygiene, for safer configuration boundaries.
+
+### Reliability and release safety
+
+- CI gates for lint, type safety, build integrity, and content checks, for catching regressions early.
+- Frontmatter/content consistency checks, for preventing drift between project claims and rendered metadata.
+- Preview-driven validation workflow before promotion to production.
+
+### Observability and performance operations
+
+- Vercel Web Analytics and Speed Insights, for real-user and performance visibility.
+- Core Web Vitals monitoring and budget-based tuning, for sustained UX quality.
+- Structured diagnostics approach for route and content loading issues.
+
+### Product control and maintainability
+
+- Feature-flag-friendly architecture (Edge Config path), for controlled rollouts.
+- Scheduled maintenance tasks (cron-ready model) for link/content hygiene and future automation.
+- Local agent guidance (`AGENTS.md`) to preserve consistency across future development sessions.
+
+## Why this matters
+
+Many portfolio sites look polished but are not engineered as maintainable systems. This project demonstrates the opposite approach: content modeling, operational rigor, and user-facing clarity working together. It reflects the same engineering mindset I bring to backend/platform work.

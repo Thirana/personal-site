@@ -42,3 +42,6 @@ next-env.d.ts
 
 # local agent session guides
 AGENTS.md
+
+# local planning notes
+docs/professional-grade-vercel-roadmap.md
