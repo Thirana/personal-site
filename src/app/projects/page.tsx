@@ -64,9 +64,9 @@ export default async function ProjectsPage() {
           ]}
         />
       </div>
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4">
         {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
+          <ProjectCard key={project.slug} project={project} layout="wide" />
         ))}
       </div>
     </div>

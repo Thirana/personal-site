@@ -37,7 +37,7 @@ outcomes:
 
 # Backend Standards
 
-This is a self learning project built to practice and implement real world, industry standard backend practices beyond basic CRUD, and to mimic the real world backend standards I learned during my work experience.
+> This is a self learning project built to practice and implement real world, industry standard backend practices beyond basic CRUD, and to mirror the backend standards I learned during my work experience.
 
 ## Project overview
 
@@ -104,8 +104,10 @@ I intentionally prioritized structure and correctness over “just making it wor
 - Higher order middlewares (auth/role/validation), for declarative and reusable routes.
 - Request context enrichment (`req.auth`, `req.workspaceAuth`, `req.requestId`), for sharing auth and workspace info across middlewares and avoiding repeated DB queries or re processing the same logic.
 
-## Why this matters
+## Project Intent
 
-Most CRUD apps work in the happy path but fall apart under real constraints like permissions, validation, token handling, logging, and schema drift. This project was built to internalize those concerns and apply them in a focused, production style architecture.
+In industry backend work, we are expected to follow strong standards for validation, authorization, token handling, logging, operational safety, code quality, error handling, and testing discipline. In many personal projects, those areas are often skipped in favor of building features quickly.
+
+I built this project to mirror the real-world backend practices I learned during my work experience and apply them end to end in a self project. The goal was to build with a production mindset, not just to make endpoints work.
 
 If you want to explore the implementation details, the repository includes structured documentation for APIs, middleware, and engineering practices.

@@ -28,12 +28,12 @@ You can use this repo as a starting point for your own site. Feel free to fork i
 
 ## Project Structure
 
-- `content/blog/*.mdx` – Blog posts (frontmatter + body)
-- `content/projects/*.mdx` – Projects (frontmatter + body)
-- `src/content/profile.ts` – Profile + skills + socials data
-- `src/content/experience.ts` – Work experience data
-- `src/components/work-experience.tsx` – Experience timeline component
-- `src/lib/content.ts` – Content loader helpers
+- `content/blog/*.mdx` - Blog posts (frontmatter + body)
+- `content/projects/*.mdx` - Projects (frontmatter + body)
+- `src/content/profile.ts` - Profile + skills + socials data
+- `src/content/experience.ts` - Work experience data
+- `src/components/work-experience.tsx` - Experience timeline component
+- `src/lib/content.ts` - Content loader helpers
 
 ## Local Setup
 

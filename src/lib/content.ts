@@ -50,6 +50,7 @@ export type ProjectEvidence = {
 
 const blogDir = path.join(process.cwd(), "content", "blog");
 const projectsDir = path.join(process.cwd(), "content", "projects");
+const isProduction = process.env.NODE_ENV === "production";
 
 export const CONTENT_CACHE_TAGS = {
   blog: "content:blog",
@@ -291,29 +292,48 @@ const getProjectMetaBySlugCached = unstable_cache(
 );
 
 export async function getAllBlogPosts() {
+  if (!isProduction) {
+    return readMdxMeta(blogDir);
+  }
+
   return getAllBlogPostsCached();
 }
 
 export async function getAllProjects() {
+  if (!isProduction) {
+    return readProjectMetaList();
+  }
+
   return getAllProjectsCached();
 }
 
 export async function getFeaturedProjects(limit = 4) {
-  const projects = await getAllProjectsCached();
+  const projects = isProduction
+    ? await getAllProjectsCached()
+    : await readProjectMetaList();
+
   return projects.filter((project) => project.featured).slice(0, limit);
 }
 
 export async function getBlogMetaBySlug(slug: string) {
+  if (!isProduction) {
+    return readBlogMetaBySlug(slug);
+  }
+
   return getBlogMetaBySlugCached(slug);
 }
 
 export async function getProjectMetaBySlug(slug: string) {
+  if (!isProduction) {
+    return readProjectMetaBySlug(slug);
+  }
+
   return getProjectMetaBySlugCached(slug);
 }
 
 export async function getBlogPostBySlug(slug: string) {
   try {
-    const meta = await getBlogMetaBySlugCached(slug);
+    const meta = await getBlogMetaBySlug(slug);
     if (!meta) {
       return null;
     }
@@ -340,7 +360,7 @@ export async function getBlogPostBySlug(slug: string) {
 
 export async function getProjectBySlug(slug: string) {
   try {
-    const meta = await getProjectMetaBySlugCached(slug);
+    const meta = await getProjectMetaBySlug(slug);
     if (!meta) {
       return null;
     }

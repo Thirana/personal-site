@@ -148,7 +148,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
       <div className="space-y-3 rounded-xl border border-border/70 bg-panel/25 p-4">
         <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-neutral-400">
-          Backend Capability Matrix
+          Concepts and Strategies
         </p>
         <CapabilityMatrix rows={projectCapabilityRows} />
       </div>

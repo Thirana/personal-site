@@ -36,6 +36,44 @@ export default function ProjectCard({
   const [mobileDetailsOpen, setMobileDetailsOpen] = useState(false);
   const hasMobileDetails = project.metrics.length > 0 || project.constraints.length > 0;
 
+  const renderDomainTags = (className?: string) => {
+    if (project.domains.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className={cn("flex flex-wrap gap-1.5", className)}>
+        {project.domains.map((domain) => (
+          <Tag
+            key={domain}
+            className="border-border/60 bg-transparent px-2 py-0.5 font-mono text-[10px] text-neutral-300 hover:border-neutral-400/70 hover:text-neutral-200"
+          >
+            {domain}
+          </Tag>
+        ))}
+      </div>
+    );
+  };
+
+  const renderTechTags = (className?: string) => {
+    if (project.tech.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className={cn("flex flex-wrap gap-2", className)}>
+        {project.tech.map((tech) => (
+          <Tag
+            key={tech}
+            className="border-cyan-300/25 bg-cyan-500/10 px-2.5 py-0.5 text-[11px] text-cyan-100 hover:border-cyan-300/45 hover:text-cyan-50"
+          >
+            {tech}
+          </Tag>
+        ))}
+      </div>
+    );
+  };
+
   const handleNavigate = () => {
     router.push(`/projects/${project.slug}`);
   };
@@ -66,22 +104,8 @@ export default function ProjectCard({
         <p className={cn("min-h-[3rem] text-sm text-neutral-300", isWide && "md:min-h-0")}>
           {project.summary}
         </p>
-        {project.domains.length > 0 ? (
-          <div className="flex flex-wrap gap-1.5 pt-1">
-            {project.domains.map((domain) => (
-              <Tag key={domain} className="px-2 py-0.5 text-[10px] font-mono">
-                {domain}
-              </Tag>
-            ))}
-          </div>
-        ) : null}
-        {isWide ? (
-          <div className="flex flex-wrap gap-2 pt-1">
-            {project.tech.map((tech) => (
-              <Tag key={tech}>{tech}</Tag>
-            ))}
-          </div>
-        ) : null}
+        {renderDomainTags("pt-1")}
+        {isWide ? renderTechTags("pt-1") : null}
       </CardHeader>
 
       {isWide ? (
@@ -97,7 +121,9 @@ export default function ProjectCard({
                     <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
                       {metric.label}
                     </p>
-                    <p className="font-mono text-xs text-neutral-100">{metric.value}</p>
+                    <p className="whitespace-pre-line font-mono text-xs text-neutral-100">
+                      {metric.value}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -152,7 +178,7 @@ export default function ProjectCard({
                           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
                             {metric.label}
                           </p>
-                          <p className="font-mono text-xs text-neutral-100">
+                          <p className="whitespace-pre-line font-mono text-xs text-neutral-100">
                             {metric.value}
                           </p>
                         </div>
@@ -189,17 +215,15 @@ export default function ProjectCard({
                   <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
                     {metric.label}
                   </p>
-                  <p className="font-mono text-xs text-neutral-100">{metric.value}</p>
+                  <p className="whitespace-pre-line font-mono text-xs text-neutral-100">
+                    {metric.value}
+                  </p>
                 </div>
               ))}
             </div>
           ) : null}
 
-          <div className="flex flex-wrap gap-2">
-            {project.tech.map((tech) => (
-              <Tag key={tech}>{tech}</Tag>
-            ))}
-          </div>
+          {renderTechTags()}
 
           {project.constraints.length > 0 ? (
             <div className="flex flex-wrap gap-1.5">
