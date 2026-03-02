@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
+import { unstable_cache } from "next/cache";
 
 export type ContentMeta = {
   slug: string;
@@ -49,6 +50,11 @@ export type ProjectEvidence = {
 
 const blogDir = path.join(process.cwd(), "content", "blog");
 const projectsDir = path.join(process.cwd(), "content", "projects");
+
+export const CONTENT_CACHE_TAGS = {
+  blog: "content:blog",
+  projects: "content:projects",
+} as const;
 
 function toStringArray(value: unknown): string[] {
   if (!Array.isArray(value)) {
@@ -131,6 +137,14 @@ function normalizeProjectMeta(
   const metrics = data.metrics;
   const evidence = data.evidence;
   const outcomes = data.outcomes;
+  const techArray = Array.isArray(tech) ? tech : [];
+  const normalizedTech = techArray.filter(
+    (item): item is string => typeof item === "string"
+  );
+  const normalizedTitle = typeof title === "string" ? title : slug;
+  const normalizedDate = typeof date === "string" ? date : "";
+  const normalizedSummary = typeof summary === "string" ? summary : "";
+  const normalizedStatus = status as ProjectStatus;
 
   assertProjectField(typeof title === "string", fileName, "Missing title");
   assertProjectField(typeof date === "string", fileName, "Missing date");
@@ -146,7 +160,7 @@ function normalizeProjectMeta(
   );
   assertProjectField(Array.isArray(tech), fileName, "Missing tech array");
   assertProjectField(
-    tech.every((item) => typeof item === "string"),
+    normalizedTech.length === techArray.length,
     fileName,
     "Tech must be an array of strings"
   );
@@ -165,11 +179,11 @@ function normalizeProjectMeta(
 
   return {
     slug,
-    title,
-    date,
-    summary,
-    status,
-    tech,
+    title: normalizedTitle,
+    date: normalizedDate,
+    summary: normalizedSummary,
+    status: normalizedStatus,
+    tech: normalizedTech,
     links: normalizedLinks,
     featured: typeof featured === "boolean" ? featured : false,
     domains: toStringArray(domains),
@@ -216,48 +230,127 @@ async function readProjectMetaList() {
   );
 }
 
-export async function getAllBlogPosts() {
-  return readMdxMeta(blogDir);
-}
-
-export async function getAllProjects() {
-  return readProjectMetaList();
-}
-
-export async function getFeaturedProjects(limit = 4) {
-  const projects = await readProjectMetaList();
-  return projects.filter((project) => project.featured).slice(0, limit);
-}
-
-export async function getBlogPostBySlug(slug: string) {
+async function readBlogMetaBySlug(slug: string) {
   try {
     const filePath = path.join(blogDir, `${slug}.mdx`);
     const raw = await fs.readFile(filePath, "utf8");
     const { data } = matter(raw);
+    return normalizeMeta(slug, data as Record<string, unknown>);
+  } catch (error) {
+    if (error instanceof Error && "code" in error) {
+      const maybeCode = (error as Error & { code?: string }).code;
+      if (maybeCode === "ENOENT") {
+        return null;
+      }
+    }
+
+    throw error;
+  }
+}
+
+async function readProjectMetaBySlug(slug: string) {
+  try {
+    const filePath = path.join(projectsDir, `${slug}.mdx`);
+    const raw = await fs.readFile(filePath, "utf8");
+    const { data } = matter(raw);
+    return normalizeProjectMeta(slug, data as Record<string, unknown>, `${slug}.mdx`);
+  } catch (error) {
+    if (error instanceof Error && "code" in error) {
+      const maybeCode = (error as Error & { code?: string }).code;
+      if (maybeCode === "ENOENT") {
+        return null;
+      }
+    }
+
+    throw error;
+  }
+}
+
+const getAllBlogPostsCached = unstable_cache(
+  async () => readMdxMeta(blogDir),
+  ["content-blog-list"],
+  { tags: [CONTENT_CACHE_TAGS.blog] }
+);
+
+const getAllProjectsCached = unstable_cache(
+  async () => readProjectMetaList(),
+  ["content-project-list"],
+  { tags: [CONTENT_CACHE_TAGS.projects] }
+);
+
+const getBlogMetaBySlugCached = unstable_cache(
+  async (slug: string) => readBlogMetaBySlug(slug),
+  ["content-blog-by-slug"],
+  { tags: [CONTENT_CACHE_TAGS.blog] }
+);
+
+const getProjectMetaBySlugCached = unstable_cache(
+  async (slug: string) => readProjectMetaBySlug(slug),
+  ["content-project-by-slug"],
+  { tags: [CONTENT_CACHE_TAGS.projects] }
+);
+
+export async function getAllBlogPosts() {
+  return getAllBlogPostsCached();
+}
+
+export async function getAllProjects() {
+  return getAllProjectsCached();
+}
+
+export async function getFeaturedProjects(limit = 4) {
+  const projects = await getAllProjectsCached();
+  return projects.filter((project) => project.featured).slice(0, limit);
+}
+
+export async function getBlogMetaBySlug(slug: string) {
+  return getBlogMetaBySlugCached(slug);
+}
+
+export async function getProjectMetaBySlug(slug: string) {
+  return getProjectMetaBySlugCached(slug);
+}
+
+export async function getBlogPostBySlug(slug: string) {
+  try {
+    const meta = await getBlogMetaBySlugCached(slug);
+    if (!meta) {
+      return null;
+    }
+
     const { default: Content } = await import(
       `../../content/blog/${slug}.mdx`
     );
 
     return {
-      meta: normalizeMeta(slug, data),
+      meta,
       Content,
     };
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && "code" in error) {
+      const maybeCode = (error as Error & { code?: string }).code;
+      if (maybeCode === "ENOENT") {
+        return null;
+      }
+    }
+
     return null;
   }
 }
 
 export async function getProjectBySlug(slug: string) {
   try {
-    const filePath = path.join(projectsDir, `${slug}.mdx`);
-    const raw = await fs.readFile(filePath, "utf8");
-    const { data } = matter(raw);
+    const meta = await getProjectMetaBySlugCached(slug);
+    if (!meta) {
+      return null;
+    }
+
     const { default: Content } = await import(
       `../../content/projects/${slug}.mdx`
     );
 
     return {
-      meta: normalizeProjectMeta(slug, data, `${slug}.mdx`),
+      meta,
       Content,
     };
   } catch (error) {

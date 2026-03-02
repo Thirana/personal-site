@@ -1,7 +1,32 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllBlogPosts } from "@/lib/content";
 import MetaStrip from "@/components/MetaStrip";
 import Tag from "@/components/Tag";
+import { siteConfig } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description:
+    "Technical writing on backend decisions, system trade-offs, and implementation patterns.",
+  alternates: {
+    canonical: "/blog",
+  },
+  openGraph: {
+    type: "website",
+    url: "/blog",
+    title: `Blog | ${siteConfig.name}`,
+    description:
+      "Technical writing on backend decisions, system trade-offs, and implementation patterns.",
+  },
+  twitter: {
+    card: "summary",
+    title: `Blog | ${siteConfig.name}`,
+    description:
+      "Technical writing on backend decisions, system trade-offs, and implementation patterns.",
+    creator: siteConfig.authorHandle,
+  },
+};
 
 export default async function BlogPage() {
   const posts = await getAllBlogPosts();

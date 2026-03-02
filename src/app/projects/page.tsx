@@ -1,6 +1,31 @@
+import type { Metadata } from "next";
 import { getAllProjects } from "@/lib/content";
 import MetaStrip from "@/components/MetaStrip";
 import ProjectCard from "@/components/ProjectCard";
+import { siteConfig } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "System-focused project writeups covering architecture decisions, reliability controls, and measurable outcomes.",
+  alternates: {
+    canonical: "/projects",
+  },
+  openGraph: {
+    type: "website",
+    url: "/projects",
+    title: `Projects | ${siteConfig.name}`,
+    description:
+      "System-focused project writeups covering architecture decisions, reliability controls, and measurable outcomes.",
+  },
+  twitter: {
+    card: "summary",
+    title: `Projects | ${siteConfig.name}`,
+    description:
+      "System-focused project writeups covering architecture decisions, reliability controls, and measurable outcomes.",
+    creator: siteConfig.authorHandle,
+  },
+};
 
 export default async function ProjectsPage() {
   const projects = await getAllProjects();

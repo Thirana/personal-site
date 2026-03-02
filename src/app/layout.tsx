@@ -2,11 +2,32 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BrandTypewriter from "../components/BrandTypewriter";
 import Nav from "../components/Nav";
+import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Personal Site",
-  description: "A minimal personal site built with Next.js",
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    url: "/",
+    siteName: siteConfig.name,
+  },
+  twitter: {
+    card: "summary",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    creator: siteConfig.authorHandle,
+  },
 };
 
 export default function RootLayout({

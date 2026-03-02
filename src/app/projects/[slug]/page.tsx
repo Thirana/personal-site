@@ -1,17 +1,68 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllProjects, getProjectBySlug } from "@/lib/content";
+import {
+  getAllProjects,
+  getProjectBySlug,
+  getProjectMetaBySlug,
+} from "@/lib/content";
 import CapabilityMatrix from "@/components/CapabilityMatrix";
 import EvidenceLinks from "@/components/EvidenceLinks";
 import StatusBadge from "@/components/StatusBadge";
 import ContentHero from "@/components/ContentHero";
+import { absoluteUrl, siteConfig } from "@/lib/site";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
+export const dynamicParams = false;
+export const dynamic = "force-static";
+
 export async function generateStaticParams() {
   const projects = await getAllProjects();
   return projects.map((project) => ({ slug: project.slug }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const meta = await getProjectMetaBySlug(slug);
+
+  if (!meta) {
+    return {};
+  }
+
+  const canonicalPath = `/projects/${slug}`;
+
+  return {
+    title: meta.title,
+    description: meta.summary,
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      type: "article",
+      url: canonicalPath,
+      title: meta.title,
+      description: meta.summary,
+      publishedTime: meta.date || undefined,
+      tags: [...meta.tech, ...meta.domains],
+      images: [
+        {
+          url: `${canonicalPath}/opengraph-image`,
+          width: 1200,
+          height: 630,
+          alt: meta.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: meta.title,
+      description: meta.summary,
+      creator: siteConfig.authorHandle,
+      images: [`${canonicalPath}/twitter-image`],
+    },
+  };
 }
 
 export default async function ProjectPage({ params }: PageProps) {
@@ -23,6 +74,29 @@ export default async function ProjectPage({ params }: PageProps) {
   }
 
   const { meta, Content } = result;
+  const canonicalPath = `/projects/${meta.slug}`;
+  const projectJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    name: meta.title,
+    description: meta.summary,
+    datePublished: meta.date || undefined,
+    codeRepository: meta.links.code || undefined,
+    programmingLanguage: meta.tech,
+    keywords: [...meta.tech, ...meta.domains],
+    url: absoluteUrl(canonicalPath),
+    author: {
+      "@type": "Person",
+      name: siteConfig.authorName,
+      url: absoluteUrl("/about"),
+    },
+    publisher: {
+      "@type": "Person",
+      name: siteConfig.authorName,
+    },
+    sameAs: [meta.links.live, meta.links.code].filter(Boolean),
+  };
+
   const projectCapabilityRows = (meta.domains.length > 0
     ? meta.domains
     : ["System Design"]).map((domain, index) => {
@@ -43,6 +117,11 @@ export default async function ProjectPage({ params }: PageProps) {
 
   return (
     <div className="space-y-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
+      />
+
       <ContentHero
         eyebrow="Project"
         title={meta.title}
