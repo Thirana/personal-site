@@ -1,5 +1,40 @@
+import { isValidElement, type ReactNode } from "react";
 import type { MDXComponents } from "mdx/types";
 import { Quote } from "lucide-react";
+import MermaidDiagram from "@/components/MermaidDiagram";
+import CodeToggle from "@/components/CodeToggle";
+
+function getTextContent(node: ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") {
+    return String(node);
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(getTextContent).join("");
+  }
+
+  if (isValidElement(node)) {
+    const props = node.props as { children?: ReactNode };
+    return getTextContent(props.children);
+  }
+
+  return "";
+}
+
+function extractMermaidChart(children: ReactNode): string | null {
+  if (!isValidElement(children)) {
+    return null;
+  }
+
+  const props = children.props as { className?: string; children?: ReactNode };
+  const className = typeof props.className === "string" ? props.className : "";
+
+  if (!className.split(/\s+/).includes("language-mermaid")) {
+    return null;
+  }
+
+  return getTextContent(props.children).trim();
+}
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -35,6 +70,20 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         />
       </div>
     ),
+    pre: ({ children, className, ...props }) => {
+      const chart = extractMermaidChart(children);
+
+      if (chart) {
+        return <MermaidDiagram chart={chart} className={className} />;
+      }
+
+      return (
+        <pre className={className} {...props}>
+          {children}
+        </pre>
+      );
+    },
+    CodeToggle,
     ...components,
   };
 }
