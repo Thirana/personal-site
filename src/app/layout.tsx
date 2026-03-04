@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import BrandTypewriter from "../components/BrandTypewriter";
 import Nav from "../components/Nav";
 import { siteConfig } from "@/lib/site";
@@ -86,6 +87,7 @@ export default function RootLayout({
           </footer>
         </div>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
