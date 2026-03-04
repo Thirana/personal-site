@@ -29,8 +29,9 @@ export default async function Image({ params }: Props) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background:
-            "radial-gradient(circle at 15% -10%, rgba(148, 163, 184, 0.22), transparent 45%), #0b0f14",
+          backgroundColor: "#0b0f14",
+          backgroundImage:
+            "radial-gradient(circle at 15% -10%, rgba(148, 163, 184, 0.22), transparent 45%)",
           color: "#f8fafc",
           padding: "56px",
           fontFamily: "Inter, ui-sans-serif, system-ui",

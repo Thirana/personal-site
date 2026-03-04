@@ -92,7 +92,7 @@ export default function MermaidDiagram({ chart, className }: MermaidDiagramProps
       <div className="overflow-x-auto rounded-xl border border-border/70 bg-panel/35 p-4">
         <div
           ref={containerRef}
-          className="[&_svg]:h-auto [&_svg]:max-w-none [&_svg]:min-w-[760px] md:[&_svg]:min-w-0"
+          className="[&_svg]:mx-auto [&_svg]:block [&_svg]:h-auto [&_svg]:max-w-none [&_svg]:min-w-[760px] md:[&_svg]:min-w-0"
           aria-label="Mermaid diagram"
         />
       </div>

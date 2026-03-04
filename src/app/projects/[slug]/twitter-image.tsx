@@ -29,7 +29,7 @@ export default async function Image({ params }: Props) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#0b0f14",
+          backgroundColor: "#0b0f14",
           color: "#f8fafc",
           padding: "56px",
           fontFamily: "Inter, ui-sans-serif, system-ui",
