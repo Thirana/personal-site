@@ -81,6 +81,8 @@ If you want a step-by-step explanation of how this caching flow works in practic
 - Ensured graceful fallback to DB-only path when Redis is disabled or unavailable.
 - Preserved stable HTTP behavior across all paths (`302` for valid redirects, `404` for missing or expired links).
 
+For create-path reliability under retries, see [Idempotency in API Design](/blog/idempotency-in-api-design).
+
 ### Observability and load validation
 
 - Tracked cache hits, negative-cache hits, timeout/error counts, and fallback-to-DB frequency.
