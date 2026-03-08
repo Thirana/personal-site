@@ -39,9 +39,13 @@ outcomes:
 
 > This is a self learning project built to practice and implement real world, industry standard backend practices beyond basic CRUD, and to mirror the backend standards I learned during my work experience.
 
-## Project overview
+<section className="my-6">
+  <h2 id="project-overview" className="scroll-mt-28">
+    Project overview
+  </h2>
 
-This backend is a workspace based project management system. It is designed for collaborative teams: users authenticate, create workspaces, manage members, and organize projects inside each workspace. I built it to focus on clean architecture, secure authentication, and consistent data access patterns while keeping the API easy to use.
+  > This backend is a workspace based project management system. It is designed for collaborative teams: users authenticate, create workspaces, manage members, and organize projects inside each workspace. I built it to focus on clean architecture, secure authentication, and consistent data access patterns while keeping the API easy to use.
+</section>
 
 ## Tech stack
 
@@ -104,10 +108,14 @@ I intentionally prioritized structure and correctness over “just making it wor
 - Higher order middlewares (auth/role/validation), for declarative and reusable routes.
 - Request context enrichment (`req.auth`, `req.workspaceAuth`, `req.requestId`), for sharing auth and workspace info across middlewares and avoiding repeated DB queries or re processing the same logic.
 
-## Project Intent
+<section className="my-6">
+  <h2 id="project-intent" className="scroll-mt-28">
+    Project Intent
+  </h2>
 
-In industry backend work, we are expected to follow strong standards for validation, authorization, token handling, logging, operational safety, code quality, error handling, and testing discipline. In many personal projects, those areas are often skipped in favor of building features quickly.
-
-I built this project to mirror the real-world backend practices I learned during my work experience and apply them end to end in a self project. The goal was to build with a production mindset, not just to make endpoints work.
-
-If you want to explore the implementation details, the repository includes structured documentation for APIs, middleware, and engineering practices.
+  > In industry backend work, we are expected to follow strong standards for validation, authorization, token handling, logging, operational safety, code quality, error handling, and testing discipline. In many personal projects, those areas are often skipped in favor of building features quickly.
+  >
+  > I built this project to mirror the real-world backend practices I learned during my work experience and apply them end to end in a self project. The goal was to build with a production mindset, not just to make endpoints work.
+  >
+  > If you want to explore the implementation details, the repository includes structured documentation for APIs, middleware, and engineering practices.
+</section>

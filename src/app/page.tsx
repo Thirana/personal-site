@@ -30,7 +30,7 @@ export default async function Home() {
         )}
       </div>
 
-      <Card className="border-border/80 bg-panel/40">
+      <Card className="border-white/20 bg-panel/40 shadow-[0_0_0_1px_rgba(255,255,255,0.08)]">
         <CardContent className="grid grid-cols-[auto_1fr] items-start gap-4 p-4 sm:gap-7 sm:p-6">
           <div className="flex-shrink-0">
             <div className="overflow-hidden rounded-lg border border-border/80">
