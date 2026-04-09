@@ -63,10 +63,19 @@ export default async function ProjectsPage() {
             { label: "Evidence Links", value: `${evidenceCount}` },
           ]}
         />
+        <p className="text-xs uppercase tracking-[0.18em] text-neutral-500">
+          Open any project below for the overview, implementation notes, and
+          evidence trail.
+        </p>
       </div>
-      <div className="grid gap-4">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} layout="wide" />
+      <div className="grid gap-5 sm:gap-6">
+        {projects.map((project, index) => (
+          <ProjectCard
+            key={project.slug}
+            project={project}
+            layout="wide"
+            index={index}
+          />
         ))}
       </div>
     </div>
