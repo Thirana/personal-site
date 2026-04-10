@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ExternalLink } from "lucide-react";
 import {
   getAllProjects,
   getProjectBySlug,
@@ -9,6 +11,7 @@ import CapabilityMatrix from "@/components/CapabilityMatrix";
 import EvidenceLinks from "@/components/EvidenceLinks";
 import StatusBadge from "@/components/StatusBadge";
 import ContentHero from "@/components/ContentHero";
+import { Button } from "@/components/ui/button";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
 type PageProps = {
@@ -126,6 +129,21 @@ export default async function ProjectPage({ params }: PageProps) {
         eyebrow="Project"
         title={meta.title}
         summary={meta.summary}
+        meta={
+          meta.links.code ? (
+            <Button
+              variant="outline"
+              size="sm"
+              asChild
+              className="min-h-10 border-emerald-400/30 bg-emerald-500/10 text-emerald-50 hover:border-emerald-300/50 hover:bg-emerald-500/15 hover:text-white"
+            >
+              <Link href={meta.links.code} target="_blank" rel="noreferrer">
+                Repository
+                <ExternalLink className="h-4 w-4" />
+              </Link>
+            </Button>
+          ) : null
+        }
         badge={<StatusBadge status={meta.status} />}
         chips={meta.tech}
       />

@@ -74,6 +74,7 @@ Code is the source of truth. Keep this file in sync when routing, MDX loading, S
   - `content:blog`
   - `content:projects`
 - In development, content reads directly from the filesystem for immediate feedback.
+- During production builds, content also reads directly from the filesystem so static route generation always sees the latest MDX files.
 - In production, content lists and slug lookups use `unstable_cache`.
 - On-demand revalidation is handled by `src/app/api/revalidate/route.ts`.
 - Revalidation behavior uses `revalidateTag(tag, "max")`.
