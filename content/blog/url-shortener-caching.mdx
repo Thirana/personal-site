@@ -205,18 +205,19 @@ sequenceDiagram
       Redis-->>API: destination URL
       API-->>U: 302 redirect
     end
-  else cache miss
+  else cache miss, active row
+    rect rgb(30, 58, 89)
+      API->>DB: query by code
+      DB-->>API: destination URL
+      API->>Redis: SET short key (TTL)
+      API-->>U: 302 redirect
+    end
+  else cache miss, missing or expired
     rect rgb(61, 49, 20)
       API->>DB: query by code
-      alt active row
-        DB-->>API: destination URL
-        API->>Redis: SET short key (TTL)
-        API-->>U: 302 redirect
-      else missing or expired
-        DB-->>API: no active row
-        API->>Redis: SET miss key (short TTL)
-        API-->>U: 404 not found
-      end
+      DB-->>API: no active row
+      API->>Redis: SET miss key (short TTL)
+      API-->>U: 404 not found
     end
   end
 ```

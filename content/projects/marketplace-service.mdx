@@ -1,0 +1,138 @@
+---
+title: "Marketplace Service"
+date: "2026-04-10"
+summary: "A NestJS marketplace backend built to practice production-style API design, transactional order handling, idempotency, and operational clarity."
+status: "Ongoing"
+tech:
+  [
+    "NestJS",
+    "TypeScript",
+    "PostgreSQL",
+    "TypeORM",
+    "class-validator",
+    "Winston",
+    "Firebase Admin",
+    "Swagger",
+    "Docker",
+  ]
+links:
+  code: "https://github.com/Thirana/marketplace-service"
+featured: true
+domains:
+  [
+    "API Design",
+    "Transactions & Idempotency",
+    "Database Integrity",
+    "Observability",
+  ]
+constraints:
+  [
+    "stable cursor pagination for public catalog reads",
+    "DB-backed idempotent order creation",
+    "inventory consistency under concurrent order attempts",
+    "non-blocking notification delivery with durable status tracking",
+  ]
+metrics:
+  - label: "Catalog Reads"
+    value: "Cursor based"
+  - label: "Order Safety"
+    value: "Transactional + idempotent"
+  - label: "Notifications"
+    value: "Persisted intent + async delivery"
+  - label: "Operations"
+    value: "Health checks + structured logs"
+evidence:
+  - label: "Repository"
+    href: "https://github.com/Thirana/marketplace-service"
+outcomes:
+  - "Built a production-style NestJS backend with clear module boundaries for products, orders, notifications, and health."
+  - "Implemented cursor-paginated product listing and admin-protected product write endpoints with explicit request validation."
+  - "Designed a transactional order flow with pessimistic row locking, price snapshotting, stock deduction, and DB-backed idempotency."
+  - "Persisted notification intent and tracked async Firebase delivery without allowing provider failures to break successful order creation."
+---
+
+# Marketplace Service
+
+<section className="my-6">
+  <h2 id="project-overview" className="scroll-mt-28">
+    Project overview
+  </h2>
+
+  > This backend models a small marketplace service with a public product catalog, order creation, and persisted notification tracking. I keep it as an ongoing practice repo where I continuously implement compact, testable versions of backend patterns I want to internalize from real work.
+  >
+  > The goal is to use one small service to deliberately practice correctness, predictable runtime behavior, database integrity, and operational clarity end to end without turning the project into a large product.
+</section>
+
+## Tech stack
+
+- **Framework:** NestJS
+- **Language:** TypeScript
+- **Database:** PostgreSQL
+- **ORM:** TypeORM
+- **Logging:** Winston
+- **Notifications:** Firebase Admin SDK
+
+## Core system features
+
+- **Products:** public `GET /v1/products` listing with cursor pagination, plus product create, update, and delete flows.
+- **Orders:** public `POST /v1/orders` endpoint for multi-item checkout with required `Idempotency-Key`.
+- **Inventory safety:** stock validation and deduction happen inside one database transaction with locked product rows.
+- **Notifications:** order creation persists notification intent and triggers async delivery tracking to `PENDING`, `SENT`, or `FAILED`.
+- **Health:** liveness and readiness endpoints for runtime and database checks.
+
+## Engineering practices and concepts
+
+I intentionally use this project to practice engineering decisions that make a backend predictable under real usage, not just functionally complete.
+
+### API structure and module boundaries
+
+- Feature-first NestJS modules for **products**, **orders**, **notifications**, and **health**.
+- Thin controllers and service-led business rules, for keeping request handling explicit and maintainable.
+- Explicit DTOs and Swagger decorators, for making request and response contracts easy to review.
+
+### Validation and request safety
+
+- Global request validation with whitelisting and forbidden unknown fields, for blocking malformed input at the API boundary.
+- Explicit environment validation at startup, for failing fast when required configuration is missing or inconsistent.
+- Header-based admin protection for product write routes and notification reads, for keeping the security model simple and bounded.
+
+### Product listing design
+
+- Cursor-based pagination over `created_at DESC, id DESC`, for stable forward paging without offset drift.
+- Public listing limited to active and non-deleted products, for keeping catalog visibility rules inside the service layer.
+- A partial database index aligned to the listing query, for making the public read path intentional rather than accidental.
+
+### Transactional order handling
+
+- Multi-item order creation inside one database transaction, for atomic writes across order, order items, stock changes, idempotency state, and notification intent.
+- Pessimistic row locking on products, for reducing oversell risk under concurrent checkout attempts.
+- Price snapshotting at write time, for keeping order totals historically stable even if product data changes later.
+
+### Idempotency and retry behavior
+
+- A dedicated `order_idempotency_keys` table, for durable duplicate request protection instead of in-memory best effort checks.
+- SHA-256 request fingerprinting over the normalized basket and device token, for distinguishing safe retries from conflicting reuse of the same key.
+- Replay of the original successful response when the request is logically identical, for making client retries predictable.
+
+### Notification lifecycle design
+
+- Notification intent persisted in the same transaction as order creation, for ensuring committed orders always have matching notification state.
+- Async delivery scheduled after commit, for preventing Firebase latency or failure from breaking order success.
+- Final notification status stored in the database, for making delivery outcomes queryable rather than log-only.
+
+### Observability and operational behavior
+
+- Structured JSON logging with request IDs, for request correlation and easier debugging.
+- Global exception normalization, for consistent API error responses.
+- Separate liveness and readiness endpoints, for clearer deployment and runtime health checks.
+- Migration-only schema management, for explicit and reviewable database evolution.
+
+<section className="my-6">
+  <h2 id="project-intent" className="scroll-mt-28">
+    Project Intent
+  </h2>
+
+  > In production backend work, the harder problems are usually around safety, consistency, and operational behavior rather than raw endpoint count. I keep this project ongoing as a compact backend sandbox where I can deliberately practice stable API contracts, reliable pagination, migration-backed schema changes, transactional stock updates, DB-backed idempotency, structured logs, health checks, and durable side-effect tracking.
+  >
+  > The result is a backend I can continuously refine as my experience grows. It reflects how I think about service design: keep the architecture small, make runtime behavior explicit, and push critical guarantees into the database and API contract where they can be reasoned about clearly.
+</section>

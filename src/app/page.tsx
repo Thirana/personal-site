@@ -114,6 +114,10 @@ export default async function Home() {
       </Section>
 
       <Section title="Project Portfolio">
+        <p className="text-sm leading-7 text-neutral-400">
+          Each card gives a quick project overview and links to the full
+          implementation notes, constraints, and outcomes.
+        </p>
         <ProjectGrid featured={featuredProjects} all={allProjects} />
       </Section>
 

@@ -1,0 +1,485 @@
+---
+title: "How Safe Order Creation Works with Idempotency and Transactions"
+date: "2026-04-10"
+summary: "A practical guide to retry safe order creation using request fingerprints, transaction boundaries, row locking, and post commit side effects."
+tags: ["Idempotency", "Transactions", "PostgreSQL", "API Design", "Concurrency"]
+track: "Backend Engineering"
+level: "Intermediate"
+appliesTo: ["Order creation endpoints", "Inventory sensitive writes", "Retry prone clients"]
+takeaway: "Safe order creation comes from treating the write path as one transaction, letting the database own idempotency, and moving provider side effects after commit."
+---
+
+# How Safe Order Creation Works with Idempotency and Transactions
+
+> This guide explains the design patterns behind safe order creation in APIs that handle inventory and side effects. The same model appears in the [Marketplace Service project](/projects/marketplace-service), where duplicate retries, stock changes, and notification delivery all need to be handled without corrupting order state.
+
+If you want the broader retry contract background first, see [Idempotency in API Design: How to Make Retries Safe](/blog/idempotency-in-api-design). This article stays focused on the order workflow itself: transaction boundaries, inventory safety, replay behavior, and post commit side effects.
+
+## The Core Problem
+
+Order creation is one of the easiest places for backend correctness to break.
+
+A user clicks "Place Order" once, but the network stalls.
+
+The client retries.
+
+Maybe the mobile app retries automatically.
+
+Maybe two requests hit the server almost at the same time.
+
+If the backend treats every request as brand new, several problems appear:
+
+1. The same logical order can be created more than once.
+2. Stock can be reduced multiple times.
+3. Side effects like notifications can be duplicated.
+4. The client has no reliable way to know whether a retry is safe.
+
+So the real problem is not just writing rows. It is making retries and concurrency safe without making the order API unpredictable.
+
+## Why Validation Alone Is Not Enough
+
+DTO validation can confirm that a request is well formed.
+
+It cannot solve:
+
+1. duplicate submission
+2. conflicting reuse of the same retry key
+3. concurrent stock updates
+4. partial writes across multiple tables
+
+Those are transaction and persistence problems.
+
+That is why order creation needs stronger guarantees than a normal create endpoint.
+
+## The Order Safety Model
+
+The practical model has four parts:
+
+1. the client sends an idempotency key
+2. the server builds a canonical fingerprint of the effective request
+3. the full write path runs inside one database transaction
+4. external side effects happen only after commit
+
+This creates a safe distinction between:
+
+1. the same order retried again
+2. a different order reusing the same key
+
+That distinction is what makes an order API safe under retries instead of merely tolerant of duplicates.
+
+## Order Creation Sequence Diagram
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant C as Client
+  participant API as API
+  participant DB as Postgres
+  participant N as Notification Worker
+
+  rect rgb(18, 58, 39)
+    C->>API: POST /v1/orders with Idempotency Key
+    API->>API: Build canonical fingerprint
+    API->>DB: Begin transaction
+    API->>DB: Insert idempotency record
+  end
+
+  rect rgb(30, 58, 89)
+    API->>DB: Lock product rows
+    API->>DB: Create order and order items
+    API->>DB: Persist notification intent
+    API->>DB: Mark idempotency record completed
+    DB-->>API: Commit transaction
+    API-->>C: Return successful order response
+  end
+
+  rect rgb(61, 49, 20)
+    API->>N: Schedule notification delivery
+    N->>DB: Update notification status
+  end
+```
+
+## 1. Fingerprint the Effective Request
+
+The retry key alone is not enough.
+
+If a client reuses the same key for a different basket, the backend needs a way to detect that conflict.
+
+That is why it is best to store a request fingerprint built from the canonical payload:
+
+<CodeToggle
+  title="Show TypeScript snippet: order fingerprint"
+  language="typescript"
+  code={`
+// Build a normalized view of the order request before hashing it.
+const buildCanonicalOrderFingerprintPayload = (
+    createOrderDto: CreateOrderDto,
+) => ({
+    customerDeviceToken: createOrderDto.customerDeviceToken,
+    currency: "LKR",
+    items: [...createOrderDto.items]
+        .map((item) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+        }))
+        .sort((left, right) => left.productId.localeCompare(right.productId)),
+});
+
+// Turn the normalized request into one stable fingerprint string.
+export const createOrderRequestFingerprint = (
+    createOrderDto: CreateOrderDto,
+): string =>
+    createHash("sha256")
+        .update(
+            JSON.stringify(buildCanonicalOrderFingerprintPayload(createOrderDto)),
+            "utf8",
+        )
+        .digest("hex");
+  `}
+/>
+
+This matters because:
+
+1. logically identical baskets produce the same fingerprint
+2. item order differences do not create false conflicts
+3. basket changes and device token changes become detectable
+
+In other words, the backend compares the effective order intent, not just the raw shape the client happened to send.
+
+## 2. Reserve the Idempotency Key in the Database
+
+Once the fingerprint is created, the server should reserve the idempotency key as early as possible.
+
+That usually means inserting a row into a dedicated table inside the transaction:
+
+<CodeToggle
+  title="Show TypeScript snippet: idempotency reservation"
+  language="typescript"
+  code={`
+// Reserve the retry key inside the database before doing the main order work.
+private async createIdempotencyRecord(
+    manager: EntityManager,
+    idempotencyKey: string,
+    requestFingerprint: string,
+): Promise<OrderIdempotencyKey> {
+    const idempotencyRepository = manager.getRepository(OrderIdempotencyKey);
+
+    return idempotencyRepository.save(
+        idempotencyRepository.create({
+            idempotencyKey,
+            requestFingerprint,
+            status: OrderIdempotencyStatus.IN_PROGRESS,
+            responseStatusCode: 201,
+            orderId: null,
+        }),
+    );
+}
+  `}
+/>
+
+The important detail is the unique constraint on the key.
+
+That turns the database into the source of truth for duplicate prevention, instead of relying on process local memory locks or single instance assumptions.
+
+## 3. Put the Whole Order Write Path Inside One Transaction
+
+Once the key is reserved, the backend should treat order creation as one atomic workflow.
+
+That transaction usually includes:
+
+1. idempotency reservation
+2. product loading and validation
+3. stock deduction
+4. order creation
+5. order item creation
+6. notification intent creation
+7. idempotency completion
+
+The shape looks like this:
+
+<CodeToggle
+  title="Show TypeScript snippet: transactional order workflow"
+  language="typescript"
+  code={`
+// Run the entire order workflow inside one database transaction.
+const { order, notification } = await this.dataSource.transaction(
+    async (manager) => {
+        // Step 1: reserve the retry key before writing the order.
+        const idempotencyRecord = await this.createIdempotencyRecord(
+            manager,
+            idempotencyKey,
+            requestFingerprint,
+        );
+
+        // Step 2: create the order and related rows using the same transaction.
+        const createdOrder = await this.createNewOrder(
+            manager,
+            idempotencyKey,
+            createOrderDto,
+        );
+
+        // Step 3: persist notification intent while the order is still in the same unit of work.
+        const createdNotification =
+            await this.notificationsService.createPendingOrderCreatedNotification(
+                manager,
+                createdOrder,
+                createOrderDto.customerDeviceToken,
+            );
+
+        // Step 4: mark the idempotency record as completed and link it to the final order.
+        idempotencyRecord.orderId = createdOrder.id;
+        idempotencyRecord.status = OrderIdempotencyStatus.COMPLETED;
+        await manager.getRepository(OrderIdempotencyKey).save(idempotencyRecord);
+
+        return {
+            order: createdOrder,
+            notification: createdNotification,
+        };
+    },
+);
+  `}
+/>
+
+This is the point where order creation stops being a plain insert and becomes a controlled business transaction.
+
+## 4. Lock Product Rows Before Changing Inventory
+
+Inventory checks are not safe if they are only read first and written later without coordination.
+
+Under concurrent load, two requests can both see the same stock and both succeed incorrectly.
+
+That is why it is best to use a locking query on the product rows involved in the order:
+
+<CodeToggle
+  title="Show TypeScript snippet: inventory row locking"
+  language="typescript"
+  code={`
+// Load the target products with a write lock before checking or reducing stock.
+const products = await manager
+    .getRepository(Product)
+    .createQueryBuilder("product")
+    .setLock("pessimistic_write")
+    .where("product.id IN (:...productIds)", { productIds })
+    .andWhere("product.deleted_at IS NULL")
+    .orderBy("product.id", "ASC")
+    .getMany();
+  `}
+/>
+
+Two things matter here:
+
+1. `pessimistic_write` prevents unsafe concurrent modification of the same rows
+2. loading IDs in sorted order helps reduce deadlock risk in multi item baskets
+
+Once the rows are locked, the service can validate stock and subtract quantities with much stronger safety.
+
+## Inventory Concurrency Diagram
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant A as Request A
+  participant B as Request B
+  participant API as Order Service
+  participant DB as Postgres
+
+  rect rgb(18, 58, 39)
+    A->>API: Create order for product X
+    API->>DB: Lock product X row
+    DB-->>API: Lock granted
+  end
+
+  rect rgb(61, 49, 20)
+    B->>API: Create order for product X
+    API->>DB: Try to lock product X row
+    DB-->>API: Wait for existing lock
+  end
+
+  rect rgb(30, 58, 89)
+    A->>DB: Deduct stock and commit
+    DB-->>A: Transaction committed
+    DB-->>API: Lock released for request B
+    API->>DB: Reload current product state
+    DB-->>API: Updated stock returned
+    API-->>B: Continue safely with latest stock view
+  end
+```
+
+## 5. Replay Safe Retries, Reject Conflicting Reuse
+
+For order creation, the retry contract should be explicit.
+
+If the unique key insert fails, the backend should load the existing idempotency record and compare fingerprints.
+
+If they match:
+
+1. return the original order
+
+If they do not match:
+
+1. reject the request as a conflict
+
+That logic looks like this:
+
+<CodeToggle
+  title="Show TypeScript snippet: replay versus conflict"
+  language="typescript"
+  code={`
+// If the retry key already exists, decide whether this is a safe replay or a conflict.
+private async replayExistingOrderOrThrow(
+    idempotencyKey: string,
+    requestFingerprint: string,
+): Promise<OrderResponseDto> {
+    // Load the stored record for the retry key from the database.
+    const idempotencyRecord = await this.dataSource
+        .getRepository(OrderIdempotencyKey)
+        .findOneBy({ idempotencyKey });
+
+    // If the record is missing, the backend cannot safely replay the original result.
+    if (!idempotencyRecord) {
+        throw new ConflictException({
+            message: "Idempotent order request could not be replayed safely.",
+            errorCode: "IDEMPOTENCY_REQUEST_CONFLICT",
+        });
+    }
+
+    // If the fingerprint changed, the same key is being reused for a different request.
+    if (idempotencyRecord.requestFingerprint !== requestFingerprint) {
+        throw new ConflictException({
+            message:
+                "Idempotency key has already been used for a different order request.",
+            errorCode: "IDEMPOTENCY_REQUEST_CONFLICT",
+        });
+    }
+
+    // Otherwise return the original order result for this logical request.
+    return loadAndReturnOriginalOrder(idempotencyRecord.orderId);
+}
+  `}
+/>
+
+This gives the client a meaningful contract:
+
+1. same logical request means safe replay
+2. different logical request means explicit conflict
+
+That is much better than silently duplicating orders or returning ambiguous failures.
+
+## Retry Decision Diagram
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant Client
+  participant API as Order API
+  participant Idem as Idempotency Store
+  participant Orders as Order Read Model
+
+  rect rgb(30, 58, 89)
+    Client->>API: Retry order creation with idempotency key
+    API->>Idem: Load existing idempotency record
+  end
+
+  alt Record missing or replay is unsafe
+    rect rgb(61, 49, 20)
+      Idem-->>API: No safe replay record
+      API-->>Client: Return 409 conflict
+    end
+  else Record exists
+    rect rgb(18, 58, 39)
+      Idem-->>API: Stored fingerprint and order reference
+      API->>API: Compare stored fingerprint with new fingerprint
+    end
+
+    alt Same logical request
+      rect rgb(18, 58, 39)
+        API->>Orders: Load original order
+        Orders-->>API: Original order payload
+        API-->>Client: Replay original success response
+      end
+    else Different logical request
+      rect rgb(61, 49, 20)
+        API-->>Client: Return 409 conflict
+      end
+    end
+  end
+```
+
+## 6. Keep External Side Effects Out of the Critical Transaction
+
+Notifications are real business behavior, but provider delivery should not decide whether the order itself succeeds.
+
+So the safer pattern is:
+
+1. persist notification intent inside the transaction
+2. attempt provider delivery after commit
+
+That often looks like this:
+
+<CodeToggle
+  title="Show TypeScript snippet: post commit notification scheduling"
+  language="typescript"
+  code={`
+// Record that notification delivery should happen for this successful order.
+this.logger.info({
+    event: "notification.created",
+    notificationId: notification.id,
+    orderId: order.id,
+    type: notification.type,
+    status: notification.status,
+});
+
+// Trigger the actual delivery after the order transaction has completed.
+this.notificationsService.scheduleDelivery(notification.id);
+  `}
+/>
+
+This separation matters because:
+
+1. order success stays tied to committed database state
+2. provider latency does not slow the response path
+3. provider failure becomes observable without invalidating the order
+
+That is a much safer boundary for side effects.
+
+## Putting the Flow Together
+
+A safe order creation flow looks like this:
+
+1. receive an idempotency key
+2. validate request shape
+3. build canonical fingerprint
+4. start transaction
+5. reserve idempotency record
+6. lock products
+7. validate availability and stock
+8. create order and order items
+9. persist notification intent
+10. complete idempotency record
+11. commit
+12. schedule notification delivery after commit
+13. on duplicate key reuse, replay or reject based on fingerprint match
+
+This is how an API turns retries into a controlled behavior instead of a correctness risk.
+
+## Practical Tradeoffs
+
+1. Idempotency improves retry safety, but it adds storage, constraints, and replay logic.
+2. Transactional order handling improves correctness, but it increases the importance of careful query design and lock scope.
+3. Pessimistic locking improves inventory safety, but it can reduce concurrency if the locked section becomes too broad.
+4. Post commit side effects protect the core write path, but they require durable state tracking because delivery is no longer synchronous.
+
+## How This Applies to My Marketplace Service
+
+In the [Marketplace Service project](/projects/marketplace-service), order creation is the strongest transactional boundary in the codebase. The API requires an idempotency key, fingerprints the effective request, reserves that key in the database, locks product rows before deducting stock, snapshots pricing into order items, and persists notification intent in the same transaction as the order.
+
+After commit, notification delivery is triggered asynchronously so provider failures do not break successful orders. If the same logical order is retried, the original response can be replayed safely. If the same key is reused for a different basket or device token, the request is rejected as a conflict.
+
+That keeps order creation predictable even when the client, network, or runtime behavior is not.
+
+## Related Reading
+
+1. [How to Set Up a Production Style NestJS Backend](/blog/production-style-nestjs-backend)
+2. [How Cursor Pagination Works on Large Production Tables](/blog/cursor-pagination-product-listing-api)
+3. [Idempotency in API Design: How to Make Retries Safe](/blog/idempotency-in-api-design)
+4. [Marketplace Service project overview](/projects/marketplace-service)

@@ -4,6 +4,7 @@ import Tag from "@/components/Tag";
 
 type ContentHeroProps = {
   eyebrow?: string;
+  eyebrowClassName?: string;
   title: string;
   summary?: string;
   meta?: ReactNode;
@@ -14,6 +15,7 @@ type ContentHeroProps = {
 
 export default function ContentHero({
   eyebrow,
+  eyebrowClassName,
   title,
   summary,
   meta,
@@ -29,7 +31,12 @@ export default function ContentHero({
       )}
     >
       {eyebrow ? (
-        <p className="text-xs uppercase tracking-[0.3em] text-neutral-400">
+        <p
+          className={cn(
+            "text-xs uppercase tracking-[0.3em] text-neutral-400",
+            eyebrowClassName
+          )}
+        >
           {eyebrow}
         </p>
       ) : null}

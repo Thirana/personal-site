@@ -28,14 +28,14 @@ export default function CodeToggle({
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="not-prose my-3 rounded-xl border border-border/70 bg-panel/30 p-3">
+    <div className="not-prose my-3 rounded-xl border border-white/15 bg-panel/30 p-3">
       <Collapsible open={open} onOpenChange={setOpen}>
         <CollapsibleTrigger asChild>
           <Button
             type="button"
             variant="outline"
             size="sm"
-            className="w-full justify-between border-border/80 bg-panel/25 font-mono text-xs text-neutral-200 hover:text-neutral-100"
+            className="w-full justify-between border-white/15 bg-panel/25 font-mono text-xs text-neutral-200 hover:text-neutral-100"
           >
             <span className="inline-flex items-center gap-2">
               <Code2 className="h-3.5 w-3.5" />

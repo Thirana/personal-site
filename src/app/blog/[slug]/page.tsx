@@ -102,6 +102,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       <ContentHero
         eyebrow="Blog"
+        eyebrowClassName="font-semibold text-emerald-300"
         title={meta.title}
         summary={meta.summary}
         meta={

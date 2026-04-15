@@ -18,16 +18,16 @@ export default function MetaStrip({ items, className }: MetaStripProps) {
   return (
     <div
       className={cn(
-        "grid gap-2 rounded-lg border border-border/70 bg-panel/30 p-3 sm:grid-cols-2 lg:grid-cols-4",
+        "grid grid-cols-2 gap-2 rounded-lg border border-border/70 bg-panel/30 p-3 lg:grid-cols-4",
         className
       )}
     >
       {items.map((item) => (
-        <div key={`${item.label}-${item.value}`} className="space-y-1">
+        <div key={`${item.label}-${item.value}`} className="min-w-0 space-y-1">
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-400">
             {item.label}
           </p>
-          <p className="font-mono text-xs text-neutral-100">{item.value}</p>
+          <p className="font-mono text-xs leading-5 text-neutral-100">{item.value}</p>
         </div>
       ))}
     </div>

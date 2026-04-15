@@ -15,7 +15,7 @@ export type ContentMeta = {
   takeaway?: string;
 };
 
-export type ProjectStatus = "Live" | "WIP" | "Paused" | "Completed";
+export type ProjectStatus = "Live" | "Ongoing" | "WIP" | "Paused" | "Completed";
 
 export type ProjectLinks = {
   live?: string;
@@ -52,6 +52,7 @@ export type ProjectEvidence = {
 const blogDir = path.join(process.cwd(), "content", "blog");
 const projectsDir = path.join(process.cwd(), "content", "projects");
 const isProduction = process.env.NODE_ENV === "production";
+const isProductionBuild = process.env.NEXT_PHASE === "phase-production-build";
 
 export const CONTENT_CACHE_TAGS = {
   blog: "content:blog",
@@ -161,9 +162,13 @@ function normalizeProjectMeta(
     "Missing summary"
   );
   assertProjectField(
-    status === "Live" || status === "WIP" || status === "Paused" || status === "Completed",
+    status === "Live" ||
+      status === "Ongoing" ||
+      status === "WIP" ||
+      status === "Paused" ||
+      status === "Completed",
     fileName,
-    "Status must be Live, WIP, Paused, or Completed"
+    "Status must be Live, Ongoing, WIP, Paused, or Completed"
   );
   assertProjectField(Array.isArray(tech), fileName, "Missing tech array");
   assertProjectField(
@@ -310,7 +315,7 @@ const getProjectMetaBySlugCached = unstable_cache(
 );
 
 export async function getAllBlogPosts() {
-  if (!isProduction) {
+  if (!isProduction || isProductionBuild) {
     return readMdxMeta(blogDir);
   }
 
@@ -318,7 +323,7 @@ export async function getAllBlogPosts() {
 }
 
 export async function getAllProjects() {
-  if (!isProduction) {
+  if (!isProduction || isProductionBuild) {
     return readProjectMetaList();
   }
 
@@ -326,7 +331,7 @@ export async function getAllProjects() {
 }
 
 export async function getFeaturedProjects(limit = 4) {
-  const projects = isProduction
+  const projects = isProduction && !isProductionBuild
     ? await getAllProjectsCached()
     : await readProjectMetaList();
 
@@ -334,7 +339,7 @@ export async function getFeaturedProjects(limit = 4) {
 }
 
 export async function getBlogMetaBySlug(slug: string) {
-  if (!isProduction) {
+  if (!isProduction || isProductionBuild) {
     return readBlogMetaBySlug(slug);
   }
 
@@ -342,7 +347,7 @@ export async function getBlogMetaBySlug(slug: string) {
 }
 
 export async function getProjectMetaBySlug(slug: string) {
-  if (!isProduction) {
+  if (!isProduction || isProductionBuild) {
     return readProjectMetaBySlug(slug);
   }
 

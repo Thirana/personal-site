@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getAllBlogPosts } from "@/lib/content";
 import MetaStrip from "@/components/MetaStrip";
-import Tag from "@/components/Tag";
+import BlogCard from "@/components/BlogCard";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -58,34 +57,7 @@ export default async function BlogPage() {
 
       <div className="grid gap-5 md:grid-cols-2">
         {posts.map((post) => (
-          <Link
-            key={post.slug}
-            href={`/blog/${post.slug}`}
-            className="group block space-y-3 rounded-xl border border-border/80 bg-panel/40 p-5 transition-all duration-200 hover:-translate-y-1 hover:border-neutral-500/70 hover:shadow-[0_24px_50px_-32px_rgba(15,23,42,0.85)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50"
-          >
-            <div className="flex flex-wrap items-center gap-2">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
-                {post.date}
-              </p>
-              {post.level ? (
-                <Tag className="px-2 py-0.5 font-mono text-[10px]">{post.level}</Tag>
-              ) : null}
-              {post.track ? (
-                <Tag className="px-2 py-0.5 font-mono text-[10px]">{post.track}</Tag>
-              ) : null}
-            </div>
-            <h2 className="text-xl font-semibold text-neutral-100 transition-colors group-hover:text-white">
-              {post.title}
-            </h2>
-            <p className="text-sm leading-7 text-neutral-300">{post.summary}</p>
-            <div className="flex flex-wrap gap-1.5">
-              {post.tags.map((tag) => (
-                <Tag key={tag} className="px-2 py-0.5 text-[10px] font-mono">
-                  {tag}
-                </Tag>
-              ))}
-            </div>
-          </Link>
+          <BlogCard key={post.slug} post={post} />
         ))}
       </div>
     </div>
