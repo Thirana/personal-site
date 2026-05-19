@@ -82,21 +82,21 @@ export function ExperienceItem({
               unoptimized
             />
           ) : (
-            <span className="flex size-2 rounded-full bg-gl-border-strong/40" />
+            <span className="relative flex size-3 items-center justify-center">
+              {experience.isCurrentEmployer && (
+                <span className="absolute inline-flex size-3 animate-ping rounded-full bg-gl-primary/40" />
+              )}
+              <span className="relative inline-flex size-2 rounded-full bg-gl-primary" />
+              {experience.isCurrentEmployer && (
+                <span className="sr-only">Current Employer</span>
+              )}
+            </span>
           )}
         </div>
 
         <h3 className="text-[15px] font-bold leading-snug text-gl-text">
           {experience.companyName}
         </h3>
-
-        {experience.isCurrentEmployer && (
-          <span className="relative flex items-center justify-center">
-            <span className="absolute inline-flex size-3 animate-ping rounded-full bg-gl-primary/40" />
-            <span className="relative inline-flex size-2 rounded-full bg-gl-primary" />
-            <span className="sr-only">Current Employer</span>
-          </span>
-        )}
       </div>
 
       <div className="relative space-y-4 before:absolute before:left-3 before:h-full before:w-px before:bg-gl-border">
@@ -136,9 +136,9 @@ export function ExperiencePositionItem({
               {position.title}
             </h4>
 
-            <div className="shrink-0 text-gl-text-faint [&_svg]:size-4" aria-hidden>
-              <ChevronsDownUpIcon className="hidden group-data-[state=open]:block" />
-              <ChevronsUpDownIcon className="hidden group-data-[state=closed]:block" />
+            <div className="shrink-0 text-gl-primary [&_svg]:size-4" aria-hidden>
+              <ChevronsDownUpIcon strokeWidth={2.5} className="hidden group-data-[state=open]:block" />
+              <ChevronsUpDownIcon strokeWidth={2.5} className="hidden group-data-[state=closed]:block" />
             </div>
           </div>
 
@@ -188,7 +188,7 @@ function Prose({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "prose prose-sm max-w-none font-mono text-gl-text-muted",
+        "prose prose-sm max-w-none text-gl-text-muted [&_ul>li::marker]:text-gl-primary",
         "prose-h4:text-gl-text prose-h4:font-semibold prose-h4:tracking-tight prose-h4:mt-4 prose-h4:mb-2",
         "prose-a:font-medium prose-a:break-words prose-a:text-gl-primary prose-a:underline prose-a:underline-offset-4",
         "prose-code:rounded-md prose-code:border prose-code:border-gl-border prose-code:bg-gl-surface-2 prose-code:text-gl-primary prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:text-sm prose-code:font-normal prose-code:before:content-none prose-code:after:content-none",
@@ -203,7 +203,7 @@ function Skill({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border border-gl-border bg-gl-surface-2 px-2 py-0.5 font-mono text-[10px] text-gl-text-muted",
+        "inline-flex items-center rounded-full border border-gl-border bg-gl-surface-2 px-2 py-0.5 text-[10px] text-gl-text-muted",
         className
       )}
       {...props}
