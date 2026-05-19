@@ -1,6 +1,7 @@
 import Tag from "@/components/Tag";
 import { Badge } from "@/components/ui/badge";
 import type {
+  BlogCaptionCoverChecklistItem,
   BlogCaptionCoverComparisonRow,
   BlogCaptionCoverPreset,
 } from "@/lib/blog-cover-presets";
@@ -64,19 +65,23 @@ function normalizeAccentWords(words: string[]) {
 function renderAccentedTitle(title: string, accentWords: string[]) {
   const normalizedAccentWords = normalizeAccentWords(accentWords);
 
-  return title.split(/(\s+)/).map((token, index) => {
-    const normalizedToken = token.replace(/[^a-z0-9]/gi, "").toLowerCase();
-    const isAccent = normalizedAccentWords.has(normalizedToken);
+  return title.split("\n").map((line, lineIndex) => (
+    <span key={`line-${lineIndex}`} className="block">
+      {line.split(/(\s+)/).map((token, tokenIndex) => {
+        const normalizedToken = token.replace(/[^a-z0-9]/gi, "").toLowerCase();
+        const isAccent = normalizedAccentWords.has(normalizedToken);
 
-    return (
-      <span
-        key={`${token}-${index}`}
-        className={isAccent ? "text-cyan-300" : undefined}
-      >
-        {token}
-      </span>
-    );
-  });
+        return (
+          <span
+            key={`${lineIndex}-${token}-${tokenIndex}`}
+            className={isAccent ? "text-cyan-300" : undefined}
+          >
+            {token}
+          </span>
+        );
+      })}
+    </span>
+  ));
 }
 
 function ComparisonRow({
@@ -231,6 +236,29 @@ function ComparisonRow({
   );
 }
 
+function ChecklistItem({
+  label,
+  detail,
+}: BlogCaptionCoverChecklistItem) {
+  return (
+    <div className="rounded-[0.8rem] border border-border/70 bg-white/[0.025] px-[clamp(0.95rem,1.5vw,1.2rem)] py-[clamp(0.85rem,1.45vw,1.1rem)] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+      <div className="flex items-start gap-3">
+        <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-emerald-300/35 bg-emerald-500/12">
+          <span className="h-2 w-2 rounded-full bg-emerald-300" />
+        </div>
+        <div className="space-y-1">
+          <p className="text-[clamp(0.98rem,1.3vw,1.12rem)] font-semibold leading-snug text-slate-100">
+            {label}
+          </p>
+          <p className="text-[clamp(0.82rem,1.02vw,0.92rem)] leading-[1.45] text-slate-400">
+            {detail}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function BlogCaptionCover({
   title,
   summary,
@@ -241,6 +269,9 @@ export default function BlogCaptionCover({
   const displaySummary = preset.displaySummary ?? summary;
   const initials = getInitials(siteConfig.authorName);
   const accentWords = preset.accentWords ?? [];
+  const hasChips = preset.chips.length > 0;
+  const hideFooter = preset.footerNote === null;
+  const hasFooterNote = typeof preset.footerNote === "string";
 
   return (
     <div
@@ -270,51 +301,84 @@ export default function BlogCaptionCover({
           </div>
 
           <div className="mt-[clamp(1.4rem,3vw,2.1rem)] max-w-[min(100%,29rem)] space-y-[clamp(1rem,1.9vw,1.35rem)]">
-            <h1 className="max-w-[10ch] text-balance text-[clamp(2.8rem,6.1vw,5.25rem)] leading-[0.94] font-semibold tracking-[-0.025em] text-slate-50">
+            <h1
+              className={cn(
+                "text-balance whitespace-pre-line text-[clamp(2.8rem,6.1vw,5.25rem)] leading-[0.94] font-semibold tracking-[-0.025em] text-slate-50",
+                preset.visual === "checklist" ? "max-w-[16ch]" : "max-w-[10ch]"
+              )}
+            >
               {accentWords.length > 0
                 ? renderAccentedTitle(displayTitle, accentWords)
                 : displayTitle}
             </h1>
-            <p className="max-w-[30ch] text-[clamp(1rem,1.85vw,1.7rem)] leading-[1.45] text-slate-400">
+            <p
+              className={cn(
+                "text-[clamp(1rem,1.85vw,1.7rem)] leading-[1.45] whitespace-pre-line text-slate-400",
+                preset.visual === "checklist" ? "max-w-[34ch]" : "max-w-[30ch]"
+              )}
+            >
               {displaySummary}
             </p>
           </div>
 
           <div className="mt-[clamp(2rem,4vw,3.15rem)] max-w-[min(100%,54rem)] space-y-[clamp(1.35rem,2.6vw,2rem)]">
-            {preset.comparisonRows.map((row) => (
-              <ComparisonRow key={row.label} {...row} />
-            ))}
+            {preset.visual === "comparison" ? (
+              preset.comparisonRows.map((row) => (
+                <ComparisonRow key={row.label} {...row} />
+              ))
+            ) : (
+              <div className="space-y-4">
+                <p className="font-mono text-[clamp(0.72rem,1vw,0.88rem)] uppercase tracking-[0.24em] text-cyan-300">
+                  {preset.checklistLabel}
+                </p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {preset.checklistItems.map((item) => (
+                    <ChecklistItem key={item.label} {...item} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="mt-[clamp(1.4rem,3.2vw,2rem)] pt-[clamp(1rem,2vw,1.55rem)]">
-          <div className="flex flex-wrap gap-2.5">
-            {preset.chips.map((chip) => (
-              <Tag
-                key={chip}
-                className="rounded-full border-border/70 bg-white/[0.03] px-[clamp(0.8rem,1.2vw,1rem)] py-[clamp(0.45rem,0.8vw,0.65rem)] text-[clamp(0.8rem,1vw,0.92rem)] font-medium text-slate-300 hover:border-border/70 hover:text-slate-300"
-              >
-                {chip}
-              </Tag>
-            ))}
+        {hasChips ? (
+          <div className="mt-[clamp(1.4rem,3.2vw,2rem)] pt-[clamp(1rem,2vw,1.55rem)]">
+            <div className="flex flex-wrap gap-2.5">
+              {preset.chips.map((chip) => (
+                <Tag
+                  key={chip}
+                  className="rounded-full border-border/70 bg-white/[0.03] px-[clamp(0.8rem,1.2vw,1rem)] py-[clamp(0.45rem,0.8vw,0.65rem)] text-[clamp(0.8rem,1vw,0.92rem)] font-medium text-slate-300 hover:border-border/70 hover:text-slate-300"
+                >
+                  {chip}
+                </Tag>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : null}
 
-        <div className="mt-[clamp(1.25rem,2.8vw,1.85rem)] pt-[clamp(1rem,2vw,1.45rem)]">
-          <div className="flex items-center gap-[clamp(0.8rem,1.5vw,1rem)]">
-            <div className="flex h-[clamp(2.35rem,4vw,2.85rem)] w-[clamp(2.35rem,4vw,2.85rem)] items-center justify-center rounded-full border border-emerald-300/35 bg-emerald-500/14 font-semibold text-[clamp(0.88rem,1.25vw,1.08rem)] text-emerald-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-              {initials}
-            </div>
-            <div className="space-y-1.5 leading-none">
-              <p className="text-[clamp(0.98rem,1.4vw,1.18rem)] font-semibold text-slate-100">
-                {siteConfig.authorName}
+        {hideFooter ? null : (
+          <div className="mt-[clamp(1.25rem,2.8vw,1.85rem)] pt-[clamp(1rem,2vw,1.45rem)]">
+            {hasFooterNote ? (
+              <p className="max-w-[36ch] text-[clamp(0.95rem,1.2vw,1.04rem)] leading-[1.55] text-slate-400">
+                {preset.footerNote}
               </p>
-              <p className="text-[clamp(0.84rem,1.1vw,0.96rem)] text-slate-400">
-                {preset.footerHost}
-              </p>
-            </div>
+            ) : (
+              <div className="flex items-center gap-[clamp(0.8rem,1.5vw,1rem)]">
+                <div className="flex h-[clamp(2.35rem,4vw,2.85rem)] w-[clamp(2.35rem,4vw,2.85rem)] items-center justify-center rounded-full border border-emerald-300/35 bg-emerald-500/14 font-semibold text-[clamp(0.88rem,1.25vw,1.08rem)] text-emerald-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+                  {initials}
+                </div>
+                <div className="space-y-1.5 leading-none">
+                  <p className="text-[clamp(0.98rem,1.4vw,1.18rem)] font-semibold text-slate-100">
+                    {siteConfig.authorName}
+                  </p>
+                  <p className="text-[clamp(0.84rem,1.1vw,0.96rem)] text-slate-400">
+                    {preset.footerHost}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

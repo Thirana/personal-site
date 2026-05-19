@@ -74,6 +74,7 @@ Code is the source of truth. Keep this file in sync when routing, MDX loading, S
 - `/internal/blog-covers/[slug]` is a static internal preview route for manual screenshot capture of blog caption cover artwork.
 - Cover content is preset-driven through `src/lib/blog-cover-presets.ts` and rendered by `src/components/BlogCaptionCover.tsx`.
 - The preview route also includes a client-side `Download PNG` action that exports only the cover artwork from the browser.
+- `/internal/project-covers/[slug]` provides the same internal PNG export flow for project or site announcement artwork, with presets in `src/lib/project-cover-presets.ts`.
 - This internal preview is separate from the public social-image pipeline. It is not linked in navigation, not included in `sitemap.ts`, and is marked `noindex`.
 
 ## Caching and Revalidation
