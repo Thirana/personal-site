@@ -6,11 +6,11 @@ type StatusBadgeProps = {
 };
 
 const statusClass: Record<ProjectStatus, string> = {
-  Live: "bg-[#0d2e1e] text-[#69b598]",
-  Ongoing: "bg-[#2a1e08] text-[#c4a05e]",
-  WIP: "bg-[#2a1e08] text-[#c4a05e]",
-  Paused: "bg-[#2f3530] text-gl-text-muted",
-  Completed: "bg-[#0d2030] text-[#62aebf]",
+  Live: "bg-[#1a3a28] text-[#a0dcb8]",
+  Ongoing: "bg-[#362a08] text-[#dfc070]",
+  WIP: "bg-[#362a08] text-[#dfc070]",
+  Paused: "bg-[#28213a] text-[#c0b4e0]",
+  Completed: "bg-[#102840] text-[#88d0e8]",
 };
 
 export default function StatusBadge({ status }: StatusBadgeProps) {

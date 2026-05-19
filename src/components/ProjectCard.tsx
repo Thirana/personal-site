@@ -13,12 +13,12 @@ type ProjectCardProps = {
 };
 
 const SWATCH_COLORS = [
-  "#69b598",
-  "#8285ba",
-  "#b87da2",
-  "#c4a05e",
-  "#b87060",
-  "#62aebf",
+  "#8eceb4",
+  "#a8abd8",
+  "#ccaabc",
+  "#d4b878",
+  "#cc9888",
+  "#80c8d8",
 ];
 
 function getSwatchColor(name: string): string {
@@ -40,7 +40,7 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
         {/* Number + title + status */}
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-start gap-3 min-w-0">
-            <span className="shrink-0 font-mono text-[12px] font-semibold text-gl-primary mt-[3px]">
+            <span className="shrink-0 font-mono text-[12px] font-semibold text-[#b8b0e0] mt-[3px]">
               {String(index + 1).padStart(2, "0")}
             </span>
             <Link
@@ -54,7 +54,7 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
         </div>
 
         {/* Summary */}
-        <p className="text-[15px] leading-[1.7] text-gl-text-muted pl-7">
+        <p className="text-[15px] leading-[1.7] text-gl-text pl-7">
           {project.summary}
         </p>
 
@@ -62,7 +62,7 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
         {visibleConstraints.length > 0 ? (
           <ul className="space-y-1.5 pl-7">
             {visibleConstraints.map((constraint) => (
-              <li key={constraint} className="flex gap-2.5 text-[14px] text-gl-text-muted">
+              <li key={constraint} className="flex gap-2.5 text-[14px] text-gl-text">
                 <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-gl-primary" />
                 <span>{constraint}</span>
               </li>
@@ -74,7 +74,7 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
         {allTags.length > 0 ? (
           <div className="flex flex-wrap gap-1.5 pl-7">
             {allTags.map((tag) => (
-              <Tag key={tag} dot={getSwatchColor(tag)} className="px-2 py-0.5 text-[10px] font-mono">
+              <Tag key={tag} dot={getSwatchColor(tag)} className="px-2.5 py-1 text-[12px]">
                 {tag}
               </Tag>
             ))}

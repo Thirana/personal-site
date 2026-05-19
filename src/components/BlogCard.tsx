@@ -1,15 +1,15 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import type { ContentMeta } from "@/lib/content";
 import Tag from "@/components/Tag";
 
 const SWATCH_COLORS = [
-  "#69b598",
-  "#8285ba",
-  "#b87da2",
-  "#c4a05e",
-  "#b87060",
-  "#62aebf",
+  "#8eceb4",
+  "#a8abd8",
+  "#ccaabc",
+  "#d4b878",
+  "#cc9888",
+  "#80c8d8",
 ];
 
 function getSwatchColor(name: string): string {
@@ -26,49 +26,41 @@ type BlogCardProps = {
 
 export default function BlogCard({ post }: BlogCardProps) {
   return (
-    <Link
-      href={`/blog/${post.slug}`}
-      className="group flex h-full flex-col rounded-2xl border border-gl-border bg-gl-surface p-6 shadow-gl transition-shadow duration-200 hover:shadow-gl-lg focus-visible:outline-none"
-    >
-      <div className="flex-1 space-y-4">
-        <div className="flex flex-wrap items-center gap-2 border-b border-white/[0.07] pb-3">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-gl-text-faint">
-            {post.date}
-          </p>
-          {post.level ? (
-            <Tag dot={getSwatchColor(post.level)} className="px-2 py-0.5 font-mono text-[10px]">
-              {post.level}
-            </Tag>
-          ) : null}
-          {post.track ? (
-            <Tag dot={getSwatchColor(post.track)} className="px-2 py-0.5 font-mono text-[10px]">
-              {post.track}
-            </Tag>
-          ) : null}
-        </div>
+    <div className="group py-8 first:pt-2">
+      <div className="space-y-4">
+        {/* Title */}
+        <Link
+          href={`/blog/${post.slug}`}
+          className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-gl-text transition-colors hover:text-gl-primary focus-visible:outline-none"
+        >
+          {post.title}
+        </Link>
 
-        <div className="space-y-2">
-          <h2 className="text-[19px] font-bold tracking-[-0.015em] text-gl-text transition-colors group-hover:text-gl-primary">
-            {post.title}
-          </h2>
-          <p className="text-[15px] leading-[1.65] text-gl-text-muted">{post.summary}</p>
-        </div>
+        {/* Summary */}
+        <p className="text-[15px] leading-[1.7] text-gl-text">{post.summary}</p>
 
-        <div className="flex flex-wrap gap-1.5">
-          {post.tags.map((tag) => (
-            <Tag key={tag} dot={getSwatchColor(tag)} className="px-2 py-0.5 text-[10px] font-mono">
-              {tag}
-            </Tag>
-          ))}
+        {/* Tags */}
+        {post.tags.length > 0 ? (
+          <div className="flex flex-wrap gap-1.5">
+            {post.tags.map((tag) => (
+              <Tag key={tag} dot={getSwatchColor(tag)} className="px-2.5 py-1 text-[12px]">
+                {tag}
+              </Tag>
+            ))}
+          </div>
+        ) : null}
+
+        {/* Read link */}
+        <div className="flex items-center gap-4 pt-1">
+          <Link
+            href={`/blog/${post.slug}`}
+            className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover focus-visible:outline-none"
+          >
+            Read article
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
       </div>
-
-      <div className="mt-5 flex items-center border-t border-white/[0.07] pt-4">
-        <span className="inline-flex items-center gap-2 rounded-[10px] bg-gl-primary px-4 py-2.5 text-[13px] font-semibold text-gl-primary-ink transition-colors group-hover:bg-gl-primary-hover">
-          Read article
-          <ArrowRight className="h-3.5 w-3.5" />
-        </span>
-      </div>
-    </Link>
+    </div>
   );
 }

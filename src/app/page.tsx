@@ -92,7 +92,7 @@ export default async function Home() {
             <p className="text-[17px] italic font-medium leading-[1.7] text-gl-text">
               {profile.headline}
             </p>
-            <ul className="space-y-2 text-[15px] text-gl-text-muted">
+            <ul className="space-y-2 text-[15px] text-gl-text">
               {profile.highlights.map((item) => (
                 <li key={item} className="flex gap-2">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gl-primary" />
@@ -124,7 +124,7 @@ export default async function Home() {
       <FadeIn delay={280}>
         <Section title="Project Portfolio">
           <p className="text-[15px] leading-[1.65] text-gl-text-muted">
-            Each card gives a quick project overview and links to the full
+            Each entry gives a quick project overview and links to the full
             implementation notes, constraints, and outcomes.
           </p>
           <ProjectGrid featured={featuredProjects} all={allProjects} />

@@ -22,12 +22,12 @@
   --gl-primary-hover: #a39ad0;
   --gl-primary-soft: #16143a;
   --gl-primary-ink: #ffffff;
-  --gl-swatch-1: #69b598;
-  --gl-swatch-2: #8285ba;
-  --gl-swatch-3: #b87da2;
-  --gl-swatch-4: #c4a05e;
-  --gl-swatch-5: #b87060;
-  --gl-swatch-6: #62aebf;
+  --gl-swatch-1: #8eceb4;
+  --gl-swatch-2: #a8abd8;
+  --gl-swatch-3: #ccaabc;
+  --gl-swatch-4: #d4b878;
+  --gl-swatch-5: #cc9888;
+  --gl-swatch-6: #80c8d8;
   --gl-success: #69b598;
   --gl-success-soft: #0d2419;
   --gl-warning: #c4a05e;
@@ -319,7 +319,29 @@ body {
     color: var(--gl-text);
   }
 
-  .prose :where(h2, h3) {
+  .prose :where(h2) {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: -0.018em;
+    color: var(--gl-text);
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .prose :where(h2)::after {
+    content: '';
+    flex: 1;
+    display: block;
+    height: 1px;
+    background-color: var(--gl-border);
+  }
+
+  .prose :where(h3) {
     letter-spacing: -0.018em;
     color: var(--gl-text);
   }
@@ -329,7 +351,11 @@ body {
   }
 
   .prose :where(p, li, ol, ul) {
-    color: var(--gl-text-muted);
+    color: var(--gl-text);
+  }
+
+  .prose ul > li::marker {
+    color: var(--gl-primary);
   }
 
   .prose :where(strong) {
@@ -372,15 +398,15 @@ body {
   }
 
   .prose blockquote {
-    border-left: 2px solid var(--gl-primary);
+    border-left: 3px solid var(--gl-primary);
     border-top: none;
     border-right: none;
     border-bottom: none;
-    color: var(--gl-text-muted);
-    font-style: italic;
-    padding-left: 1rem;
-    padding-top: 0;
-    padding-bottom: 0;
+    background: var(--gl-surface);
+    color: var(--gl-text);
+    font-style: normal;
+    padding: 1rem 1.25rem;
+    border-radius: 0 0.75rem 0.75rem 0;
   }
 
   .prose :where(hr) {

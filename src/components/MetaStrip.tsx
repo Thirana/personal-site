@@ -18,7 +18,7 @@ export default function MetaStrip({ items, className }: MetaStripProps) {
   return (
     <div
       className={cn(
-        "glass-panel grid grid-cols-2 gap-2 rounded-xl border border-transparent bg-gl-surface-2 p-3 lg:grid-cols-4",
+        "grid grid-cols-2 gap-x-8 gap-y-4 border-t border-gl-border pt-4 lg:grid-cols-4",
         className
       )}
     >
@@ -27,7 +27,7 @@ export default function MetaStrip({ items, className }: MetaStripProps) {
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-gl-text-faint">
             {item.label}
           </p>
-          <p className="font-mono text-xs leading-5 text-gl-text">{item.value}</p>
+          <p className="font-mono text-sm font-semibold text-gl-text">{item.value}</p>
         </div>
       ))}
     </div>

@@ -13,6 +13,7 @@ export type ContentMeta = {
   track?: string;
   appliesTo: string[];
   takeaway?: string;
+  project?: string;
 };
 
 export type ProjectStatus = "Live" | "Ongoing" | "WIP" | "Paused" | "Completed";
@@ -110,6 +111,7 @@ function normalizeMeta(slug: string, data: Record<string, unknown>): ContentMeta
     track: typeof data.track === "string" ? data.track : undefined,
     appliesTo: toStringArray(data.appliesTo),
     takeaway: typeof data.takeaway === "string" ? data.takeaway : undefined,
+    project: typeof data.project === "string" ? data.project : undefined,
   };
 }
 
@@ -352,6 +354,11 @@ export async function getProjectMetaBySlug(slug: string) {
   }
 
   return getProjectMetaBySlugCached(slug);
+}
+
+export async function getBlogsByProject(projectSlug: string) {
+  const posts = await getAllBlogPosts();
+  return posts.filter((post) => post.project === projectSlug);
 }
 
 export async function getBlogPostBySlug(slug: string) {

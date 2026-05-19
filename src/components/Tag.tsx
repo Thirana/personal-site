@@ -12,7 +12,7 @@ export default function Tag({ children, icon, dot, className }: TagProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full bg-[#2f3530] px-2.5 py-1 text-[11.5px] font-medium text-gl-text-muted transition-colors",
+        "inline-flex items-center gap-1.5 rounded-full bg-[#2f3530] px-3 py-1.5 text-[13px] font-medium text-gl-text transition-colors",
         className
       )}
     >

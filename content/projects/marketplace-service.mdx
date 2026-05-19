@@ -53,24 +53,6 @@ outcomes:
 
 # Marketplace Service
 
-<section className="my-6">
-  <h2 id="project-overview" className="scroll-mt-28">
-    Project overview
-  </h2>
-
-  > This backend models a small marketplace service with a public product catalog, order creation, and persisted notification tracking. I keep it as an ongoing practice repo where I continuously implement compact, testable versions of backend patterns I want to internalize from real work.
-  >
-  > The goal is to use one small service to deliberately practice correctness, predictable runtime behavior, database integrity, and operational clarity end to end without turning the project into a large product.
-</section>
-
-## Tech stack
-
-- **Framework:** NestJS
-- **Language:** TypeScript
-- **Database:** PostgreSQL
-- **ORM:** TypeORM
-- **Logging:** Winston
-- **Notifications:** Firebase Admin SDK
 
 ## Core system features
 
@@ -127,12 +109,3 @@ I intentionally use this project to practice engineering decisions that make a b
 - Separate liveness and readiness endpoints, for clearer deployment and runtime health checks.
 - Migration-only schema management, for explicit and reviewable database evolution.
 
-<section className="my-6">
-  <h2 id="project-intent" className="scroll-mt-28">
-    Project Intent
-  </h2>
-
-  > In production backend work, the harder problems are usually around safety, consistency, and operational behavior rather than raw endpoint count. I keep this project ongoing as a compact backend sandbox where I can deliberately practice stable API contracts, reliable pagination, migration-backed schema changes, transactional stock updates, DB-backed idempotency, structured logs, health checks, and durable side-effect tracking.
-  >
-  > The result is a backend I can continuously refine as my experience grows. It reflects how I think about service design: keep the architecture small, make runtime behavior explicit, and push critical guarantees into the database and API contract where they can be reasoned about clearly.
-</section>

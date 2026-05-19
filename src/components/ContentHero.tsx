@@ -24,43 +24,48 @@ export default function ContentHero({
   className,
 }: ContentHeroProps) {
   return (
-    <div
-      className={cn(
-        "not-prose space-y-4 rounded-2xl border border-gl-border bg-gl-surface p-6 shadow-gl",
-        className
-      )}
-    >
-      {eyebrow ? (
-        <p
-          className={cn(
-            "font-mono text-[11px] uppercase tracking-[0.26em] text-gl-text-faint",
-            eyebrowClassName
-          )}
-        >
-          {eyebrow}
-        </p>
-      ) : null}
-      <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-bold tracking-[-0.022em] text-gl-text sm:text-3xl">
-          {title}
-        </h1>
-        {badge}
+    <div className={cn("not-prose space-y-5", className)}>
+      {/* Eyebrow label + rule + badge */}
+      <div className="flex items-center gap-4">
+        {eyebrow ? (
+          <p
+            className={cn(
+              "shrink-0 font-mono text-[14px] font-bold uppercase tracking-[0.2em] text-gl-primary",
+              eyebrowClassName
+            )}
+          >
+            {eyebrow}
+          </p>
+        ) : null}
+        <div className="flex-1 border-t border-gl-border" />
+        {badge ? <div className="shrink-0">{badge}</div> : null}
       </div>
+
+      {/* Title */}
+      <h1 className="text-3xl font-bold tracking-[-0.024em] text-gl-text sm:text-4xl">
+        {title}
+      </h1>
+
+      {/* Summary */}
       {summary ? (
-        <p className="text-[16px] leading-[1.65] text-gl-text-muted">{summary}</p>
+        <p className="text-[16px] leading-[1.7] text-gl-text">{summary}</p>
       ) : null}
-      {meta ? (
-        <div className="flex flex-wrap items-center gap-2 text-xs text-gl-text-muted">
-          {meta}
-        </div>
-      ) : null}
+
+      {/* Chips */}
       {chips && chips.length > 0 ? (
         <div className="flex flex-wrap gap-2">
           {chips.map((chip) => (
-            <Tag key={chip} className="px-2.5 py-1 text-xs">
+            <Tag key={chip} className="px-3 py-1.5 text-[13px]">
               {chip}
             </Tag>
           ))}
+        </div>
+      ) : null}
+
+      {/* Meta (date, links) */}
+      {meta ? (
+        <div className="flex flex-wrap items-center gap-2">
+          {meta}
         </div>
       ) : null}
     </div>

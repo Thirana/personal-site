@@ -7,15 +7,12 @@ type SectionProps = {
 
 export default function Section({ title, children }: SectionProps) {
   return (
-    <section className="space-y-5">
-      <div className="flex items-center gap-3">
-        <div className="flex shrink-0 items-center gap-2.5">
-          <div className="h-[18px] w-[3px] rounded-full bg-gl-primary" />
-          <h2 className="text-[17px] font-bold tracking-[-0.015em] text-gl-text">
-            {title}
-          </h2>
-        </div>
-        <div className="min-w-0 flex-1 border-t border-gl-border" />
+    <section className="space-y-6">
+      <div className="flex items-center gap-4">
+        <p className="shrink-0 font-mono text-[14px] font-bold uppercase tracking-[0.2em] text-gl-primary">
+          {title}
+        </p>
+        <div className="flex-1 border-t border-gl-border" />
       </div>
       {children}
     </section>

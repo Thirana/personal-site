@@ -35,12 +35,15 @@ export default async function BlogPage() {
   return (
     <div className="space-y-8">
       <FadeIn>
-        <div className="space-y-4 rounded-2xl border border-gl-border bg-gl-surface p-6 shadow-gl">
-          <p className="font-mono text-[11px] uppercase tracking-[0.26em] text-gl-text-faint">
-            Engineering Notes
-          </p>
-          <h1 className="text-3xl font-bold tracking-[-0.022em] text-gl-text">Blog</h1>
-          <p className="max-w-2xl text-[16px] leading-[1.65] text-gl-text-muted">
+        <div className="space-y-5">
+          <div className="flex items-center gap-4">
+            <p className="shrink-0 font-mono text-[14px] font-bold uppercase tracking-[0.2em] text-gl-primary">
+              Engineering Notes
+            </p>
+            <div className="flex-1 border-t border-gl-border" />
+          </div>
+          <h1 className="text-3xl font-bold tracking-[-0.024em] text-gl-text sm:text-4xl">Blog</h1>
+          <p className="max-w-2xl text-[16px] leading-[1.7] text-gl-text">
             Technical writing focused on backend decisions, system trade-offs, and
             implementation patterns.
           </p>
@@ -56,7 +59,7 @@ export default async function BlogPage() {
       </FadeIn>
 
       <FadeIn delay={120}>
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="divide-y divide-gl-border">
           {posts.map((post) => (
             <BlogCard key={post.slug} post={post} />
           ))}

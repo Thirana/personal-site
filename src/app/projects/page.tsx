@@ -48,12 +48,15 @@ export default async function ProjectsPage() {
   return (
     <div className="space-y-8">
       <FadeIn>
-        <div className="glass-panel space-y-4 rounded-2xl border border-transparent bg-gl-surface p-6 shadow-gl">
-          <p className="font-mono text-[11px] uppercase tracking-[0.26em] text-gl-text-faint">
-            Systems Portfolio
-          </p>
-          <h1 className="text-3xl font-bold tracking-[-0.022em] text-gl-text">Projects</h1>
-          <p className="max-w-2xl text-[16px] leading-[1.65] text-gl-text-muted">
+        <div className="space-y-5">
+          <div className="flex items-center gap-4">
+            <p className="shrink-0 font-mono text-[14px] font-bold uppercase tracking-[0.2em] text-gl-primary">
+              Systems Portfolio
+            </p>
+            <div className="flex-1 border-t border-gl-border" />
+          </div>
+          <h1 className="text-3xl font-bold tracking-[-0.024em] text-gl-text sm:text-4xl">Projects</h1>
+          <p className="max-w-2xl text-[16px] leading-[1.7] text-gl-text">
             System-focused work that highlights architecture decisions, reliability
             controls, and measurable outcomes.
           </p>
@@ -65,10 +68,6 @@ export default async function ProjectsPage() {
               { label: "Evidence Links", value: `${evidenceCount}` },
             ]}
           />
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gl-text-faint">
-            Open any project below for the overview, implementation notes, and
-            evidence trail.
-          </p>
         </div>
       </FadeIn>
 

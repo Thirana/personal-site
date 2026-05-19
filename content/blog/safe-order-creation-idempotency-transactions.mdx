@@ -7,6 +7,7 @@ track: "Backend Engineering"
 level: "Intermediate"
 appliesTo: ["Order creation endpoints", "Inventory sensitive writes", "Retry prone clients"]
 takeaway: "Safe order creation comes from treating the write path as one transaction, letting the database own idempotency, and moving provider side effects after commit."
+project: "marketplace-service"
 ---
 
 # How Safe Order Creation Works with Idempotency and Transactions

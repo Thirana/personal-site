@@ -10,8 +10,8 @@ type CapabilityMatrixProps = {
 
 export default function CapabilityMatrix({ rows }: CapabilityMatrixProps) {
   return (
-    <div className="glass-panel overflow-hidden rounded-xl bg-gl-surface-2">
-      <div className="hidden grid-cols-[0.8fr_1.45fr_1.35fr] border-b border-gl-border px-4 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-gl-text-faint sm:grid">
+    <div>
+      <div className="hidden grid-cols-[0.8fr_1.45fr_1.35fr] border-b border-gl-border pb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-gl-text-faint sm:grid">
         <span>Domain</span>
         <span>Focus</span>
         <span>Strategies</span>
@@ -20,11 +20,11 @@ export default function CapabilityMatrix({ rows }: CapabilityMatrixProps) {
         {rows.map((row) => (
           <div
             key={row.domain}
-            className="grid gap-2 px-4 py-3 sm:grid-cols-[0.8fr_1.45fr_1.35fr] sm:gap-3"
+            className="grid gap-2 py-4 sm:grid-cols-[0.8fr_1.45fr_1.35fr] sm:gap-3"
           >
-            <p className="text-sm font-medium text-gl-text">{row.domain}</p>
-            <p className="text-sm text-gl-text-muted">{row.focus}</p>
-            <p className="font-mono text-xs text-gl-primary">{row.signal}</p>
+            <p className="text-[14px] font-semibold text-gl-text">{row.domain}</p>
+            <p className="text-[14px] text-gl-text">{row.focus}</p>
+            <p className="font-mono text-[12px] text-gl-primary">{row.signal}</p>
           </div>
         ))}
       </div>
