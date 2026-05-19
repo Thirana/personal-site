@@ -62,7 +62,7 @@ export default function BrandTypewriter({ className }: BrandTypewriterProps) {
         <span>Thirana&apos;s</span>
         <span className="inline-flex min-w-[10ch] items-center">
           <span>{typedText}</span>
-          <span className="ml-0.5 inline-block h-[1em] w-px animate-pulse bg-neutral-200/90" />
+          <span className="animate-cursor-blink ml-0.5 inline-block h-[1em] w-px bg-gl-primary" />
         </span>
       </span>
       <span className="sr-only">Thirana&apos;s personal site</span>

@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { Separator } from "@/components/ui/separator";
 
 type SectionProps = {
   title: string;
@@ -8,13 +7,15 @@ type SectionProps = {
 
 export default function Section({ title, children }: SectionProps) {
   return (
-    <section className="space-y-4">
-      <div className="flex items-center gap-4">
-        <div className="h-4 w-1 rounded-full bg-emerald-400/80" />
-        <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-400">
-          {title}
-        </h2>
-        <Separator className="flex-1 bg-border/70" />
+    <section className="space-y-5">
+      <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2.5">
+          <div className="h-[18px] w-[3px] rounded-full bg-gl-primary" />
+          <h2 className="text-[17px] font-bold tracking-[-0.015em] text-gl-text">
+            {title}
+          </h2>
+        </div>
+        <div className="min-w-0 flex-1 border-t border-gl-border" />
       </div>
       {children}
     </section>

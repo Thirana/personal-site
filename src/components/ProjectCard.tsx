@@ -1,266 +1,117 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import type { ProjectMeta } from "@/lib/content";
 import StatusBadge from "./StatusBadge";
 import Tag from "./Tag";
-import { cn } from "@/lib/utils";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 type ProjectCardProps = {
   project: ProjectMeta;
   layout?: "default" | "wide";
+  index?: number;
 };
 
-export default function ProjectCard({
-  project,
-  layout = "default",
-}: ProjectCardProps) {
-  const isWide = layout === "wide";
-  const [mobileDetailsOpen, setMobileDetailsOpen] = useState(false);
+const SWATCH_COLORS = [
+  "#69b598",
+  "#8285ba",
+  "#b87da2",
+  "#c4a05e",
+  "#b87060",
+  "#62aebf",
+];
+
+function getSwatchColor(name: string): string {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash * 31 + name.charCodeAt(i)) & 0xffff;
+  }
+  return SWATCH_COLORS[hash % SWATCH_COLORS.length];
+}
+
+export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
   const projectPath = `/projects/${project.slug}`;
-  const secondaryMetrics = project.metrics.slice(0, 2);
-  const visibleConstraints = project.constraints.slice(0, 3);
-  const hasMobileDetails =
-    secondaryMetrics.length > 0 || visibleConstraints.length > 0;
-
-  const renderDomainTags = (className?: string) => {
-    if (project.domains.length === 0) {
-      return null;
-    }
-
-    return (
-      <div className={cn("space-y-2", className)}>
-        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-500">
-          Focus Areas
-        </p>
-        <div className="flex flex-wrap gap-1.5">
-          {project.domains.map((domain) => (
-            <Tag
-              key={domain}
-              className="border-border/60 bg-transparent px-2 py-0.5 font-mono text-[10px] text-neutral-300 hover:border-neutral-400/70 hover:text-neutral-200"
-            >
-              {domain}
-            </Tag>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderTechTags = (className?: string) => {
-    if (project.tech.length === 0) {
-      return null;
-    }
-
-    return (
-      <div className={cn("space-y-2", className)}>
-        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-500">
-          Stack
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {project.tech.map((tech) => (
-            <Tag
-              key={tech}
-              className="border-cyan-300/25 bg-cyan-500/10 px-2.5 py-0.5 text-[11px] text-cyan-100 hover:border-cyan-300/45 hover:text-cyan-50"
-            >
-              {tech}
-            </Tag>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderConstraintChips = (constraints: string[]) => {
-    if (constraints.length === 0) {
-      return null;
-    }
-
-    return (
-      <div className="space-y-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-500">
-          Operating Constraints
-        </p>
-        <div className="flex flex-wrap gap-1.5">
-          {constraints.map((constraint) => (
-            <span
-              key={constraint}
-              className="rounded-md border border-border/70 bg-transparent px-2 py-1 font-mono text-[10px] text-neutral-300"
-            >
-              {constraint}
-            </span>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderSecondaryMetrics = () => {
-    if (secondaryMetrics.length === 0) {
-      return null;
-    }
-
-    return (
-      <div className="space-y-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-500">
-          System Signals
-        </p>
-        <div className="grid gap-2 sm:grid-cols-2">
-          {secondaryMetrics.map((metric) => (
-            <div
-              key={`${metric.label}-${metric.value}`}
-              className="rounded-xl border border-border/70 bg-panel/35 px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
-            >
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
-                {metric.label}
-              </p>
-              <p className="mt-2 whitespace-pre-line font-mono text-xs leading-6 text-neutral-100">
-                {metric.value}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
+  const visibleConstraints = project.constraints.slice(0, 2);
+  const allTags = [...project.domains, ...project.tech];
 
   return (
-    <Card
-      className={cn(
-        "group relative overflow-hidden border-border/80 bg-[linear-gradient(180deg,rgba(17,24,37,0.96)_0%,rgba(11,15,20,0.98)_100%)] shadow-[0_16px_40px_-32px_rgba(15,23,42,0.95)] transition-[border-color,transform,box-shadow] duration-200 before:pointer-events-none before:absolute before:inset-x-6 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/14 before:to-transparent hover:border-neutral-500/80 hover:shadow-[0_28px_70px_-40px_rgba(14,165,233,0.35)] focus-within:border-neutral-400/90 focus-within:shadow-[0_28px_70px_-40px_rgba(14,165,233,0.4)]",
-        isWide && "md:grid md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
-      )}
-    >
-      <CardHeader className={cn("space-y-3 p-5 sm:p-6", isWide && "md:row-span-2 md:pr-7")}>
-        <div className="flex items-start justify-between gap-4 border-b border-border/60 pb-4">
-          <CardTitle className="min-w-0 flex-1 leading-tight">
+    <div className="group py-8 first:pt-2">
+      <div className="space-y-4">
+        {/* Number + title + status */}
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="flex items-start gap-3 min-w-0">
+            <span className="shrink-0 font-mono text-[12px] font-semibold text-gl-primary mt-[3px]">
+              {String(index + 1).padStart(2, "0")}
+            </span>
             <Link
               href={projectPath}
-              className="inline-block text-lg text-neutral-100 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:text-xl"
+              className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-gl-text transition-colors hover:text-gl-primary focus-visible:outline-none"
             >
               {project.title}
             </Link>
-          </CardTitle>
+          </div>
           <StatusBadge status={project.status} />
         </div>
 
-        <div className="space-y-3">
-          <p className="text-sm leading-7 text-neutral-300">{project.summary}</p>
-        </div>
+        {/* Summary */}
+        <p className="text-[15px] leading-[1.7] text-gl-text-muted pl-7">
+          {project.summary}
+        </p>
 
-        {renderDomainTags()}
-        {renderTechTags()}
-      </CardHeader>
+        {/* Constraints */}
+        {visibleConstraints.length > 0 ? (
+          <ul className="space-y-1.5 pl-7">
+            {visibleConstraints.map((constraint) => (
+              <li key={constraint} className="flex gap-2.5 text-[14px] text-gl-text-muted">
+                <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-gl-primary" />
+                <span>{constraint}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
 
-      {isWide ? (
-        <>
-          <CardContent className="hidden p-5 pt-5 md:block md:border-l md:border-border/60 md:p-6 md:pl-6 md:pt-6">
-            <div className="space-y-5">
-              {renderSecondaryMetrics()}
-              {renderConstraintChips(visibleConstraints)}
-            </div>
-          </CardContent>
-
-          {hasMobileDetails ? (
-            <CardContent className="border-t border-border/60 p-5 pt-4 md:hidden">
-              <Collapsible
-                open={mobileDetailsOpen}
-                onOpenChange={setMobileDetailsOpen}
-              >
-                <CollapsibleTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="w-full justify-between border-border/70 bg-panel/25 text-neutral-200 hover:bg-panel/45 hover:text-neutral-100"
-                  >
-                    <span>
-                      {mobileDetailsOpen
-                        ? "Hide project details"
-                        : "Reveal project details"}
-                    </span>
-                    <ChevronDown
-                      className={cn(
-                        "h-4 w-4 transition-transform duration-200",
-                        mobileDetailsOpen && "rotate-180"
-                      )}
-                    />
-                  </Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="mt-4 space-y-4 overflow-hidden duration-300 data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-                  {renderSecondaryMetrics()}
-                  {renderConstraintChips(visibleConstraints)}
-                </CollapsibleContent>
-              </Collapsible>
-            </CardContent>
-          ) : null}
-        </>
-      ) : (
-        <CardContent className="border-t border-border/60 p-5 pt-4">
-          <div className="space-y-4">
-            {renderSecondaryMetrics()}
-            {renderConstraintChips(visibleConstraints)}
+        {/* Tags */}
+        {allTags.length > 0 ? (
+          <div className="flex flex-wrap gap-1.5 pl-7">
+            {allTags.map((tag) => (
+              <Tag key={tag} dot={getSwatchColor(tag)} className="px-2 py-0.5 text-[10px] font-mono">
+                {tag}
+              </Tag>
+            ))}
           </div>
-        </CardContent>
-      )}
+        ) : null}
 
-      <CardFooter
-        className={cn(
-          "mt-auto flex flex-wrap items-center gap-2 border-t border-border/60 p-5 pt-4 sm:p-6 sm:pt-4",
-          isWide && "md:col-start-2 md:pl-6"
-        )}
-      >
-        <Button
-          variant="outline"
-          size="default"
-          asChild
-          className="min-h-11 border-emerald-400/30 bg-emerald-500/10 px-4 text-sm text-emerald-50 hover:border-emerald-300/50 hover:bg-emerald-500/15 hover:text-white"
-        >
-          <Link href={projectPath}>
+        {/* CTAs */}
+        <div className="flex flex-wrap items-center gap-4 pl-7 pt-1">
+          <Link
+            href={projectPath}
+            className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover"
+          >
             Project overview
-            <ArrowRight className="h-4 w-4" />
+            <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
-        </Button>
-        {project.links.live ? (
-          <Button
-            variant="outline"
-            size="sm"
-            asChild
-            className="min-h-10 border-border/70 bg-panel/20 text-neutral-200 hover:border-neutral-500/70 hover:bg-panel/45 hover:text-white"
-          >
-            <a href={project.links.live} target="_blank" rel="noreferrer">
-              Live
+          {project.links.code ? (
+            <a
+              href={project.links.code}
+              target="_blank"
+              rel="noreferrer"
+              className="text-[13px] font-medium text-gl-text-faint transition-colors hover:text-gl-text"
+            >
+              Code ↗
             </a>
-          </Button>
-        ) : null}
-        {project.links.code ? (
-          <Button
-            variant="outline"
-            size="sm"
-            asChild
-            className="min-h-10 border-[1.5px] border-white/40 bg-panel/20 text-neutral-100 hover:border-white/70 hover:bg-panel/45 hover:text-white"
-          >
-            <a href={project.links.code} target="_blank" rel="noreferrer">
-              Code
+          ) : null}
+          {project.links.live ? (
+            <a
+              href={project.links.live}
+              target="_blank"
+              rel="noreferrer"
+              className="text-[13px] font-medium text-gl-text-faint transition-colors hover:text-gl-text"
+            >
+              Live ↗
             </a>
-          </Button>
-        ) : null}
-      </CardFooter>
-    </Card>
+          ) : null}
+        </div>
+      </div>
+    </div>
   );
 }

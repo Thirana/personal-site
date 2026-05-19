@@ -3,6 +3,23 @@ import { ArrowRight } from "lucide-react";
 import type { ContentMeta } from "@/lib/content";
 import Tag from "@/components/Tag";
 
+const SWATCH_COLORS = [
+  "#69b598",
+  "#8285ba",
+  "#b87da2",
+  "#c4a05e",
+  "#b87060",
+  "#62aebf",
+];
+
+function getSwatchColor(name: string): string {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash * 31 + name.charCodeAt(i)) & 0xffff;
+  }
+  return SWATCH_COLORS[hash % SWATCH_COLORS.length];
+}
+
 type BlogCardProps = {
   post: ContentMeta;
 };
@@ -11,41 +28,45 @@ export default function BlogCard({ post }: BlogCardProps) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group flex h-full flex-col rounded-xl border border-border/80 bg-panel/40 p-5 transition-all duration-200 hover:-translate-y-1 hover:border-neutral-500/70 hover:shadow-[0_24px_50px_-32px_rgba(15,23,42,0.85)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50"
+      className="group flex h-full flex-col rounded-2xl border border-gl-border bg-gl-surface p-6 shadow-gl transition-shadow duration-200 hover:shadow-gl-lg focus-visible:outline-none"
     >
       <div className="flex-1 space-y-4">
-        <div className="flex flex-wrap items-center gap-2 border-b border-border/60 pb-3">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-400">
+        <div className="flex flex-wrap items-center gap-2 border-b border-white/[0.07] pb-3">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-gl-text-faint">
             {post.date}
           </p>
           {post.level ? (
-            <Tag className="px-2 py-0.5 font-mono text-[10px]">{post.level}</Tag>
+            <Tag dot={getSwatchColor(post.level)} className="px-2 py-0.5 font-mono text-[10px]">
+              {post.level}
+            </Tag>
           ) : null}
           {post.track ? (
-            <Tag className="px-2 py-0.5 font-mono text-[10px]">{post.track}</Tag>
+            <Tag dot={getSwatchColor(post.track)} className="px-2 py-0.5 font-mono text-[10px]">
+              {post.track}
+            </Tag>
           ) : null}
         </div>
 
-        <div className="space-y-3">
-          <h2 className="text-xl font-semibold text-neutral-100 transition-colors group-hover:text-white">
+        <div className="space-y-2">
+          <h2 className="text-[19px] font-bold tracking-[-0.015em] text-gl-text transition-colors group-hover:text-gl-primary">
             {post.title}
           </h2>
-          <p className="text-sm leading-7 text-neutral-300">{post.summary}</p>
+          <p className="text-[15px] leading-[1.65] text-gl-text-muted">{post.summary}</p>
         </div>
 
         <div className="flex flex-wrap gap-1.5">
           {post.tags.map((tag) => (
-            <Tag key={tag} className="px-2 py-0.5 text-[10px] font-mono">
+            <Tag key={tag} dot={getSwatchColor(tag)} className="px-2 py-0.5 text-[10px] font-mono">
               {tag}
             </Tag>
           ))}
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-start border-t border-border/60 pt-4">
-        <span className="inline-flex min-h-10 items-center gap-2 rounded-md border border-emerald-400/30 bg-emerald-500/10 px-3 text-xs font-medium text-emerald-50 transition-colors group-hover:border-emerald-300/50 group-hover:bg-emerald-500/15 group-hover:text-white">
+      <div className="mt-5 flex items-center border-t border-white/[0.07] pt-4">
+        <span className="inline-flex items-center gap-2 rounded-[10px] bg-gl-primary px-4 py-2.5 text-[13px] font-semibold text-gl-primary-ink transition-colors group-hover:bg-gl-primary-hover">
           Read article
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-3.5 w-3.5" />
         </span>
       </div>
     </Link>

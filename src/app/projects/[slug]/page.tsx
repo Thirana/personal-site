@@ -11,7 +11,6 @@ import CapabilityMatrix from "@/components/CapabilityMatrix";
 import EvidenceLinks from "@/components/EvidenceLinks";
 import StatusBadge from "@/components/StatusBadge";
 import ContentHero from "@/components/ContentHero";
-import { Button } from "@/components/ui/button";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
 type PageProps = {
@@ -131,17 +130,15 @@ export default async function ProjectPage({ params }: PageProps) {
         summary={meta.summary}
         meta={
           meta.links.code ? (
-            <Button
-              variant="outline"
-              size="sm"
-              asChild
-              className="min-h-10 border-emerald-400/30 bg-emerald-500/10 text-emerald-50 hover:border-emerald-300/50 hover:bg-emerald-500/15 hover:text-white"
+            <Link
+              href={meta.links.code}
+              target="_blank"
+              rel="noreferrer"
+              className="glass-btn-primary inline-flex items-center gap-1.5 rounded-[10px] px-3 py-2 text-[13px] font-semibold"
             >
-              <Link href={meta.links.code} target="_blank" rel="noreferrer">
-                Repository
-                <ExternalLink className="h-4 w-4" />
-              </Link>
-            </Button>
+              Repository
+              <ExternalLink className="h-3.5 w-3.5" />
+            </Link>
           ) : null
         }
         badge={<StatusBadge status={meta.status} />}
@@ -149,14 +146,14 @@ export default async function ProjectPage({ params }: PageProps) {
       />
 
       {meta.outcomes.length > 0 ? (
-        <div className="space-y-2 rounded-xl border border-border/70 bg-panel/25 p-4">
-          <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-neutral-400">
+        <div className="glass-panel space-y-3 rounded-xl border border-transparent bg-gl-surface p-5 shadow-gl">
+          <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-gl-text-faint">
             Outcomes
           </p>
-          <ul className="space-y-2 text-sm text-neutral-200">
+          <ul className="space-y-2 text-[15px] text-gl-text-muted">
             {meta.outcomes.map((outcome) => (
               <li key={outcome} className="flex gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gl-primary" />
                 <span>{outcome}</span>
               </li>
             ))}
@@ -164,8 +161,8 @@ export default async function ProjectPage({ params }: PageProps) {
         </div>
       ) : null}
 
-      <div className="space-y-3 rounded-xl border border-border/70 bg-panel/25 p-4">
-        <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-neutral-400">
+      <div className="space-y-3 rounded-xl border border-gl-border bg-gl-surface p-5 shadow-gl">
+        <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-gl-text-faint">
           Concepts and Strategies
         </p>
         <CapabilityMatrix rows={projectCapabilityRows} />

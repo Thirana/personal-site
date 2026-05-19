@@ -1,24 +1,29 @@
 import type { ReactNode } from "react";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 type TagProps = {
   children: ReactNode;
   icon?: ReactNode;
+  dot?: string;
   className?: string;
 };
 
-export default function Tag({ children, icon, className }: TagProps) {
+export default function Tag({ children, icon, dot, className }: TagProps) {
   return (
-    <Badge
-      variant="secondary"
+    <span
       className={cn(
-        "inline-flex items-center gap-2 border border-border/80 bg-panel/60 px-3 py-1 text-xs text-foreground transition-colors hover:border-neutral-500 hover:text-neutral-50",
+        "inline-flex items-center gap-1.5 rounded-full bg-[#2f3530] px-2.5 py-1 text-[11.5px] font-medium text-gl-text-muted transition-colors",
         className
       )}
     >
-      {icon ? <span className="text-foreground/80">{icon}</span> : null}
+      {dot ? (
+        <span
+          className="size-[7px] shrink-0 rounded-full"
+          style={{ background: dot }}
+        />
+      ) : null}
+      {icon ? <span className="text-gl-text-muted">{icon}</span> : null}
       {children}
-    </Badge>
+    </span>
   );
 }

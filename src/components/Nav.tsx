@@ -27,13 +27,13 @@ export default function Nav() {
 
   const getLinkClasses = (isActive: boolean) =>
     cn(
-      "transition-colors hover:text-neutral-100",
-      isActive ? "text-neutral-100" : "text-neutral-400"
+      "text-[14px] font-medium transition-colors",
+      isActive ? "text-gl-text" : "text-gl-text-muted hover:text-gl-text"
     );
 
   return (
     <>
-      <nav className="hidden items-center gap-5 text-sm sm:flex">
+      <nav className="hidden items-center gap-6 sm:flex">
         {links.map((link) => {
           const isHome = link.href === "/";
           const isActive = isHome
@@ -48,7 +48,7 @@ export default function Nav() {
             >
               {link.label}
               {isActive ? (
-                <span className="absolute inset-x-0 -bottom-0.5 h-px bg-neutral-100" />
+                <span className="absolute inset-x-0 -bottom-0.5 h-px bg-gl-primary" />
               ) : null}
             </Link>
           );
@@ -61,7 +61,7 @@ export default function Nav() {
             type="button"
             variant="outline"
             size="icon"
-            className="h-9 w-9 border-border/80 bg-panel/30 text-neutral-200 hover:bg-panel/50 hover:text-neutral-100 sm:hidden"
+            className="h-9 w-9 border-gl-border bg-gl-surface text-gl-text-muted hover:bg-gl-surface-2 hover:text-gl-text sm:hidden"
             aria-label="Open navigation menu"
           >
             <Menu className="h-4 w-4" />
@@ -70,10 +70,10 @@ export default function Nav() {
 
         <SheetContent
           side="right"
-          className="w-[82vw] max-w-[320px] border-0 bg-[#0b1220]/20 text-neutral-100 backdrop-blur-2xl shadow-[-28px_0_52px_-20px_rgba(2,6,23,0.65)] sm:hidden"
+          className="w-[82vw] max-w-[320px] border-0 border-l border-gl-border bg-gl-bg-subtle/90 text-gl-text backdrop-blur-2xl shadow-[-28px_0_52px_-20px_rgba(0,0,0,0.65)] sm:hidden"
         >
-          <SheetHeader className="border-b border-border/80 pr-14">
-            <SheetTitle className="text-neutral-300">Navigation</SheetTitle>
+          <SheetHeader className="border-b border-gl-border pr-14">
+            <SheetTitle className="text-gl-text-muted">Navigation</SheetTitle>
           </SheetHeader>
 
           <nav className="grid gap-1 p-3 text-base">
@@ -89,10 +89,10 @@ export default function Nav() {
                   href={link.href}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    "rounded-md px-4 py-3",
+                    "rounded-lg px-4 py-3 text-[15px] font-medium transition-colors",
                     isActive
-                      ? "bg-neutral-800/80 text-neutral-100"
-                      : "text-neutral-200 hover:bg-neutral-800/40 hover:text-neutral-100"
+                      ? "bg-gl-surface-2 text-gl-text"
+                      : "text-gl-text-muted hover:bg-gl-surface text-gl-text"
                   )}
                 >
                   {link.label}

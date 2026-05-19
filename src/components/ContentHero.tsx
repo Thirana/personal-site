@@ -26,14 +26,14 @@ export default function ContentHero({
   return (
     <div
       className={cn(
-        "not-prose space-y-4 rounded-2xl border border-border/80 bg-panel/40 p-6",
+        "not-prose space-y-4 rounded-2xl border border-gl-border bg-gl-surface p-6 shadow-gl",
         className
       )}
     >
       {eyebrow ? (
         <p
           className={cn(
-            "text-xs uppercase tracking-[0.3em] text-neutral-400",
+            "font-mono text-[11px] uppercase tracking-[0.26em] text-gl-text-faint",
             eyebrowClassName
           )}
         >
@@ -41,16 +41,16 @@ export default function ContentHero({
         </p>
       ) : null}
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-semibold text-neutral-100 sm:text-3xl">
+        <h1 className="text-2xl font-bold tracking-[-0.022em] text-gl-text sm:text-3xl">
           {title}
         </h1>
         {badge}
       </div>
       {summary ? (
-        <p className="text-sm leading-7 text-neutral-200">{summary}</p>
+        <p className="text-[16px] leading-[1.65] text-gl-text-muted">{summary}</p>
       ) : null}
       {meta ? (
-        <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-300">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-gl-text-muted">
           {meta}
         </div>
       ) : null}

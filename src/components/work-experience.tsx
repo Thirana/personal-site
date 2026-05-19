@@ -82,24 +82,24 @@ export function ExperienceItem({
               unoptimized
             />
           ) : (
-            <span className="flex size-2 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+            <span className="flex size-2 rounded-full bg-gl-border-strong/40" />
           )}
         </div>
 
-        <h3 className="text-lg font-medium leading-snug text-foreground">
+        <h3 className="text-[15px] font-bold leading-snug text-gl-text">
           {experience.companyName}
         </h3>
 
         {experience.isCurrentEmployer && (
           <span className="relative flex items-center justify-center">
-            <span className="absolute inline-flex size-3 animate-ping rounded-full bg-emerald-400/50" />
-            <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
+            <span className="absolute inline-flex size-3 animate-ping rounded-full bg-gl-primary/40" />
+            <span className="relative inline-flex size-2 rounded-full bg-gl-primary" />
             <span className="sr-only">Current Employer</span>
           </span>
         )}
       </div>
 
-      <div className="relative space-y-4 before:absolute before:left-3 before:h-full before:w-px before:bg-border">
+      <div className="relative space-y-4 before:absolute before:left-3 before:h-full before:w-px before:bg-gl-border">
         {experience.positions.map((position) => (
           <ExperiencePositionItem key={position.id} position={position} />
         ))}
@@ -117,46 +117,44 @@ export function ExperiencePositionItem({
 
   return (
     <Collapsible defaultOpen={position.isExpanded} asChild>
-      <div className="relative last:before:absolute last:before:h-full last:before:w-4 last:before:bg-background">
+      <div className="relative last:before:absolute last:before:h-full last:before:w-4 last:before:bg-gl-bg">
         <CollapsibleTrigger
           className={cn(
             "group not-prose block w-full select-none text-left",
-            "relative before:absolute before:-top-1 before:-right-1 before:-bottom-1.5 before:left-7 before:rounded-lg hover:before:bg-muted/50"
+            "relative before:absolute before:-top-1 before:-right-1 before:-bottom-1.5 before:left-7 before:rounded-lg hover:before:bg-gl-surface"
           )}
         >
           <div className="relative z-10 mb-1 flex items-center gap-3">
             <div
-              className="flex size-6 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground"
+              className="flex size-6 shrink-0 items-center justify-center rounded-lg bg-gl-surface-2 text-gl-text-muted"
               aria-hidden
             >
               <ExperienceIcon className="size-4" />
             </div>
 
-            <h4 className="flex-1 text-balance text-base font-medium text-foreground">
+            <h4 className="flex-1 text-balance text-[14px] font-medium text-gl-text">
               {position.title}
             </h4>
 
-            <div className="shrink-0 text-muted-foreground [&_svg]:size-4" aria-hidden>
+            <div className="shrink-0 text-gl-text-faint [&_svg]:size-4" aria-hidden>
               <ChevronsDownUpIcon className="hidden group-data-[state=open]:block" />
               <ChevronsUpDownIcon className="hidden group-data-[state=closed]:block" />
             </div>
           </div>
 
-          <div className="relative z-10 flex items-center gap-2 pl-9 text-sm text-muted-foreground">
+          <div className="relative z-10 flex items-center gap-2 pl-9 text-[12px] text-gl-text-faint">
             {position.employmentType && (
               <>
                 <dl>
                   <dt className="sr-only">Employment Type</dt>
                   <dd>{position.employmentType}</dd>
                 </dl>
-
                 <Separator
-                  className="data-[orientation=vertical]:h-4"
+                  className="data-[orientation=vertical]:h-4 bg-gl-border"
                   orientation="vertical"
                 />
               </>
             )}
-
             <dl>
               <dt className="sr-only">Employment Period</dt>
               <dd>{position.employmentPeriod}</dd>
@@ -190,10 +188,10 @@ function Prose({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "prose prose-sm max-w-none font-mono text-foreground prose-zinc dark:prose-invert",
-        "prose-h4:text-foreground prose-h4:font-semibold prose-h4:tracking-tight prose-h4:mt-4 prose-h4:mb-2",
-        "prose-a:font-medium prose-a:break-words prose-a:text-foreground prose-a:underline prose-a:underline-offset-4",
-        "prose-code:rounded-md prose-code:border prose-code:bg-muted/50 prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:text-sm prose-code:font-normal prose-code:before:content-none prose-code:after:content-none",
+        "prose prose-sm max-w-none font-mono text-gl-text-muted",
+        "prose-h4:text-gl-text prose-h4:font-semibold prose-h4:tracking-tight prose-h4:mt-4 prose-h4:mb-2",
+        "prose-a:font-medium prose-a:break-words prose-a:text-gl-primary prose-a:underline prose-a:underline-offset-4",
+        "prose-code:rounded-md prose-code:border prose-code:border-gl-border prose-code:bg-gl-surface-2 prose-code:text-gl-primary prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:text-sm prose-code:font-normal prose-code:before:content-none prose-code:after:content-none",
         className
       )}
       {...props}
@@ -205,7 +203,7 @@ function Skill({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-lg border bg-muted/50 px-1.5 py-0.5 font-mono text-xs text-muted-foreground",
+        "inline-flex items-center rounded-full border border-gl-border bg-gl-surface-2 px-2 py-0.5 font-mono text-[10px] text-gl-text-muted",
         className
       )}
       {...props}

@@ -102,11 +102,10 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       <ContentHero
         eyebrow="Blog"
-        eyebrowClassName="font-semibold text-emerald-300"
         title={meta.title}
         summary={meta.summary}
         meta={
-          <span className="inline-flex items-center rounded-full border border-border/70 bg-panel/35 px-2.5 py-1 font-mono text-[11px] text-neutral-300">
+          <span className="inline-flex items-center rounded-full border border-gl-border bg-gl-surface-2 px-2.5 py-1 font-mono text-[11px] text-gl-text-muted">
             Published: {meta.date || "n/a"}
           </span>
         }

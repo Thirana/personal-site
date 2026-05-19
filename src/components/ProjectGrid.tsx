@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowDown } from "lucide-react";
 import type { ProjectMeta } from "@/lib/content";
 import ProjectCard from "./ProjectCard";
-import { Button } from "@/components/ui/button";
 
 type ProjectGridProps = {
   featured: ProjectMeta[];
@@ -16,21 +16,23 @@ export default function ProjectGrid({ featured, all }: ProjectGridProps) {
   const canExpand = all.length > projects.length;
 
   return (
-    <div className="space-y-6">
-      <div className="grid gap-5 sm:gap-6">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} layout="wide" />
+    <div>
+      <div className="divide-y divide-gl-border">
+        {projects.map((project, index) => (
+          <ProjectCard key={project.slug} project={project} index={index} />
         ))}
       </div>
       {canExpand ? (
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => setShowAll(true)}
-          className="w-full sm:w-auto"
-        >
-          Show full portfolio
-        </Button>
+        <div className="border-t border-gl-border pt-6 mt-2">
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="inline-flex items-center gap-2 text-[14px] font-medium text-gl-text-faint transition-colors hover:text-gl-text"
+          >
+            <ArrowDown className="h-3.5 w-3.5" />
+            Show {all.length - projects.length} more projects
+          </button>
+        </div>
       ) : null}
     </div>
   );

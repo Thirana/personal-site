@@ -1,26 +1,27 @@
 import type { ProjectStatus } from "@/lib/content";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 type StatusBadgeProps = {
   status: ProjectStatus;
 };
 
-const statusStyles: Record<ProjectStatus, string> = {
-  Live: "border-emerald-400/40 bg-emerald-500/10 text-emerald-300",
-  Ongoing: "border-amber-400/40 bg-amber-500/10 text-amber-300",
-  WIP: "border-amber-400/40 bg-amber-500/10 text-amber-300",
-  Paused: "border-slate-400/40 bg-slate-500/10 text-slate-300",
-  Completed: "border-sky-400/40 bg-sky-500/10 text-sky-300",
+const statusClass: Record<ProjectStatus, string> = {
+  Live: "bg-[#0d2e1e] text-[#69b598]",
+  Ongoing: "bg-[#2a1e08] text-[#c4a05e]",
+  WIP: "bg-[#2a1e08] text-[#c4a05e]",
+  Paused: "bg-[#2f3530] text-gl-text-muted",
+  Completed: "bg-[#0d2030] text-[#62aebf]",
 };
 
 export default function StatusBadge({ status }: StatusBadgeProps) {
   return (
-    <Badge
-      variant="secondary"
-      className={cn("border", statusStyles[status])}
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-bold tracking-[0.06em] uppercase",
+        statusClass[status]
+      )}
     >
       {status}
-    </Badge>
+    </span>
   );
 }
