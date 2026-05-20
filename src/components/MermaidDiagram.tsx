@@ -124,7 +124,7 @@ export default function MermaidDiagram({ chart, className }: MermaidDiagramProps
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <div className={cn("not-prose my-6", className)}>
-        <div className="rounded-xl border border-gl-border bg-gl-bg p-4">
+        <div className="rounded-xl border border-gl-primary/30 bg-gl-bg p-4">
           <div className="mb-3 flex justify-end">
             <DialogTrigger asChild>
               <Button

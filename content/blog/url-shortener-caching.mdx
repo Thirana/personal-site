@@ -41,17 +41,17 @@ That layer is called cache.
 
 Instead of asking the database for every redirect request, the service can return frequently accessed results from cache first. This reduces expensive repeated queries, lowers database pressure, and improves user response time.
 
-After that, the remaining question is: what caching workflow keeps speed high without breaking correctness?
+After that, the remaining question is: what `cache-aside` workflow keeps speed high without breaking correctness?
 
 ## The Caching Pattern
 
-A common strategy is cache-aside:
+A common strategy is `cache-aside`:
 
-1. Read from cache first.
-2. On cache miss, read from DB.
-3. Write DB result to cache.
+- **Read cache first** — check the cache before hitting the database.
+- **Fall back to DB on miss** — query the source of truth only when the cache has no answer.
+- **Warm the cache** — store the DB result in cache for future requests.
 
-Important rule: database remains source of truth. Cache is an acceleration layer, not authoritative storage.
+> Important rule: database remains source of truth. Cache is an acceleration layer, not authoritative storage.
 
 ## Key Design That Works Well
 
@@ -106,7 +106,7 @@ func (s *Service) resolveFromShortCache(ctx context.Context, code string) (strin
 1. `short` key misses.
 2. Service checks `miss` key.
 3. If both miss, query DB.
-4. If active row exists, set `short` key with TTL and return `302`.
+4. If active row exists, set `short` key with `TTL` and return `302`.
 
 <CodeToggle
   title="Show Go snippet - Cache miss then DB hit"
@@ -140,7 +140,7 @@ func (s *Service) resolveViaDB(ctx context.Context, code string) (string, int, e
 
 1. Both Redis keys miss.
 2. DB returns no active row.
-3. Service sets `miss` key (short TTL).
+3. Service sets `miss` key (short `TTL`).
 4. Service returns `404`.
 
 <CodeToggle
@@ -165,7 +165,7 @@ func (s *Service) notFoundResponse(ctx context.Context, code string) (string, in
 
 ### 4) Cache failure path
 
-If Redis times out or errors, service falls back to DB path. This may be slower, but behavior remains correct.
+> If Redis times out or errors, service falls back to DB path. This may be slower, but behavior remains correct.
 
 <CodeToggle
   title="Show Go snippet - Cache failure fallback"
@@ -227,13 +227,13 @@ sequenceDiagram
 
 Cache entries should not live forever. In URL shorteners, eviction is controlled in two main ways:
 
-1. TTL expiry: each key automatically expires after its configured lifetime.
+1. `TTL` expiry: each key automatically expires after its configured lifetime.
 2. Write-time invalidation: create/update/delete operations clear or refresh related keys.
 
 Practical setup:
 
-- `short` keys can use a longer TTL because they represent valid destinations.
-- `miss` keys should use a short TTL so temporary misses do not stay cached too long.
+- `short` keys can use a longer `TTL` because they represent valid destinations.
+- `miss` keys should use a short `TTL` so temporary misses do not stay cached too long.
 
 This keeps cache fresh while still giving strong speed benefits.
 
@@ -245,6 +245,8 @@ These numbers come from the same load scenario before and after enabling Redis c
 - `DURATION=20s`: the test runs for 20 seconds with that same load.
 
 If you want to verify these results yourself, you can check out the Trimly repository locally and run the same load test setup. The repository and script links are provided below.
+
+> These results come from the same load scenario (`VUS=20`, `DURATION=20s`) run before and after enabling Redis `cache-aside`. Error rate stayed at 0% throughout.
 
 | Metric | Redis OFF | Redis ON | Why it matters |
 | --- | --- | --- | --- |
@@ -268,10 +270,10 @@ Technical view:
 
 ## Practical Tradeoffs
 
-1. Cache improves speed but increases key/TTL/invalidation complexity.
-2. Negative caching reduces waste but TTL must be chosen carefully.
-3. Fallback logic is required before cache can be trusted in production.
-4. Performance claims should be validated with repeatable load tests.
+- **Speed vs invalidation complexity** — Cache improves speed but increases key, `TTL`, and invalidation complexity.
+- **Negative caching vs TTL discipline** — Negative caching reduces wasted DB reads, but `TTL` must be chosen carefully to avoid stale "not found" entries.
+- **Fallback is required** — Fallback logic is required before cache can be trusted in production.
+- **Validate with load tests** — Performance claims should be validated with repeatable load tests, not assumed from theory.
 
 ## How This Applies to My Trimly Project
 

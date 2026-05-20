@@ -30,16 +30,16 @@ Some rows can become inactive.
 
 Soft deleted rows can disappear from the visible result set.
 
-And once the table holds a large number of rows, OFFSET based pagination makes query cost worse as the requested page gets deeper.
+And once the table holds a large number of rows, `OFFSET`-based pagination makes query cost worse as the requested page gets deeper.
 
-If the API relies only on OFFSET based pagination, several problems appear:
+If the API relies only on `OFFSET`-based pagination, several problems appear:
 
 1. duplicate rows across pages
 2. skipped rows
 3. unstable page boundaries
 4. slower queries because the database still has to walk past all earlier rows before returning the requested page
 
-*The main problem is not only "how do I return page 20?" It is "how do I continue from a stable position while row count and query cost keep growing?"*
+> The main problem is not only "how do I return page 20?" It is "how do I continue from a stable position while row count and query cost keep growing?"
 
 ## What OFFSET Pagination Looks Like in Practice
 
@@ -118,7 +118,7 @@ The idea is simple:
 2. encode the last seen position into a cursor
 3. ask for rows after that exact position on the next request
 
-The cursor is not a page number. It is a continuation token.
+> The cursor is not a page number. It is a continuation token.
 
 ## First Request Without a Cursor
 
@@ -251,7 +251,7 @@ ORDER BY created_at DESC, id DESC
   `}
 />
 
-Without a tie breaker, cursor pagination becomes subtly unsafe.
+> Without a tie breaker, cursor pagination becomes subtly unsafe.
 
 ## Second Request With the Cursor
 
@@ -454,10 +454,10 @@ The important point is that each page is anchored to a stable position, not a ro
 
 ## Practical Tradeoffs
 
-1. Cursor pagination is more stable than OFFSET pagination, but the implementation is more careful because ordering and continuation rules must match exactly.
-2. Opaque cursors keep the client contract clean, but they require validation and clear server side encoding rules.
-3. Cursor pagination is excellent for forward scrolling and feeds, but it is less natural than OFFSET when users need arbitrary page number jumps.
-4. Index design matters a lot, because the pagination contract and the read performance story should reinforce each other.
+- **Stability vs implementation care** — Cursor pagination is more stable than `OFFSET` pagination, but the implementation is more careful because ordering and continuation rules must match exactly.
+- **Opaque cursors vs validation cost** — Opaque cursors keep the client contract clean, but they require validation and clear server-side encoding rules.
+- **Forward paging vs arbitrary jumps** — Cursor pagination is excellent for forward scrolling and feeds, but it is less natural than `OFFSET` when users need arbitrary page number jumps.
+- **Index alignment** — Index design matters a lot, because the pagination contract and the read performance story should reinforce each other.
 
 ## How This Applies to My Marketplace Service
 

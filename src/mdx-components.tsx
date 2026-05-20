@@ -25,10 +25,18 @@ function extractMermaidChart(children: ReactNode): string | null {
     return null;
   }
 
-  const props = children.props as { className?: string; children?: ReactNode };
+  const props = children.props as {
+    className?: string;
+    "data-language"?: string;
+    children?: ReactNode;
+  };
   const className = typeof props.className === "string" ? props.className : "";
+  const dataLang = props["data-language"];
 
-  if (!className.split(/\s+/).includes("language-mermaid")) {
+  if (
+    !className.split(/\s+/).includes("language-mermaid") &&
+    dataLang !== "mermaid"
+  ) {
     return null;
   }
 
@@ -68,7 +76,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       }
 
       return (
-        <pre className={className} {...props}>
+        <pre
+          className={`not-prose overflow-x-auto rounded-xl border border-gl-primary/30 bg-gl-surface-2 px-5 py-4 text-sm leading-relaxed ${className ?? ""}`}
+          {...props}
+        >
           {children}
         </pre>
       );

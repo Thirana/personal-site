@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { profile, skills, socials } from "@/content/profile";
+import { profile, socials } from "@/content/profile";
 import { WORK_EXPERIENCE } from "@/content/experience";
 import { getAllProjects, getFeaturedProjects } from "@/lib/content";
 import ProjectGrid from "@/components/ProjectGrid";
 import Section from "@/components/Section";
-import Tag from "@/components/Tag";
+import TechTabs from "@/components/TechTabs";
 import { WorkExperience } from "@/components/work-experience";
 import { FadeIn } from "@/components/FadeIn";
 
@@ -104,24 +104,15 @@ export default async function Home() {
         </div>
       </FadeIn>
 
-      {/* Skills */}
+      {/* Technologies & Tools */}
       <FadeIn delay={220}>
         <Section title="Technologies & Tools">
-          <div className="flex flex-wrap gap-2">
-            {skills.map((skill) => (
-              <Tag
-                key={skill.label}
-                icon={<skill.icon className="h-3.5 w-3.5" />}
-              >
-                {skill.label}
-              </Tag>
-            ))}
-          </div>
+          <TechTabs />
         </Section>
       </FadeIn>
 
       {/* Projects */}
-      <FadeIn delay={280}>
+      <FadeIn delay={280} className="mt-8">
         <Section title="Project Portfolio">
           <p className="text-[15px] leading-[1.65] text-gl-text-muted">
             Each entry gives a quick project overview and links to the full

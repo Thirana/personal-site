@@ -114,10 +114,12 @@ The route examples above are based on this project's real implementation, so you
 
 This portfolio is static-first by design:
 
-1. Core pages are prebuilt for low-latency delivery.
-2. Blog and project detail pages are SSG with deterministic slug generation.
-3. Runtime generation is limited to workflows that must execute on demand.
-4. Content freshness is controlled through tag-based revalidation, not full rebuilds for every update.
+- **Static core pages** — prebuilt for low-latency delivery.
+- **SSG for content detail** — blog and project detail pages use SSG with deterministic slug generation.
+- **Minimal dynamic routes** — runtime generation is limited to workflows that must execute on demand.
+- **Tag-based revalidation** — content freshness is controlled through tag-based revalidation, not full rebuilds for every update.
+
+> The goal is not to pick one mode and apply it everywhere. The right setup assigns each route to the simplest mode that still satisfies its freshness and runtime needs.
 
 ## Rendering Decision Diagram
 
@@ -274,15 +276,17 @@ flowchart TD
 - Scope controls which cache tags are refreshed.
 - Fresh content is observed on subsequent requests.
 
+> Revalidation is not a full rebuild. It is a targeted signal that tells the cache which routes need fresh content on the next request.
+
 ## Practical Tradeoffs
 
-1. **Static-first speed vs freshness**
+- **Static-first speed vs freshness**
    Prebuilt pages are very fast and cheap to serve, but content can become outdated if you do not pair static routes with a reliable update flow.
-2. **SSG scale vs slug discipline**
+- **SSG scale vs slug discipline**
    SSG handles many content pages efficiently, but it depends on stable slug generation. If slugs are inconsistent, pages can be missing or incorrectly routed.
-3. **Dynamic flexibility vs runtime cost**
+- **Dynamic flexibility vs runtime cost**
    Dynamic routes support request-time logic, but they increase server work and can add latency compared with static delivery.
-4. **Revalidation control vs operational safety**
+- **Revalidation control vs operational safety**
    Tag-based revalidation gives targeted freshness, but secret validation and scope handling must be correct to avoid unauthorized calls or wrong cache invalidation.
 
 In practice, the goal is not to use one mode everywhere. The best outcome comes from assigning each route to the simplest mode that still satisfies freshness and runtime needs.

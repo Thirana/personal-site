@@ -32,9 +32,9 @@ Without idempotency, the server may process the same payment intent twice.
 
 That creates real business issues:
 
-1. Duplicate side effects such as double charges, duplicate orders, or repeated short-link creation.
-2. Confusing user experience when one action appears to happen twice.
-3. Extra support and reconciliation work for the team.
+- **Duplicate side effects** — such as double charges, duplicate orders, or repeated short-link creation.
+- **Confusing user experience** — when one action appears to happen twice.
+- **Support overhead** — extra support and reconciliation work for the team.
 
 ## Why Idempotency Is the Solution
 
@@ -46,7 +46,7 @@ In plain language:
 - Retries become safe instead of risky.
 - Correctness comes first, performance comes second.
 
-This is why idempotency is a reliability requirement for any retry-prone API, not an optional feature.
+> This is why idempotency is a reliability requirement for any retry-prone API, not an optional feature.
 
 ## Core Pattern You Can Reuse
 
@@ -154,7 +154,7 @@ The DB uniqueness constraint on the intent key is the final safety layer:
 3. Service catches that failure and reads the existing row.
 4. API returns the existing logical resource instead of creating a duplicate.
 
-This is what makes idempotency reliable even when requests arrive in parallel.
+> This is what makes idempotency reliable even when requests arrive in parallel.
 
 <CodeToggle
   title="Show Go snippet - Unique constraint mapping"
@@ -182,7 +182,7 @@ func mapWriteError(err error) error {
 
 ### 4) Return deterministic HTTP status
 
-Keep API responses explicit: `201` for first successful create, `200` for duplicate intent.
+> Keep API responses explicit: `201` for first successful create, `200` for duplicate intent.
 
 <CodeToggle
   title="Show Go snippet - 201 for new, 200 for duplicate"
@@ -249,10 +249,10 @@ Implementation proof:
 
 ## Practical Tradeoffs
 
-1. Idempotency increases implementation complexity in service and storage layers.
-2. Input normalization rules must be stable, documented, and tested.
-3. DB constraints are required to complete safety under concurrency.
-4. Teams must align on response semantics so clients can rely on them.
+- **Implementation complexity** — Idempotency increases implementation complexity in service and storage layers.
+- **Normalization stability** — Input normalization rules must be stable, documented, and tested.
+- **Database as safety net** — DB constraints are required to complete safety under concurrency.
+- **Response semantics alignment** — Teams must align on response semantics so clients can rely on them.
 
 ## How This Maps to Trimly
 

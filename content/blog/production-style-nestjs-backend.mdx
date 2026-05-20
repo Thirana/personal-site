@@ -20,11 +20,11 @@ When building a production grade backend, functional correctness is only one par
 
 The endpoints may work, but the runtime contract can still be loose:
 
-1. The app starts even when environment configuration is incomplete.
-2. Logs are inconsistent or split across multiple formats.
-3. Errors return different response shapes depending on where they happen.
-4. Requests cannot be traced cleanly across logs.
-5. Health endpoints do not clearly distinguish "process is up" from "service is ready."
+- **No fail-fast on bad config** — the app starts even when environment configuration is incomplete.
+- **Inconsistent logging** — logs are inconsistent or split across multiple formats.
+- **Unpredictable error shapes** — errors return different response shapes depending on where they happen.
+- **No request correlation** — requests cannot be traced cleanly across logs.
+- **Shallow health checks** — health endpoints do not clearly distinguish "process is up" from "service is ready."
 
 This usually does not hurt during the first few local runs. It becomes a real problem once the service is deployed, restarted, debugged under pressure, or handed to someone else.
 
@@ -40,7 +40,7 @@ If a request fails, the client should still get a consistent error shape.
 
 If something goes wrong in production, logs should already contain the request ID, method, path, status code, and failure classification.
 
-That means bootstrap behavior is part of the service contract, not just framework wiring.
+> That means bootstrap behavior is part of the service contract, not just framework wiring.
 
 ## The Setup Model
 
@@ -121,13 +121,13 @@ export const validateEnv = (
   `}
 />
 
-This approach is valuable because invalid runtime state is usually harder to debug than a startup crash. A clean failure during bootstrap is often the safest possible outcome.
+> This approach is valuable because invalid runtime state is usually harder to debug than a startup crash. A clean failure during bootstrap is often the safest possible outcome.
 
 ## 2. Build One Shared Request Pipeline
 
 Once configuration is valid, the next goal is to make every request pass through the same technical flow.
 
-In NestJS, a practical way to handle that is to put the logic in a single app level setup function:
+In NestJS, a practical way to handle that is to put the logic in a single `configureApp` function:
 
 <CodeToggle
   title="Show TypeScript snippet: shared app pipeline"
@@ -285,11 +285,11 @@ export class AppExceptionFilter implements ExceptionFilter {
   `}
 />
 
-The point is not only cleaner code. The point is stable API behavior under failure.
+> The point is not only cleaner code. The point is stable API behavior under failure.
 
 ## 6. Separate Liveness from Readiness
 
-A backend can be alive but not actually ready to serve traffic.
+> A backend can be alive but not actually ready to serve traffic.
 
 That is why it is best to expose two health checks:
 
@@ -345,10 +345,10 @@ That is a much stronger foundation than "Nest app starts and controllers exist."
 
 ## Practical Tradeoffs
 
-1. Centralized setup improves consistency, but it requires discipline to keep cross cutting concerns in the shared pipeline instead of drifting back into feature modules.
-2. Fail fast config validation makes startup stricter, but that is usually better than discovering bad config through partial runtime failure.
-3. Structured logging is more useful operationally, but it takes some effort to keep payloads consistent and free of sensitive values.
-4. Readiness checks improve deployment safety, but they must reflect real dependency health instead of shallow process checks.
+- **Centralized setup vs drift** — Centralized setup improves consistency, but it requires discipline to keep cross-cutting concerns in the shared pipeline instead of drifting back into feature modules.
+- **Strict startup vs flexibility** — Fail-fast config validation makes startup stricter, but that is usually better than discovering bad config through partial runtime failure.
+- **Structured logging vs payload discipline** — Structured logging is more useful operationally, but it takes effort to keep payloads consistent and free of sensitive values.
+- **Real dependency health vs shallow checks** — Readiness checks improve deployment safety, but they must reflect real dependency health instead of shallow process checks.
 
 ## How This Applies to My Marketplace Service
 

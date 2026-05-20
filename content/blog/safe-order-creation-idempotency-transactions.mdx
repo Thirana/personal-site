@@ -30,12 +30,12 @@ Maybe two requests hit the server almost at the same time.
 
 If the backend treats every request as brand new, several problems appear:
 
-1. The same logical order can be created more than once.
-2. Stock can be reduced multiple times.
-3. Side effects like notifications can be duplicated.
-4. The client has no reliable way to know whether a retry is safe.
+- **Duplicate orders** — the same logical order can be created more than once.
+- **Oversell risk** — stock can be reduced multiple times for the same intent.
+- **Duplicated side effects** — notifications and other side effects can fire more than once.
+- **Unpredictable retry contract** — the client has no reliable way to know whether a retry is safe.
 
-So the real problem is not just writing rows. It is making retries and concurrency safe without making the order API unpredictable.
+> So the real problem is not just writing rows. It is making retries and concurrency safe without making the order API unpredictable.
 
 ## Why Validation Alone Is Not Enough
 
@@ -43,10 +43,10 @@ DTO validation can confirm that a request is well formed.
 
 It cannot solve:
 
-1. duplicate submission
-2. conflicting reuse of the same retry key
-3. concurrent stock updates
-4. partial writes across multiple tables
+- **Duplicate submission** — the same logical request creates multiple records
+- **Conflicting key reuse** — a different basket sent with the same retry key
+- **Concurrent stock updates** — two requests both see available stock and both succeed
+- **Partial writes** — a failure mid-way leaves tables in inconsistent state
 
 Those are transaction and persistence problems.
 
@@ -66,7 +66,7 @@ This creates a safe distinction between:
 1. the same order retried again
 2. a different order reusing the same key
 
-That distinction is what makes an order API safe under retries instead of merely tolerant of duplicates.
+> That distinction is what makes an order API safe under retries instead of merely tolerant of duplicates.
 
 ## Order Creation Sequence Diagram
 
@@ -106,7 +106,7 @@ The retry key alone is not enough.
 
 If a client reuses the same key for a different basket, the backend needs a way to detect that conflict.
 
-That is why it is best to store a request fingerprint built from the canonical payload:
+That is why it is best to store a `sha256` request fingerprint built from the canonical payload:
 
 <CodeToggle
   title="Show TypeScript snippet: order fingerprint"
@@ -241,7 +241,7 @@ const { order, notification } = await this.dataSource.transaction(
   `}
 />
 
-This is the point where order creation stops being a plain insert and becomes a controlled business transaction.
+> This is the point where order creation stops being a plain insert and becomes a controlled business transaction.
 
 ## 4. Lock Product Rows Before Changing Inventory
 
@@ -312,13 +312,7 @@ For order creation, the retry contract should be explicit.
 
 If the unique key insert fails, the backend should load the existing idempotency record and compare fingerprints.
 
-If they match:
-
-1. return the original order
-
-If they do not match:
-
-1. reject the request as a conflict
+If the fingerprints match, the server returns the original order response. If they differ, the request is rejected as a `409` conflict.
 
 That logic looks like this:
 
@@ -441,7 +435,7 @@ This separation matters because:
 2. provider latency does not slow the response path
 3. provider failure becomes observable without invalidating the order
 
-That is a much safer boundary for side effects.
+> That is a much safer boundary for side effects.
 
 ## Putting the Flow Together
 
@@ -465,10 +459,10 @@ This is how an API turns retries into a controlled behavior instead of a correct
 
 ## Practical Tradeoffs
 
-1. Idempotency improves retry safety, but it adds storage, constraints, and replay logic.
-2. Transactional order handling improves correctness, but it increases the importance of careful query design and lock scope.
-3. Pessimistic locking improves inventory safety, but it can reduce concurrency if the locked section becomes too broad.
-4. Post commit side effects protect the core write path, but they require durable state tracking because delivery is no longer synchronous.
+- **Idempotency vs storage cost** — Idempotency improves retry safety, but it adds storage, constraints, and replay logic.
+- **Transactions vs query care** — Transactional order handling improves correctness, but it increases the importance of careful query design and lock scope.
+- **Locking vs concurrency** — Pessimistic locking improves inventory safety, but it can reduce concurrency if the locked section becomes too broad.
+- **Post-commit delivery vs durability** — Post-commit side effects protect the core write path, but they require durable state tracking because delivery is no longer synchronous.
 
 ## How This Applies to My Marketplace Service
 
