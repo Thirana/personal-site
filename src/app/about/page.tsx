@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { aboutCta, aboutPrinciples, aboutSummary } from "@/content/about";
-import { getBlogMetaBySlug, getProjectMetaBySlug, type ProjectMeta, type ContentMeta } from "@/lib/content";
+import {
+  getBlogMetaBySlug,
+  getProjectMetaBySlug,
+  type ProjectMeta,
+  type ContentMeta,
+} from "@/lib/content";
 import TechTabs from "@/components/TechTabs";
 import FeaturedWorkTabs from "@/components/FeaturedWorkTabs";
 import { FadeIn } from "@/components/FadeIn";
@@ -31,15 +36,20 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const [growLogs, personalSite, sessionSecurity, safeOrder] = await Promise.all([
-    getProjectMetaBySlug("grow-logs"),
-    getProjectMetaBySlug("personal-site"),
-    getBlogMetaBySlug("session-security-in-practice"),
-    getBlogMetaBySlug("safe-order-creation-idempotency-transactions"),
-  ]);
+  const [growLogs, personalSite, sessionSecurity, safeOrder] =
+    await Promise.all([
+      getProjectMetaBySlug("grow-logs"),
+      getProjectMetaBySlug("personal-site"),
+      getBlogMetaBySlug("session-security-in-practice"),
+      getBlogMetaBySlug("safe-order-creation-idempotency-transactions"),
+    ]);
 
-  const projects = [growLogs, personalSite].filter((p): p is ProjectMeta => p != null);
-  const posts = [sessionSecurity, safeOrder].filter((p): p is ContentMeta => p != null);
+  const projects = [growLogs, personalSite].filter(
+    (p): p is ProjectMeta => p != null,
+  );
+  const posts = [sessionSecurity, safeOrder].filter(
+    (p): p is ContentMeta => p != null,
+  );
 
   return (
     <div className="space-y-12">

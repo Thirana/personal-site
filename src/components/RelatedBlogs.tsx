@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import type { Route } from "next";
 import type { ContentMeta } from "@/lib/content";
 import Tag from "@/components/Tag";
 
@@ -43,7 +44,7 @@ export default function RelatedBlogs({ posts }: RelatedBlogsProps) {
           <div key={post.slug} className="py-6 first:pt-2">
             <div className="space-y-3">
               <Link
-                href={`/blog/${post.slug}`}
+                href={`/blog/${post.slug}` as Route<string>}
                 className="block text-[18px] font-bold tracking-[-0.015em] text-gl-text transition-colors hover:text-gl-primary focus-visible:outline-none"
               >
                 {post.title}
@@ -68,7 +69,7 @@ export default function RelatedBlogs({ posts }: RelatedBlogsProps) {
               ) : null}
 
               <Link
-                href={`/blog/${post.slug}`}
+                href={`/blog/${post.slug}` as Route<string>}
                 className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover focus-visible:outline-none"
               >
                 Read article

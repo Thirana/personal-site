@@ -21,6 +21,8 @@ const withMDX = createMDX({
 });
 
 const nextConfig: NextConfig = {
+  reactStrictMode: true,
+  poweredByHeader: false,
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
     qualities: [100, 75],
@@ -30,6 +32,13 @@ const nextConfig: NextConfig = {
         hostname: "assets.chanhdai.com",
       },
     ],
+  },
+  typedRoutes: true,
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === "production"
+        ? { exclude: ["error", "warn"] }
+        : false,
   },
 };
 

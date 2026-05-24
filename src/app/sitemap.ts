@@ -10,7 +10,10 @@ const staticRoutes = [
 ] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [posts, projects] = await Promise.all([getAllBlogPosts(), getAllProjects()]);
+  const [posts, projects] = await Promise.all([
+    getAllBlogPosts(),
+    getAllProjects(),
+  ]);
 
   const now = new Date();
 

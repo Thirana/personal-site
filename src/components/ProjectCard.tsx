@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import type { Route } from "next";
 import type { ProjectMeta } from "@/lib/content";
 import StatusBadge from "./StatusBadge";
 import Tag from "./Tag";
@@ -30,7 +31,7 @@ function getSwatchColor(name: string): string {
 }
 
 export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
-  const projectPath = `/projects/${project.slug}`;
+  const projectPath = `/projects/${project.slug}` as Route<string>;
   const visibleConstraints = project.constraints.slice(0, 2);
   const allTags = [...project.domains, ...project.tech];
 
@@ -62,7 +63,10 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
         {visibleConstraints.length > 0 ? (
           <ul className="space-y-1.5 pl-7">
             {visibleConstraints.map((constraint) => (
-              <li key={constraint} className="flex gap-2.5 text-[14px] text-gl-text">
+              <li
+                key={constraint}
+                className="flex gap-2.5 text-[14px] text-gl-text"
+              >
                 <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-gl-primary" />
                 <span>{constraint}</span>
               </li>
@@ -74,7 +78,11 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
         {allTags.length > 0 ? (
           <div className="flex flex-wrap gap-1.5 pl-7">
             {allTags.map((tag) => (
-              <Tag key={tag} dot={getSwatchColor(tag)} className="px-2.5 py-1 text-[12px]">
+              <Tag
+                key={tag}
+                dot={getSwatchColor(tag)}
+                className="px-2.5 py-1 text-[12px]"
+              >
                 {tag}
               </Tag>
             ))}

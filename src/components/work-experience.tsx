@@ -70,7 +70,10 @@ export function ExperienceItem({
   return (
     <div className="space-y-4 py-4">
       <div className="not-prose flex items-center gap-3">
-        <div className="flex size-6 shrink-0 items-center justify-center" aria-hidden>
+        <div
+          className="flex size-6 shrink-0 items-center justify-center"
+          aria-hidden
+        >
           {experience.companyLogo ? (
             <Image
               src={experience.companyLogo}
@@ -121,7 +124,7 @@ export function ExperiencePositionItem({
         <CollapsibleTrigger
           className={cn(
             "group not-prose block w-full select-none text-left",
-            "relative before:absolute before:-top-1 before:-right-1 before:-bottom-1.5 before:left-7 before:rounded-lg hover:before:bg-gl-surface"
+            "relative before:absolute before:-top-1 before:-right-1 before:-bottom-1.5 before:left-7 before:rounded-lg hover:before:bg-gl-surface",
           )}
         >
           <div className="relative z-10 mb-1 flex items-center gap-3">
@@ -136,9 +139,18 @@ export function ExperiencePositionItem({
               {position.title}
             </h4>
 
-            <div className="shrink-0 text-gl-primary [&_svg]:size-4" aria-hidden>
-              <ChevronsDownUpIcon strokeWidth={2.5} className="hidden group-data-[state=open]:block" />
-              <ChevronsUpDownIcon strokeWidth={2.5} className="hidden group-data-[state=closed]:block" />
+            <div
+              className="shrink-0 text-gl-primary [&_svg]:size-4"
+              aria-hidden
+            >
+              <ChevronsDownUpIcon
+                strokeWidth={2.5}
+                className="hidden group-data-[state=open]:block"
+              />
+              <ChevronsUpDownIcon
+                strokeWidth={2.5}
+                className="hidden group-data-[state=closed]:block"
+              />
             </div>
           </div>
 
@@ -192,7 +204,7 @@ function Prose({ className, ...props }: React.ComponentProps<"div">) {
         "prose-h4:text-gl-text prose-h4:font-semibold prose-h4:tracking-tight prose-h4:mt-4 prose-h4:mb-2",
         "prose-a:font-medium prose-a:break-words prose-a:text-gl-primary prose-a:underline prose-a:underline-offset-4",
         "prose-code:rounded-md prose-code:border prose-code:border-gl-border prose-code:bg-gl-surface-2 prose-code:text-gl-primary prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:text-sm prose-code:font-normal prose-code:before:content-none prose-code:after:content-none",
-        className
+        className,
       )}
       {...props}
     />
@@ -204,7 +216,7 @@ function Skill({ className, ...props }: React.ComponentProps<"span">) {
     <span
       className={cn(
         "inline-flex items-center rounded-full border border-gl-border bg-gl-surface-2 px-2 py-0.5 text-[10px] text-gl-text-muted",
-        className
+        className,
       )}
       {...props}
     />

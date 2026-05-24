@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { Route } from "next";
 import { ArrowRight, BookOpen, FolderOpen } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { techTabs } from "@/content/about";
@@ -26,8 +27,11 @@ export default function TechTabs() {
       </div>
 
       {techTabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value} className="mt-5 space-y-5">
-
+        <TabsContent
+          key={tab.value}
+          value={tab.value}
+          className="mt-5 space-y-5"
+        >
           {/* Tool chips */}
           <div className="flex flex-wrap gap-2">
             {tab.tools.map((tool) => (
@@ -73,7 +77,7 @@ export default function TechTabs() {
                 {tab.related.map((item) => (
                   <Link
                     key={item.href}
-                    href={item.href}
+                    href={item.href as Route<string>}
                     className="group flex items-center justify-between rounded-lg border border-gl-border bg-gl-bg px-3 py-2.5 transition-colors hover:bg-gl-surface"
                   >
                     <div className="flex min-w-0 items-center gap-2.5">
@@ -92,7 +96,6 @@ export default function TechTabs() {
               </div>
             </div>
           )}
-
         </TabsContent>
       ))}
     </Tabs>

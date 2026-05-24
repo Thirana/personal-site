@@ -30,7 +30,8 @@ export const metadata: Metadata = {
 
 export default async function BlogPage() {
   const posts = await getAllBlogPosts();
-  const trackCount = new Set(posts.map((post) => post.track).filter(Boolean)).size;
+  const trackCount = new Set(posts.map((post) => post.track).filter(Boolean))
+    .size;
 
   return (
     <div className="space-y-8">
@@ -42,10 +43,12 @@ export default async function BlogPage() {
             </p>
             <div className="flex-1 border-t border-gl-border" />
           </div>
-          <h1 className="text-3xl font-bold tracking-[-0.024em] text-gl-text sm:text-4xl">Blog</h1>
+          <h1 className="text-3xl font-bold tracking-[-0.024em] text-gl-text sm:text-4xl">
+            Blog
+          </h1>
           <p className="max-w-2xl text-[16px] leading-[1.7] text-gl-text">
-            Technical writing focused on backend decisions, system trade-offs, and
-            implementation patterns.
+            Technical writing focused on backend decisions, system trade-offs,
+            and implementation patterns.
           </p>
           <MetaStrip
             items={[

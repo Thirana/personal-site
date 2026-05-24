@@ -87,11 +87,13 @@ function MermaidCanvas({
           return;
         }
 
-        setError(err instanceof Error ? err.message : "Failed to render diagram.");
+        setError(
+          err instanceof Error ? err.message : "Failed to render diagram.",
+        );
       }
     }
 
-    renderDiagram();
+    void renderDiagram();
 
     return () => {
       cancelled = true;
@@ -109,17 +111,25 @@ function MermaidCanvas({
     );
   }
 
-  return <div ref={containerRef} className={className} aria-label={ariaLabel} />;
+  return (
+    <div ref={containerRef} className={className} aria-label={ariaLabel} />
+  );
 }
 
-export default function MermaidDiagram({ chart, className }: MermaidDiagramProps) {
+export default function MermaidDiagram({
+  chart,
+  className,
+}: MermaidDiagramProps) {
   const [open, setOpen] = useState(false);
   const id = useId();
   const renderBaseId = useMemo(
     () => `mermaid-${id.replace(/[^a-zA-Z0-9_-]/g, "")}`,
-    [id]
+    [id],
   );
-  const isSequenceDiagram = useMemo(() => /\bsequenceDiagram\b/.test(chart), [chart]);
+  const isSequenceDiagram = useMemo(
+    () => /\bsequenceDiagram\b/.test(chart),
+    [chart],
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -162,15 +172,16 @@ export default function MermaidDiagram({ chart, className }: MermaidDiagramProps
         <div className="min-h-0 flex-1 p-4 sm:p-6">
           {open ? (
             <div className="h-full overflow-auto overscroll-contain rounded-xl border border-gl-border bg-gl-bg p-4 [scrollbar-width:thin] [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gl-border [&::-webkit-scrollbar-track]:bg-gl-bg-subtle">
-                <MermaidCanvas
-                  chart={chart}
-                  renderId={`${renderBaseId}-dialog`}
-                  ariaLabel="Expanded Mermaid diagram"
-                  className={cn(
-                    "w-max min-w-full [&_svg]:block [&_svg]:h-auto [&_svg]:max-w-none [&_svg]:min-w-[960px]",
-                    isSequenceDiagram && "flex min-h-full items-center justify-center [&_svg]:mx-auto"
-                  )}
-                />
+              <MermaidCanvas
+                chart={chart}
+                renderId={`${renderBaseId}-dialog`}
+                ariaLabel="Expanded Mermaid diagram"
+                className={cn(
+                  "w-max min-w-full [&_svg]:block [&_svg]:h-auto [&_svg]:max-w-none [&_svg]:min-w-[960px]",
+                  isSequenceDiagram &&
+                    "flex min-h-full items-center justify-center [&_svg]:mx-auto",
+                )}
+              />
             </div>
           ) : null}
         </div>

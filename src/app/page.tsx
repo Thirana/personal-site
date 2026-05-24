@@ -52,7 +52,9 @@ export default async function Home() {
                 <h1 className="text-xl font-bold tracking-[-0.015em] text-gl-text sm:text-2xl">
                   {profile.name}
                 </h1>
-                <p className="text-[13px] text-gl-text-faint">{profile.handle}</p>
+                <p className="text-[13px] text-gl-text-faint">
+                  {profile.handle}
+                </p>
               </div>
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="flex items-center gap-2.5 shrink-0">

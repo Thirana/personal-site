@@ -1,5 +1,5 @@
 import { revalidateTag } from "next/cache";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { CONTENT_CACHE_TAGS } from "@/lib/content";
 
 type RevalidateScope = "all" | "blog" | "projects";
@@ -29,14 +29,14 @@ function validateSecret(secret: string | undefined) {
   if (!expectedSecret) {
     return NextResponse.json(
       { ok: false, message: "REVALIDATE_SECRET is not configured." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
   if (!secret || secret !== expectedSecret) {
     return NextResponse.json(
       { ok: false, message: "Invalid revalidation secret." },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
@@ -52,7 +52,10 @@ function triggerRevalidation(scope: RevalidateScope) {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const scope = getScope(searchParams.get("scope"));
-  const secret = searchParams.get("secret") ?? request.headers.get("x-revalidate-secret") ?? undefined;
+  const secret =
+    searchParams.get("secret") ??
+    request.headers.get("x-revalidate-secret") ??
+    undefined;
 
   const invalidSecretResponse = validateSecret(secret);
   if (invalidSecretResponse) {

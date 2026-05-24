@@ -13,8 +13,16 @@ import {
 import type { CSSProperties } from "react";
 
 const githubDarkDimmed: Record<string, CSSProperties> = {
-  'code[class*="language-"]': { color: "#adbac7", background: "none", fontStyle: "normal" },
-  'pre[class*="language-"]': { color: "#adbac7", background: "none", fontStyle: "normal" },
+  'code[class*="language-"]': {
+    color: "#adbac7",
+    background: "none",
+    fontStyle: "normal",
+  },
+  'pre[class*="language-"]': {
+    color: "#adbac7",
+    background: "none",
+    fontStyle: "normal",
+  },
   comment: { color: "#768390", fontStyle: "normal" },
   prolog: { color: "#768390", fontStyle: "normal" },
   doctype: { color: "#768390", fontStyle: "normal" },
@@ -81,7 +89,7 @@ export default function CodeToggle({
             <ChevronDown
               className={cn(
                 "h-4 w-4 transition-transform duration-200",
-                open && "rotate-180"
+                open && "rotate-180",
               )}
             />
           </Button>

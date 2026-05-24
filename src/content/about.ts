@@ -16,7 +16,15 @@ export const techTabs: TechTab[] = [
   {
     value: "web",
     label: "Web Development",
-    tools: ["NestJS", "Express", "Node.js", "React", "Next.js", "TanStack Query", "Zod"],
+    tools: [
+      "NestJS",
+      "Express",
+      "Node.js",
+      "React",
+      "Next.js",
+      "TanStack Query",
+      "Zod",
+    ],
     highlights: [
       "Currently building Grow Logs, a full stack SaaS using NestJS, Next.js, and PostgreSQL, applying production level engineering concepts required for a real user facing product.",
       "Built this personal portfolio site with Next.js using static generation, tag based on demand revalidation, and automated social card generation per route.",
@@ -24,8 +32,16 @@ export const techTabs: TechTab[] = [
     ],
     related: [
       { label: "Grow Logs", href: "/projects/grow-logs", type: "project" },
-      { label: "Personal Site", href: "/projects/personal-site", type: "project" },
-      { label: "Production Style NestJS Backend", href: "/blog/production-style-nestjs-backend", type: "blog" },
+      {
+        label: "Personal Site",
+        href: "/projects/personal-site",
+        type: "project",
+      },
+      {
+        label: "Production Style NestJS Backend",
+        href: "/blog/production-style-nestjs-backend",
+        type: "blog",
+      },
     ],
   },
   {
@@ -38,8 +54,16 @@ export const techTabs: TechTab[] = [
       "Used SHA256 fingerprinting stored in PostgreSQL to make order creation idempotent under retries and duplicate submissions.",
     ],
     related: [
-      { label: "Cursor Pagination in a Product API", href: "/blog/cursor-pagination-product-listing-api", type: "blog" },
-      { label: "Safe Order Creation", href: "/blog/safe-order-creation-idempotency-transactions", type: "blog" },
+      {
+        label: "Cursor Pagination in a Product API",
+        href: "/blog/cursor-pagination-product-listing-api",
+        type: "blog",
+      },
+      {
+        label: "Safe Order Creation",
+        href: "/blog/safe-order-creation-idempotency-transactions",
+        type: "blog",
+      },
     ],
   },
   {
@@ -52,14 +76,26 @@ export const techTabs: TechTab[] = [
       "Delivered refresh tokens via HTTP only cookies scoped to the API origin to block XSS token theft.",
     ],
     related: [
-      { label: "Session Security in Practice", href: "/blog/session-security-in-practice", type: "blog" },
+      {
+        label: "Session Security in Practice",
+        href: "/blog/session-security-in-practice",
+        type: "blog",
+      },
       { label: "Grow Logs", href: "/projects/grow-logs", type: "project" },
     ],
   },
   {
     value: "infra",
     label: "Infrastructure",
-    tools: ["AWS EKS", "Kubernetes", "Terraform", "Helm", "Argo CD", "Karpenter", "Docker"],
+    tools: [
+      "AWS EKS",
+      "Kubernetes",
+      "Terraform",
+      "Helm",
+      "Argo CD",
+      "Karpenter",
+      "Docker",
+    ],
     highlights: [
       "Migrated customers from EC2 to multi tenant AWS EKS with namespace isolation using Argo CD and Helm.",
       "Implemented Karpenter autoscaling achieving approximately 40% infrastructure cost reduction.",
@@ -111,7 +147,6 @@ export const aboutPrinciples: AboutPrinciple[] = [
       "I connect new ideas to what I already know, growing a stronger and more coherent mental model of systems.",
   },
 ];
-
 
 export const aboutCta: AboutCTA = {
   title: "Open to Conversations",

@@ -22,7 +22,7 @@ export default function StickyHeader() {
         "sticky top-0 z-50 w-full transition-all duration-300",
         scrolled
           ? "border-b border-gl-border bg-gl-bg/80 backdrop-blur-2xl"
-          : "border-b border-transparent"
+          : "border-b border-transparent",
       )}
     >
       <div className="page flex items-center justify-between gap-3 py-4">

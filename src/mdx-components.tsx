@@ -54,6 +54,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       />
     ),
     img: ({ className, alt = "", ...props }) => (
+      // eslint-disable-next-line @next/next/no-img-element
       <img
         className={`rounded-xl border border-gl-border ${className ?? ""}`}
         alt={alt}

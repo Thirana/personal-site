@@ -21,7 +21,7 @@ const DialogOverlay = React.forwardRef<
       "data-[state=open]:animate-in data-[state=closed]:animate-out",
       "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0",
       "data-[state=open]:duration-200 data-[state=closed]:duration-150",
-      className
+      className,
     )}
     style={{
       background: "rgba(2, 6, 23, 0.52)",
@@ -49,7 +49,7 @@ const DialogContent = React.forwardRef<
         "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0",
         "data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95",
         "data-[state=open]:duration-200 data-[state=closed]:duration-150",
-        className
+        className,
       )}
       {...props}
     >

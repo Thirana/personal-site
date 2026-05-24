@@ -24,7 +24,7 @@ export function FadeIn({
           observer.disconnect();
         }
       },
-      { threshold: 0.08 }
+      { threshold: 0.08 },
     );
     observer.observe(el);
     return () => observer.disconnect();

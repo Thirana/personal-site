@@ -19,6 +19,7 @@ There is no test suite in this project.
 ## Architecture
 
 **Content sources**: Two kinds of content exist side by side.
+
 - `content/blog/*.mdx` and `content/projects/*.mdx` -- MDX files for authored content; frontmatter is parsed by `gray-matter` via `src/lib/content.ts`.
 - `src/content/profile.ts` and `src/content/experience.ts` -- typed TypeScript files for static site data (profile, socials, skills, work timeline).
 

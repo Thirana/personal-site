@@ -12,7 +12,10 @@ type FeaturedWorkTabsProps = {
 
 const ACCENT = "var(--gl-primary)";
 
-export default function FeaturedWorkTabs({ projects, posts }: FeaturedWorkTabsProps) {
+export default function FeaturedWorkTabs({
+  projects,
+  posts,
+}: FeaturedWorkTabsProps) {
   return (
     <Tabs defaultValue="projects">
       <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

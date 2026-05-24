@@ -19,7 +19,7 @@ export default function MetaStrip({ items, className }: MetaStripProps) {
     <div
       className={cn(
         "grid grid-cols-2 gap-x-8 gap-y-4 border-t border-gl-border pt-4 lg:grid-cols-4",
-        className
+        className,
       )}
     >
       {items.map((item) => (
@@ -27,7 +27,9 @@ export default function MetaStrip({ items, className }: MetaStripProps) {
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-gl-text-faint">
             {item.label}
           </p>
-          <p className="font-mono text-sm font-semibold text-gl-text">{item.value}</p>
+          <p className="font-mono text-sm font-semibold text-gl-text">
+            {item.value}
+          </p>
         </div>
       ))}
     </div>

@@ -31,7 +31,7 @@ export default function ContentHero({
           <p
             className={cn(
               "shrink-0 font-mono text-[14px] font-bold uppercase tracking-[0.2em] text-gl-primary",
-              eyebrowClassName
+              eyebrowClassName,
             )}
           >
             {eyebrow}
@@ -64,9 +64,7 @@ export default function ContentHero({
 
       {/* Meta (date, links) */}
       {meta ? (
-        <div className="flex flex-wrap items-center gap-2">
-          {meta}
-        </div>
+        <div className="flex flex-wrap items-center gap-2">{meta}</div>
       ) : null}
     </div>
   );

@@ -21,60 +21,72 @@ export default async function Image({ params }: Props) {
   const summary = meta?.summary ?? siteConfig.description;
 
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        backgroundColor: "#0b0f14",
+        color: "#f8fafc",
+        padding: "56px",
+        fontFamily: "Inter, ui-sans-serif, system-ui",
+      }}
+    >
       <div
         style={{
-          width: "100%",
-          height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          backgroundColor: "#0b0f14",
-          color: "#f8fafc",
-          padding: "56px",
-          fontFamily: "Inter, ui-sans-serif, system-ui",
+          fontSize: 20,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: "#94a3b8",
         }}
       >
+        Blog Note
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
         <div
           style={{
             display: "flex",
-            fontSize: 20,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "#94a3b8",
+            fontSize: 60,
+            lineHeight: 1.08,
+            fontWeight: 700,
           }}
         >
-          Blog Note
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-          <div style={{ display: "flex", fontSize: 60, lineHeight: 1.08, fontWeight: 700 }}>
-            {title}
-          </div>
-          <div style={{ display: "flex", fontSize: 26, lineHeight: 1.35, color: "#cbd5e1" }}>
-            {summary}
-          </div>
+          {title}
         </div>
         <div
           style={{
             display: "flex",
-            alignItems: "center",
-            gap: "16px",
-            fontSize: 22,
-            color: "#94a3b8",
+            fontSize: 26,
+            lineHeight: 1.35,
+            color: "#cbd5e1",
           }}
         >
-          <span
-            style={{
-              width: "8px",
-              height: "28px",
-              borderRadius: "9999px",
-              backgroundColor: "#22d3ee",
-            }}
-          />
-          {siteConfig.name}
+          {summary}
         </div>
       </div>
-    ),
-    size
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "16px",
+          fontSize: 22,
+          color: "#94a3b8",
+        }}
+      >
+        <span
+          style={{
+            width: "8px",
+            height: "28px",
+            borderRadius: "9999px",
+            backgroundColor: "#22d3ee",
+          }}
+        />
+        {siteConfig.name}
+      </div>
+    </div>,
+    size,
   );
 }

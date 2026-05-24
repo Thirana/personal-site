@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -12,7 +11,10 @@ type EvidenceLinksProps = {
   className?: string;
 };
 
-export default function EvidenceLinks({ items, className }: EvidenceLinksProps) {
+export default function EvidenceLinks({
+  items,
+  className,
+}: EvidenceLinksProps) {
   if (items.length === 0) {
     return null;
   }
@@ -20,7 +22,7 @@ export default function EvidenceLinks({ items, className }: EvidenceLinksProps) 
   return (
     <div className={cn("flex flex-wrap gap-2", className)}>
       {items.map((item) => (
-        <Link
+        <a
           key={`${item.label}-${item.href}`}
           href={item.href}
           target="_blank"
@@ -29,7 +31,7 @@ export default function EvidenceLinks({ items, className }: EvidenceLinksProps) 
         >
           {item.label}
           <ExternalLink className="h-3 w-3" />
-        </Link>
+        </a>
       ))}
     </div>
   );

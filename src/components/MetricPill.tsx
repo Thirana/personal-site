@@ -6,12 +6,16 @@ type MetricPillProps = {
   className?: string;
 };
 
-export default function MetricPill({ label, value, className }: MetricPillProps) {
+export default function MetricPill({
+  label,
+  value,
+  className,
+}: MetricPillProps) {
   return (
     <div
       className={cn(
         "inline-flex min-w-[8.5rem] flex-col gap-1 rounded-xl border border-gl-border bg-gl-surface-2 px-3 py-3 text-center",
-        className
+        className,
       )}
     >
       <span className="font-mono text-[22px] font-bold leading-none tabular-nums text-gl-primary">

@@ -22,9 +22,15 @@ export default function CapabilityMatrix({ rows }: CapabilityMatrixProps) {
             key={row.domain}
             className="grid gap-2 py-4 sm:grid-cols-[0.8fr_1.45fr_1.35fr] sm:gap-3"
           >
-            <p className="text-[14px] font-semibold text-gl-text">{row.domain}</p>
-            <p className="text-[14px] font-semibold text-gl-text">{row.focus}</p>
-            <p className="font-mono text-[12px] font-semibold text-gl-primary">{row.signal}</p>
+            <p className="text-[14px] font-semibold text-gl-text">
+              {row.domain}
+            </p>
+            <p className="text-[14px] font-semibold text-gl-text">
+              {row.focus}
+            </p>
+            <p className="font-mono text-[12px] font-semibold text-gl-primary">
+              {row.signal}
+            </p>
           </div>
         ))}
       </div>

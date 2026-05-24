@@ -31,18 +31,18 @@ export const metadata: Metadata = {
 export default async function ProjectsPage() {
   const projects = await getAllProjects();
   const activeProjects = projects.filter(
-    (project) => project.status === "Live" || project.status === "WIP"
+    (project) => project.status === "Live" || project.status === "WIP",
   ).length;
   const backendOrInfra = projects.filter((project) =>
     project.domains.some((domain) =>
       ["api", "data", "platform", "infra", "observability"].includes(
-        domain.toLowerCase()
-      )
-    )
+        domain.toLowerCase(),
+      ),
+    ),
   ).length;
   const evidenceCount = projects.reduce(
     (sum, project) => sum + project.evidence.length,
-    0
+    0,
   );
 
   return (
@@ -55,10 +55,12 @@ export default async function ProjectsPage() {
             </p>
             <div className="flex-1 border-t border-gl-border" />
           </div>
-          <h1 className="text-3xl font-bold tracking-[-0.024em] text-gl-text sm:text-4xl">Projects</h1>
+          <h1 className="text-3xl font-bold tracking-[-0.024em] text-gl-text sm:text-4xl">
+            Projects
+          </h1>
           <p className="max-w-2xl text-[16px] leading-[1.7] text-gl-text">
-            System-focused work that highlights architecture decisions, reliability
-            controls, and measurable outcomes.
+            System-focused work that highlights architecture decisions,
+            reliability controls, and measurable outcomes.
           </p>
           <MetaStrip
             items={[

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ExternalLink } from "lucide-react";
 import {
@@ -27,7 +26,9 @@ export async function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const meta = await getProjectMetaBySlug(slug);
 
@@ -102,14 +103,15 @@ export default async function ProjectPage({ params }: PageProps) {
     sameAs: [meta.links.live, meta.links.code].filter(Boolean),
   };
 
-  const projectCapabilityRows = (meta.domains.length > 0
-    ? meta.domains
-    : ["System Design"]).map((domain, index) => {
+  const projectCapabilityRows = (
+    meta.domains.length > 0 ? meta.domains : ["System Design"]
+  ).map((domain, index) => {
     const mappedConstraint =
       meta.constraints[index] ??
       meta.constraints[meta.constraints.length - 1] ??
       "Core system behavior documented in project notes.";
-    const mappedMetric = meta.metrics[index] ?? meta.metrics[meta.metrics.length - 1];
+    const mappedMetric =
+      meta.metrics[index] ?? meta.metrics[meta.metrics.length - 1];
 
     return {
       domain,
@@ -133,7 +135,7 @@ export default async function ProjectPage({ params }: PageProps) {
         summary={meta.summary}
         meta={
           meta.links.code ? (
-            <Link
+            <a
               href={meta.links.code}
               target="_blank"
               rel="noreferrer"
@@ -141,7 +143,7 @@ export default async function ProjectPage({ params }: PageProps) {
             >
               Repository
               <ExternalLink className="h-3.5 w-3.5" />
-            </Link>
+            </a>
           ) : null
         }
         badge={<StatusBadge status={meta.status} />}
@@ -177,7 +179,9 @@ export default async function ProjectPage({ params }: PageProps) {
         <CapabilityMatrix rows={projectCapabilityRows} />
       </div>
 
-      <EvidenceLinks items={meta.evidence.filter((e) => e.label !== "Repository")} />
+      <EvidenceLinks
+        items={meta.evidence.filter((e) => e.label !== "Repository")}
+      />
 
       <article className="prose prose-invert max-w-none content-with-hero">
         <Content />

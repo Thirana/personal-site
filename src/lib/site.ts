@@ -6,7 +6,9 @@ function stripTrailingSlash(value: string) {
 
 function resolveSiteUrl() {
   const configured =
-    process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL ?? DEFAULT_SITE_URL;
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    process.env.SITE_URL ??
+    DEFAULT_SITE_URL;
 
   try {
     const normalized = new URL(configured).toString();

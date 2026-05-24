@@ -100,7 +100,10 @@ function toProjectEvidence(value: unknown): ProjectEvidence[] {
     .filter((item) => item.label.length > 0 && item.href.length > 0);
 }
 
-function normalizeMeta(slug: string, data: Record<string, unknown>): ContentMeta {
+function normalizeMeta(
+  slug: string,
+  data: Record<string, unknown>,
+): ContentMeta {
   return {
     slug,
     title: typeof data.title === "string" ? data.title : slug,
@@ -118,7 +121,7 @@ function normalizeMeta(slug: string, data: Record<string, unknown>): ContentMeta
 function assertProjectField(
   condition: boolean,
   fileName: string,
-  message: string
+  message: string,
 ) {
   if (!condition) {
     throw new Error(`[content/projects/${fileName}] ${message}`);
@@ -128,7 +131,7 @@ function assertProjectField(
 function normalizeProjectMeta(
   slug: string,
   data: Record<string, unknown>,
-  fileName: string
+  fileName: string,
 ): ProjectMeta {
   const title = data.title;
   const date = data.date;
@@ -145,24 +148,18 @@ function normalizeProjectMeta(
   const outcomes = data.outcomes;
   const techArray = Array.isArray(tech) ? tech : [];
   const normalizedTech = techArray.filter(
-    (item): item is string => typeof item === "string"
+    (item): item is string => typeof item === "string",
   );
   const normalizedTitle = typeof title === "string" ? title : slug;
   const normalizedDate = typeof date === "string" ? date : "";
   const normalizedSummary = typeof summary === "string" ? summary : "";
   const normalizedStatus = status as ProjectStatus;
   const normalizedPriority =
-    typeof priority === "number" && Number.isFinite(priority)
-      ? priority
-      : 100;
+    typeof priority === "number" && Number.isFinite(priority) ? priority : 100;
 
   assertProjectField(typeof title === "string", fileName, "Missing title");
   assertProjectField(typeof date === "string", fileName, "Missing date");
-  assertProjectField(
-    typeof summary === "string",
-    fileName,
-    "Missing summary"
-  );
+  assertProjectField(typeof summary === "string", fileName, "Missing summary");
   assertProjectField(
     status === "Live" ||
       status === "Ongoing" ||
@@ -170,13 +167,13 @@ function normalizeProjectMeta(
       status === "Paused" ||
       status === "Completed",
     fileName,
-    "Status must be Live, Ongoing, WIP, Paused, or Completed"
+    "Status must be Live, Ongoing, WIP, Paused, or Completed",
   );
   assertProjectField(Array.isArray(tech), fileName, "Missing tech array");
   assertProjectField(
     normalizedTech.length === techArray.length,
     fileName,
-    "Tech must be an array of strings"
+    "Tech must be an array of strings",
   );
 
   const normalizedLinks: ProjectLinks = {};
@@ -219,11 +216,11 @@ async function readMdxMeta(dir: string) {
         const raw = await fs.readFile(path.join(dir, file), "utf8");
         const { data } = matter(raw);
         return normalizeMeta(slug, data);
-      })
+      }),
   );
 
   return entries.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
 }
 
@@ -237,23 +234,21 @@ async function readProjectMetaList() {
         const raw = await fs.readFile(path.join(projectsDir, file), "utf8");
         const { data } = matter(raw);
         return normalizeProjectMeta(slug, data, file);
-      })
+      }),
   );
 
-  return entries.sort(
-    (a, b) => {
-      if (a.priority !== b.priority) {
-        return a.priority - b.priority;
-      }
-
-      const byDate = new Date(b.date).getTime() - new Date(a.date).getTime();
-      if (byDate !== 0) {
-        return byDate;
-      }
-
-      return a.title.localeCompare(b.title);
+  return entries.sort((a, b) => {
+    if (a.priority !== b.priority) {
+      return a.priority - b.priority;
     }
-  );
+
+    const byDate = new Date(b.date).getTime() - new Date(a.date).getTime();
+    if (byDate !== 0) {
+      return byDate;
+    }
+
+    return a.title.localeCompare(b.title);
+  });
 }
 
 async function readBlogMetaBySlug(slug: string) {
@@ -279,7 +274,11 @@ async function readProjectMetaBySlug(slug: string) {
     const filePath = path.join(projectsDir, `${slug}.mdx`);
     const raw = await fs.readFile(filePath, "utf8");
     const { data } = matter(raw);
-    return normalizeProjectMeta(slug, data as Record<string, unknown>, `${slug}.mdx`);
+    return normalizeProjectMeta(
+      slug,
+      data as Record<string, unknown>,
+      `${slug}.mdx`,
+    );
   } catch (error) {
     if (error instanceof Error && "code" in error) {
       const maybeCode = (error as Error & { code?: string }).code;
@@ -295,25 +294,25 @@ async function readProjectMetaBySlug(slug: string) {
 const getAllBlogPostsCached = unstable_cache(
   async () => readMdxMeta(blogDir),
   ["content-blog-list"],
-  { tags: [CONTENT_CACHE_TAGS.blog] }
+  { tags: [CONTENT_CACHE_TAGS.blog] },
 );
 
 const getAllProjectsCached = unstable_cache(
   async () => readProjectMetaList(),
   ["content-project-list"],
-  { tags: [CONTENT_CACHE_TAGS.projects] }
+  { tags: [CONTENT_CACHE_TAGS.projects] },
 );
 
 const getBlogMetaBySlugCached = unstable_cache(
   async (slug: string) => readBlogMetaBySlug(slug),
   ["content-blog-by-slug"],
-  { tags: [CONTENT_CACHE_TAGS.blog] }
+  { tags: [CONTENT_CACHE_TAGS.blog] },
 );
 
 const getProjectMetaBySlugCached = unstable_cache(
   async (slug: string) => readProjectMetaBySlug(slug),
   ["content-project-by-slug"],
-  { tags: [CONTENT_CACHE_TAGS.projects] }
+  { tags: [CONTENT_CACHE_TAGS.projects] },
 );
 
 export async function getAllBlogPosts() {
@@ -333,9 +332,10 @@ export async function getAllProjects() {
 }
 
 export async function getFeaturedProjects(limit = 4) {
-  const projects = isProduction && !isProductionBuild
-    ? await getAllProjectsCached()
-    : await readProjectMetaList();
+  const projects =
+    isProduction && !isProductionBuild
+      ? await getAllProjectsCached()
+      : await readProjectMetaList();
 
   return projects.filter((project) => project.featured).slice(0, limit);
 }
@@ -368,9 +368,7 @@ export async function getBlogPostBySlug(slug: string) {
       return null;
     }
 
-    const { default: Content } = await import(
-      `../../content/blog/${slug}.mdx`
-    );
+    const { default: Content } = await import(`../../content/blog/${slug}.mdx`);
 
     return {
       meta,

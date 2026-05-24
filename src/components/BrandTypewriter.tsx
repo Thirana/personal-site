@@ -57,7 +57,10 @@ export default function BrandTypewriter({ className }: BrandTypewriterProps) {
     <>
       <span
         aria-hidden
-        className={cn("inline-flex items-center gap-1.5 whitespace-nowrap", className)}
+        className={cn(
+          "inline-flex items-center gap-1.5 whitespace-nowrap",
+          className,
+        )}
       >
         <span>Thirana&apos;s</span>
         <span className="inline-flex min-w-[10ch] items-center">

@@ -19,7 +19,7 @@ const links = [
   { href: "/projects", label: "Projects" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
-];
+] as const;
 
 export default function Nav() {
   const pathname = usePathname();
@@ -28,7 +28,7 @@ export default function Nav() {
   const getLinkClasses = (isActive: boolean) =>
     cn(
       "text-[14px] font-medium transition-colors",
-      isActive ? "text-gl-text" : "text-gl-text-muted hover:text-gl-text"
+      isActive ? "text-gl-text" : "text-gl-text-muted hover:text-gl-text",
     );
 
   return (
@@ -81,7 +81,8 @@ export default function Nav() {
               const isHome = link.href === "/";
               const isActive = isHome
                 ? pathname === "/"
-                : pathname === link.href || pathname.startsWith(`${link.href}/`);
+                : pathname === link.href ||
+                  pathname.startsWith(`${link.href}/`);
 
               return (
                 <Link
@@ -92,7 +93,7 @@ export default function Nav() {
                     "rounded-lg px-4 py-3 text-[15px] font-medium transition-colors",
                     isActive
                       ? "bg-gl-surface-2 text-gl-text"
-                      : "text-gl-text-muted hover:bg-gl-surface text-gl-text"
+                      : "text-gl-text-muted hover:bg-gl-surface text-gl-text",
                   )}
                 >
                   {link.label}
