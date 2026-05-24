@@ -197,10 +197,69 @@ This matches the exact checks CI runs. If this chain passes locally with a clean
 
 ---
 
+## Dependabot
+
+Dependabot opens weekly PRs for two ecosystems configured in `.github/dependabot.yml`:
+
+- **npm** — package version bumps in `package.json`
+- **github-actions** — version bumps for actions used in `.github/workflows/`
+
+The CI pipeline runs on every Dependabot PR, so breaking updates are caught before merge.
+
+### Auto-merge
+
+`.github/workflows/dependabot-auto-merge.yml` automatically merges **patch and minor** updates once CI passes. Major version bumps stay open for manual review.
+
+| Update type | Example                                 | Behaviour                              |
+| ----------- | --------------------------------------- | -------------------------------------- |
+| Patch       | `react-dom` 19.2.3 → 19.2.6             | Auto-merged after CI passes            |
+| Minor       | `@next/mdx` 16.1.6 → 16.2.6             | Auto-merged after CI passes            |
+| Major       | `eslint` 9.x → 10.x, `shadcn` 3.x → 4.x | Stays open — review changelog manually |
+
+The workflow uses `pull_request_target` so it has write access to the repository. It uses `dependabot/fetch-metadata` to read the semver bump type, then calls `gh pr merge --auto --squash` which tells GitHub to merge as soon as all required status checks pass.
+
+**Two GitHub settings must be enabled for auto-merge to work:**
+
+1. **Allow auto-merge** — repo Settings → General → Pull Requests → tick "Allow auto-merge". Without this, `gh pr merge --auto` fails immediately.
+2. **Branch protection with required status checks** — repo Settings → Branches → add a rule for `main`, enable "Require status checks to pass before merging", and add `quality` and `build` as required checks. Without this, auto-merge fires immediately without waiting for CI.
+
+### Reviewing major version Dependabot PRs
+
+Do not merge major version PRs without checking the changelog. Common things to verify:
+
+- **npm majors** — read the migration guide for the package. Check if the config format, API, or CLI changed. Run `npm run build` locally on the PR branch before merging.
+- **GitHub Actions majors** — check the action's release notes. Actions major bumps (`actions/checkout@v4` → `v6`) usually only change the Node runtime version used internally and are safe, but worth a quick scan.
+
+If a major PR is safe after review, merge it manually via the GitHub UI. If it requires code changes, make them on the Dependabot branch and push — Dependabot will not overwrite manual commits.
+
+### Merge order for multiple open PRs
+
+Dependabot opens up to 5 PRs at once (the configured limit). Merge in this order to minimise rebase conflicts:
+
+1. GitHub Actions updates first — they only affect CI, zero app risk
+2. Patch npm updates next
+3. Minor npm updates
+4. Major npm updates last, after manual review
+
+Merge one at a time. After each merge, Dependabot automatically rebases the remaining open PRs onto `main`.
+
+### Vercel preview builds
+
+Vercel creates a preview deployment for every Dependabot PR by default. These are wasted build minutes — a `package.json` version bump has no UI to preview. The CI pipeline already validates the change.
+
+**To disable preview builds for Dependabot:** in your Vercel project go to Settings → Git → Ignored Build Step and paste:
+
+```bash
+if [ "$VERCEL_GIT_COMMIT_AUTHOR_LOGIN" = "dependabot[bot]" ]; then exit 0; else exit 1; fi
+```
+
+Vercel runs this script before every build. Exit `0` skips the build; exit `1` proceeds normally. This applies to all current and future Dependabot PRs automatically.
+
+---
+
 ## Notes
 
 - **Node version:** CI runs Node 20 (`@types/node: ^20`). Match locally with `nvm use 20` if needed.
 - **Pre-commit hook not running:** Run `npm ci` — it re-activates Husky via the `prepare` script. If still not running, check `chmod +x .husky/pre-commit`.
 - **MDX files excluded from Prettier:** `*.mdx` is in `.prettierignore`. Prettier does not check or reformat MDX content files — only TypeScript, CSS, JSON, and Markdown config files.
 - **`no-console` in CI:** The lint step runs `eslint` without `--max-warnings=0` but the rule is a `warn`, so it shows up as a warning. If any `console.log` was committed (bypassing the pre-commit gate with `--no-verify`), the CI lint step will surface it as a warning in the log but not fail the job. Add `--max-warnings=0` to `npm run lint` if you want CI to enforce this strictly.
-- **Dependabot:** Weekly PRs are opened automatically for npm package updates and GitHub Actions version bumps. CI runs on those PRs, so breaking updates are caught before you merge.
