@@ -64,7 +64,7 @@ export default function RootLayout({
     >
       <body className="bg-gl-bg text-gl-text antialiased">
         <StickyHeader />
-        <div className="page flex min-h-screen flex-col py-10">
+        <div className="page flex min-h-screen flex-col pt-6 pb-10">
           <main className="flex-1">{children}</main>
 
           <footer className="mt-16 border-t border-gl-border/40 py-8">

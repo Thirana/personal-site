@@ -108,6 +108,12 @@ export const techTabs: TechTab[] = [
 export const aboutSummary =
   "I am a software engineer who works across backend systems, frontend interfaces, and cloud infrastructure. I enjoy studying how real production platforms are built and validated, then applying those patterns through self-driven projects and professional work. Currently I am building Grow Logs, a full stack SaaS, to put what I learn into practice.";
 
+export const heroBioPoints = [
+  "Software engineer with 1.5 years of industry experience and a BSc (Hons) in Computer Engineering from the University of Sri Jayewardenepura.",
+  "Hands-on with cloud-native systems, DevOps practices, and full-stack development across AWS, Kubernetes-based platforms, and modern web frameworks.",
+  "Studies real production patterns and applies them through self-driven projects. Currently building Grow Logs, a full-stack SaaS.",
+];
+
 export type AboutPrinciple = {
   title: string;
   description: string;

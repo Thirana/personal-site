@@ -40,10 +40,12 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
       <div className="space-y-4">
         {/* Number + title + status */}
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="flex items-start gap-3 min-w-0">
-            <span className="shrink-0 font-mono text-[12px] font-semibold text-[#b8b0e0] mt-[3px]">
-              {String(index + 1).padStart(2, "0")}
-            </span>
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-gl-border bg-gl-surface-2">
+              <span className="font-mono text-[11px] font-semibold text-[#b8b0e0]">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+            </div>
             <Link
               href={projectPath}
               className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-gl-text transition-colors hover:text-gl-primary focus-visible:outline-none"
@@ -55,13 +57,13 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
         </div>
 
         {/* Summary */}
-        <p className="text-[15px] leading-[1.7] text-gl-text pl-7">
+        <p className="text-[15px] leading-[1.7] text-gl-text pl-10">
           {project.summary}
         </p>
 
         {/* Constraints */}
         {visibleConstraints.length > 0 ? (
-          <ul className="space-y-1.5 pl-7">
+          <ul className="space-y-1.5 pl-10">
             {visibleConstraints.map((constraint) => (
               <li
                 key={constraint}
@@ -76,7 +78,7 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 
         {/* Tags */}
         {allTags.length > 0 ? (
-          <div className="flex flex-wrap gap-1.5 pl-7">
+          <div className="flex flex-wrap gap-1.5 pl-10">
             {allTags.map((tag) => (
               <Tag
                 key={tag}
@@ -90,7 +92,7 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
         ) : null}
 
         {/* CTAs */}
-        <div className="flex flex-wrap items-center gap-4 pl-7 pt-1">
+        <div className="flex flex-wrap items-center gap-4 pl-10 pt-1">
           <Link
             href={projectPath}
             className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover"

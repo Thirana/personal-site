@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import BrandTypewriter from "./BrandTypewriter";
 import Nav from "./Nav";
 
 export default function StickyHeader() {
@@ -31,7 +30,7 @@ export default function StickyHeader() {
           aria-label="Thirana's personal site"
           className="text-[11px] font-bold uppercase tracking-[0.2em] text-gl-text transition-colors hover:text-gl-primary sm:text-sm sm:tracking-[0.35em]"
         >
-          <BrandTypewriter />
+          Thirana Embuldeniya
         </Link>
         <Nav />
       </div>

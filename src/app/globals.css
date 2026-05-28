@@ -252,6 +252,14 @@ body {
   animation: gl-cursor-blink 1s steps(2) infinite;
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .animation-delay-100 {
   animation-delay: 100ms;
 }

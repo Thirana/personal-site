@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-26T00:00:00Z",
+  "title": "Design System: Thirana Embuldeniya Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "chalk-lavender": {
+        "role": "primary",
+        "displayName": "Chalk Lavender",
+        "canonical": "oklch(63% 0.088 293)",
+        "tonalRamp": [
+          "#1a1424",
+          "#2e2445",
+          "#433564",
+          "#5b4882",
+          "#7a67a8",
+          "#9488c2",
+          "#bcb4d9",
+          "#dcd9ed"
+        ]
+      },
+      "chalk-lavender-hover": {
+        "role": "primary-hover",
+        "displayName": "Chalk Lavender Hover",
+        "canonical": "oklch(68% 0.085 293)",
+        "tonalRamp": [
+          "#1c1629",
+          "#33274e",
+          "#4a3a6e",
+          "#634e8e",
+          "#8270b0",
+          "#a39ad0",
+          "#c8c2e2",
+          "#e4e1f2"
+        ]
+      },
+      "forest-black": {
+        "role": "neutral-bg",
+        "displayName": "Forest Black",
+        "canonical": "oklch(12% 0.007 152)",
+        "tonalRamp": [
+          "#0c0e0d",
+          "#161918",
+          "#1d201e",
+          "#252924",
+          "#343a36",
+          "#4d5550",
+          "#7a847d",
+          "#b0b9b2"
+        ]
+      },
+      "surface": {
+        "role": "neutral-surface",
+        "displayName": "Surface",
+        "canonical": "oklch(17% 0.007 152)",
+        "tonalRamp": [
+          "#0f110f",
+          "#161918",
+          "#1d201e",
+          "#252924",
+          "#303630",
+          "#464e48",
+          "#6e7870",
+          "#aab4ac"
+        ]
+      },
+      "text-faint": {
+        "role": "neutral-tertiary",
+        "displayName": "Text Faint",
+        "canonical": "oklch(58% 0.012 152)",
+        "tonalRamp": [
+          "#181e19",
+          "#24312a",
+          "#334539",
+          "#476050",
+          "#5e7d6a",
+          "#7e9a88",
+          "#a4bfae",
+          "#cce0d4"
+        ]
+      },
+      "success": {
+        "role": "semantic-success",
+        "displayName": "Sage Success",
+        "canonical": "oklch(68% 0.078 160)",
+        "tonalRamp": [
+          "#051a0f",
+          "#0d2419",
+          "#163422",
+          "#224d33",
+          "#346849",
+          "#4e8f65",
+          "#6eb888",
+          "#9ad6b2"
+        ]
+      },
+      "warning": {
+        "role": "semantic-warning",
+        "displayName": "Amber Warning",
+        "canonical": "oklch(68% 0.09 80)",
+        "tonalRamp": [
+          "#1a1005",
+          "#231a07",
+          "#34270c",
+          "#4d3a14",
+          "#6e5420",
+          "#967038",
+          "#c29458",
+          "#e0bc88"
+        ]
+      },
+      "danger": {
+        "role": "semantic-danger",
+        "displayName": "Terracotta Danger",
+        "canonical": "oklch(60% 0.08 30)",
+        "tonalRamp": [
+          "#180a07",
+          "#261009",
+          "#3a1710",
+          "#55221a",
+          "#773128",
+          "#9e4a40",
+          "#c4736a",
+          "#dfa098"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page titles. One per page. Tight tracking converts size into authority."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Article and project titles in list views. Card-level emphasis."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Primary reading text. Max 72ch line length."
+      },
+      "label": {
+        "displayName": "Label (Mono)",
+        "purpose": "Section headers and eyebrow markers only. The system's one distinctive voice."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Tag text, timestamps, metadata. Tight and functional."
+      }
+    },
+    "shadows": [
+      {
+        "name": "ambient",
+        "value": "0 1px 3px rgba(0,0,0,0.45), 0 6px 20px -8px rgba(0,0,0,0.5)",
+        "purpose": "Default card and panel shadow. Profile block, about CTA, primary content panels."
+      },
+      {
+        "name": "ambient-large",
+        "value": "0 2px 6px rgba(0,0,0,0.5), 0 16px 40px -12px rgba(0,0,0,0.6)",
+        "purpose": "High-emphasis panels. Stronger falloff at larger radius."
+      },
+      {
+        "name": "hard-offset",
+        "value": "4px 4px 0 #d8ddd6",
+        "purpose": "Structural pinned surfaces. Used rarely; geometric hardness contrasts with ambient softness elsewhere."
+      }
+    ],
+    "motion": [
+      {
+        "name": "fade-up",
+        "value": "opacity 0 -> 1, translateY 12px -> 0, duration 400ms, ease linear",
+        "purpose": "Default entrance for page sections. Stagger delay: 0/80/160/220/280/340ms per section."
+      },
+      {
+        "name": "fade-up-large",
+        "value": "opacity 0 -> 1, translateY 22px -> 0, duration 1000ms, cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "High-emphasis entrances. Profile card or hero blocks."
+      },
+      {
+        "name": "fade-in",
+        "value": "opacity 0 -> 1, duration 250ms, ease linear",
+        "purpose": "Subtle reveals for secondary elements."
+      },
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Default easing for entrances. Exponential ease-out; never bounce or elastic."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Solid Chalk Lavender fill. Used for primary CTAs on the about page and in-content calls to action.",
+      "html": "<button class=\"ds-btn-primary\">View my work</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 11px 20px; background: #9488c2; color: #ffffff; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 600; border: 1px solid #9488c2; border-radius: 14px; cursor: pointer; text-decoration: none; transition: background 120ms, border-color 120ms; } .ds-btn-primary:hover { background: #a39ad0; border-color: #a39ad0; } .ds-btn-primary:active { transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: 2px solid #9488c2; outline-offset: 2px; border-radius: 14px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Transparent with a subtle white border. Used alongside Primary for lower-priority actions.",
+      "html": "<button class=\"ds-btn-secondary\">View source</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 11px 20px; background: transparent; color: #ffffff; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 600; border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; cursor: pointer; text-decoration: none; transition: background 120ms, border-color 120ms; } .ds-btn-secondary:hover { background: #252924; border-color: rgba(255,255,255,0.22); } .ds-btn-secondary:active { transform: scale(0.97); } .ds-btn-secondary:focus-visible { outline: 2px solid #9488c2; outline-offset: 2px; }"
+    },
+    {
+      "name": "Tag Chip",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Technology and topic labels. Color dot assigned by tag name hash from the six decorative swatches.",
+      "html": "<span class=\"ds-tag\"><span class=\"ds-tag-dot\" style=\"background:#8eceb4\"></span>Node.js</span>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; gap: 6px; background: #2f3530; color: #ffffff; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 12px; font-weight: 500; padding: 6px 10px; border-radius: 9999px; white-space: nowrap; } .ds-tag-dot { width: 7px; height: 7px; flex-shrink: 0; border-radius: 50%; }"
+    },
+    {
+      "name": "Social Icon Button",
+      "kind": "button",
+      "refersTo": "social-icon",
+      "description": "Circular icon button for social links in the profile card header.",
+      "html": "<a class=\"ds-social-icon\" href=\"#\" aria-label=\"GitHub\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22\"/></svg></a>",
+      "css": ".ds-social-icon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #2c312d; background: #252924; color: #f5f7f5; text-decoration: none; transition: border-color 150ms, color 150ms; } .ds-social-icon:hover { border-color: rgba(255,255,255,0.18); color: #ffffff; } .ds-social-icon:focus-visible { outline: 2px solid #9488c2; outline-offset: 2px; }"
+    },
+    {
+      "name": "Section Header",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Signature layout primitive. Monospace uppercase label in Chalk Lavender followed by a full-width ruled line. Used to open every named content section.",
+      "html": "<div class=\"ds-section-header\"><span class=\"ds-section-label\">Project Portfolio</span><div class=\"ds-section-rule\"></div></div>",
+      "css": ".ds-section-header { display: flex; align-items: center; gap: 16px; } .ds-section-label { flex-shrink: 0; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: #9488c2; line-height: 1; } .ds-section-rule { flex: 1; height: 1px; background: #2c312d; }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": null,
+      "description": "Project lifecycle status indicator. Four semantic states: Live, WIP/Ongoing, Paused, Completed.",
+      "html": "<span class=\"ds-status ds-status-live\">Live</span>",
+      "css": ".ds-status { display: inline-flex; align-items: center; border-radius: 9999px; padding: 4px 10px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; } .ds-status-live { background: #1a3a28; color: #a0dcb8; } .ds-status-wip { background: #362a08; color: #dfc070; } .ds-status-paused { background: #28213a; color: #c0b4e0; } .ds-status-completed { background: #102840; color: #88d0e8; }"
+    },
+    {
+      "name": "Project List Item",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Signature component for the projects list. Indexed with a monospace leading number, title as headline link, summary, constraint bullets, tag row, and CTA links. No card border at rest.",
+      "html": "<div class=\"ds-project-item\"><div class=\"ds-project-header\"><div class=\"ds-project-title-row\"><span class=\"ds-project-index\">01</span><a class=\"ds-project-title\" href=\"#\">Grow Logs</a></div><span class=\"ds-status ds-status-live\">Live</span></div><p class=\"ds-project-summary\">A production-grade personal finance tracker exploring multi-tenant architecture patterns.</p><div class=\"ds-project-tags\"><span class=\"ds-tag\"><span class=\"ds-tag-dot\" style=\"background:#8eceb4\"></span>Node.js</span><span class=\"ds-tag\"><span class=\"ds-tag-dot\" style=\"background:#a8abd8\"></span>PostgreSQL</span></div><div class=\"ds-project-links\"><a class=\"ds-project-cta\" href=\"#\">Project overview <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><path d=\"M7 17L17 7M17 7H7M17 7v10\"/></svg></a></div></div>",
+      "css": ".ds-project-item { padding: 32px 0; border-bottom: 1px solid #2c312d; } .ds-project-item:first-child { padding-top: 8px; } .ds-project-header { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; } .ds-project-title-row { display: flex; align-items: flex-start; gap: 12px; min-width: 0; } .ds-project-index { flex-shrink: 0; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; font-weight: 600; color: #b8b0e0; margin-top: 3px; } .ds-project-title { font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; color: #ffffff; text-decoration: none; transition: color 150ms; } .ds-project-title:hover { color: #9488c2; } .ds-project-summary { font-size: 15px; line-height: 1.7; color: #ffffff; padding-left: 28px; margin-bottom: 12px; } .ds-project-tags { display: flex; flex-wrap: wrap; gap: 6px; padding-left: 28px; margin-bottom: 12px; } .ds-project-links { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding-left: 28px; } .ds-project-cta { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #9488c2; text-decoration: none; transition: color 150ms; } .ds-project-cta:hover { color: #a39ad0; } .ds-status { display: inline-flex; align-items: center; border-radius: 9999px; padding: 4px 10px; font-family: Inter, ui-sans-serif, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; } .ds-status-live { background: #1a3a28; color: #a0dcb8; } .ds-tag { display: inline-flex; align-items: center; gap: 6px; background: #2f3530; color: #ffffff; font-family: Inter, ui-sans-serif, sans-serif; font-size: 12px; font-weight: 500; padding: 6px 10px; border-radius: 9999px; } .ds-tag-dot { width: 7px; height: 7px; flex-shrink: 0; border-radius: 50%; }"
+    },
+    {
+      "name": "Profile Card",
+      "kind": "card",
+      "refersTo": null,
+      "description": "Homepage identity block. Grid layout: photo thumbnail left, name + handle + social links right. Lavender vertical stripe accent on the headline section.",
+      "html": "<div class=\"ds-profile-card\"><div class=\"ds-profile-photo-wrap\"><div class=\"ds-profile-photo-placeholder\">T</div></div><div class=\"ds-profile-info\"><div class=\"ds-profile-name\">Thirana Embuldeniya</div><div class=\"ds-profile-handle\">@_Thirana</div><div class=\"ds-profile-socials\"><div class=\"ds-profile-socials-label\"><span class=\"ds-profile-stripe\"></span><span class=\"ds-profile-reach\">Reach Out</span></div><a class=\"ds-social-icon\" href=\"#\" aria-label=\"Email\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z\"/><polyline points=\"22,6 12,13 2,6\"/></svg></a></div></div></div>",
+      "css": ".ds-profile-card { border: 1px solid #2c312d; border-radius: 18px; background: #1d201e; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.45), 0 6px 20px -8px rgba(0,0,0,0.5); display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: start; } .ds-profile-photo-wrap { flex-shrink: 0; border: 1px solid #2c312d; border-radius: 12px; overflow: hidden; } .ds-profile-photo-placeholder { width: 64px; height: 80px; background: #252924; display: flex; align-items: center; justify-content: center; font-family: Inter, ui-sans-serif, sans-serif; font-size: 24px; font-weight: 700; color: #8c9690; } .ds-profile-info { min-width: 0; } .ds-profile-name { font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 21px; font-weight: 700; letter-spacing: -0.015em; color: #ffffff; margin-bottom: 2px; } .ds-profile-handle { font-size: 13px; color: #8c9690; margin-bottom: 12px; } .ds-profile-socials { display: flex; align-items: center; gap: 10px; } .ds-profile-socials-label { display: flex; align-items: center; gap: 10px; flex-shrink: 0; } .ds-profile-stripe { display: inline-block; width: 3px; height: 16px; border-radius: 9999px; background: #9488c2; } .ds-profile-reach { font-family: Inter, ui-sans-serif, sans-serif; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.2em; color: #8c9690; } .ds-social-icon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #2c312d; background: #252924; color: #f5f7f5; text-decoration: none; transition: border-color 150ms, color 150ms; } .ds-social-icon:hover { border-color: rgba(255,255,255,0.18); color: #ffffff; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Workshop",
+    "overview": "This is the surface where an engineer puts their work out for inspection, not for sale. The atmosphere is what you might find at 9pm in a well-run engineering org's internal wiki: dense without being cluttered, functional without being sterile. Dark surfaces that absorb rather than compete. A single lavender accent used narrowly as a structural signal, the way a good editor uses italics: rarely, so it means something when it appears. Monospace section labels that feel like file headers in a terminal session.\n\nThe color strategy is Restrained. Forest Black is the ground: a near-black with a faint green undertone that prevents the coldness of pure black without announcing itself as a design choice. Two surface tiers lift content off that ground through tonal layering, not shadows doing the work alone. Chalk Lavender appears on perhaps 8% of any screen; its role is navigation and emphasis, not branding. It earns its place each time by marking something actionable or structurally significant.\n\nThis system explicitly rejects generic dev portfolio templates with rainbow skill bars, animated counters, and typewriter hero effects. It rejects startup landing-page energy, gradient CTAs, and over-designed portfolios that read as designer-not-engineer.",
+    "keyCharacteristics": [
+      "Dark ground with a faint organic tint; neither cold tech-dark nor warm editorial-dark",
+      "One accent color, used with discipline across the full site",
+      "Monospace uppercase labels as structural markers, not decorative elements",
+      "Typography hierarchy through weight and tight letter-spacing; no display typefaces",
+      "Motion is minimal: fade-up entrances with staggered delays, no choreography",
+      "Lists and ruled lines as layout primitives; cards only when containment is the affordance"
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "Chalk Lavender is the system's only chromatic statement. It appears on at most 10% of any given screen. Its rarity is the signal; every new lavender element is a question about whether that use is load-bearing.",
+        "section": "colors"
+      },
+      {
+        "name": "The Swatch Quarantine Rule",
+        "body": "The six decorative swatches exist solely as tag-dot identifiers. Prohibited on any other surface: backgrounds, text, borders, hover states, icons.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono-Label Rule",
+        "body": "Section labels and eyebrow markers always use JetBrains Mono in uppercase with 0.2em letter-spacing, rendered in Chalk Lavender, followed by a full-width ruled line. This is the system's one visual signature; it creates hierarchy across sections without adding mass.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tight-Header Rule",
+        "body": "Headings carry negative letter-spacing (-0.018em to -0.024em by size). At Display size this is mandatory; at Headline size it is expected. Never zero-track a heading; optical weight is the point.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tonal-First Rule",
+        "body": "Depth is established by surface color before shadows are added. If you can distinguish a container from its ground without a shadow, the tonal layering is working. Shadows amplify, they do not substitute.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Interactive list items, navigation links, section labels, and tag chips are flat at rest. Elevation (shadow or surface shift) is a state response: hover, focus, active, or containment. A shadow on a resting list item is always wrong.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use Chalk Lavender exclusively for interactive affordances, active states, and Section Header labels.",
+      "Do establish depth through tonal surface layering first, then add Ambient shadow only if containment requires it.",
+      "Do use Section Header (mono label + ruled line) for all named content groups outside of MDX prose.",
+      "Do use negative letter-spacing on headings: -0.018em at 22px, -0.024em at 30px and above.",
+      "Do cap body text line length at 72ch.",
+      "Do use Tag chips with deterministic swatch dots for technology and topic labels.",
+      "Do animate with opacity and transform only. Ease-out curves. No layout property animation.",
+      "Do respect prefers-reduced-motion: all FadeIn animations should be skipped or instant."
+    ],
+    "donts": [
+      "Don't add a second accent color. Chalk Lavender is the system's only chromatic statement.",
+      "Don't use the six decorative swatches on any surface other than 7px tag dots.",
+      "Don't use side-stripe borders (border-left or border-right > 1px in a colored accent) on cards, list items, or callout blocks.",
+      "Don't use gradient text (background-clip: text with a gradient).",
+      "Don't build identical card grids: same-size cards with icon + heading + body text repeated in rows.",
+      "Don't use rainbow skill bars, animated percentage counters, or typewriter 'I am a [role]' effects.",
+      "Don't add startup landing-page elements: hero metric blocks, social proof banners, or gradient CTA sections.",
+      "Don't use blur-and-glass as decoration. The mobile nav sheet is the one intentional exception.",
+      "Don't add shadows to flat list items or navigation links at rest.",
+      "Don't use a modal as a first solution."
+    ]
+  }
+}

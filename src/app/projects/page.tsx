@@ -66,7 +66,7 @@ export default async function ProjectsPage() {
             items={[
               { label: "Total Systems", value: `${projects.length}` },
               { label: "Active", value: `${activeProjects}` },
-              { label: "Backend/Infra", value: `${backendOrInfra}` },
+              { label: "Technical", value: `${backendOrInfra}` },
               { label: "Evidence Links", value: `${evidenceCount}` },
             ]}
           />
