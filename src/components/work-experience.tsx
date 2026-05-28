@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { FadeIn } from "@/components/FadeIn";
 
 const iconMap = {
   code: CodeXmlIcon,
@@ -73,8 +74,10 @@ export function WorkExperience({
 }) {
   return (
     <div className={cn("bg-transparent", className)}>
-      {experiences.map((experience) => (
-        <ExperienceItem key={experience.id} experience={experience} />
+      {experiences.map((experience, index) => (
+        <FadeIn key={experience.id} delay={index * 160}>
+          <ExperienceItem experience={experience} />
+        </FadeIn>
       ))}
     </div>
   );

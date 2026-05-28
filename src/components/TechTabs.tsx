@@ -8,6 +8,23 @@ import { techTabs } from "@/content/about";
 
 const ACCENT = "var(--gl-primary)";
 
+const SWATCH_COLORS = [
+  "#8eceb4",
+  "#a8abd8",
+  "#ccaabc",
+  "#d4b878",
+  "#cc9888",
+  "#80c8d8",
+];
+
+function getSwatchColor(name: string): string {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash * 31 + name.charCodeAt(i)) & 0xffff;
+  }
+  return SWATCH_COLORS[hash % SWATCH_COLORS.length];
+}
+
 export default function TechTabs() {
   return (
     <Tabs defaultValue={techTabs[0].value}>
@@ -37,11 +54,11 @@ export default function TechTabs() {
             {tab.tools.map((tool) => (
               <span
                 key={tool}
-                className="inline-flex items-center gap-2 rounded-full border border-gl-border bg-gl-surface-2 px-3 py-1.5 text-[13px] font-medium text-gl-text"
+                className="inline-flex items-center gap-2 rounded-full border border-gl-border bg-gl-surface-2 px-3 py-1.5 text-[14px] font-medium text-gl-text"
               >
                 <span
                   className="size-[7px] shrink-0 rounded-full"
-                  style={{ background: ACCENT }}
+                  style={{ background: getSwatchColor(tool) }}
                 />
                 {tool}
               </span>
@@ -55,7 +72,7 @@ export default function TechTabs() {
                 {tab.highlights.map((point) => (
                   <li key={point} className="flex gap-2.5">
                     <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-gl-primary" />
-                    <span className="text-[13px] leading-[1.65] text-gl-text-muted">
+                    <span className="text-[15px] leading-[1.65] text-gl-text-muted">
                       {point}
                     </span>
                   </li>
@@ -86,7 +103,7 @@ export default function TechTabs() {
                       ) : (
                         <FolderOpen className="h-3.5 w-3.5 shrink-0 text-gl-text-faint" />
                       )}
-                      <span className="truncate text-[13px] font-medium text-gl-text-muted transition-colors group-hover:text-gl-text">
+                      <span className="truncate text-[14px] font-medium text-gl-text-muted transition-colors group-hover:text-gl-text">
                         {item.label}
                       </span>
                     </div>

@@ -4,7 +4,12 @@ import { Briefcase, GraduationCap, MapPin, Phone } from "lucide-react";
 import { heroBioPoints } from "@/content/about";
 import { profile, socials } from "@/content/profile";
 import { WORK_EXPERIENCE } from "@/content/experience";
-import { getAllProjects, getFeaturedProjects } from "@/lib/content";
+import {
+  getAllProjects,
+  getFeaturedProjects,
+  getFeaturedBlogPost,
+  getBlogMetaBySlug,
+} from "@/lib/content";
 import { getCachedContributions } from "@/lib/get-cached-contributions";
 import {
   GitHubContributions,
@@ -13,7 +18,9 @@ import {
 import ProjectGrid from "@/components/ProjectGrid";
 import Section from "@/components/Section";
 import { WorkExperience } from "@/components/work-experience";
+import { HomeBlogSection } from "@/components/HomeBlogSection";
 import { FadeIn } from "@/components/FadeIn";
+import { TypewriterText } from "@/components/TypewriterText";
 
 const GITHUB_USERNAME = "Thirana";
 const GITHUB_PROFILE_URL = "https://github.com/Thirana";
@@ -23,10 +30,16 @@ const heroSocials = socials.filter((s) =>
 );
 
 export default async function Home() {
-  const [featuredProjects, allProjects] = await Promise.all([
-    getFeaturedProjects(4),
-    getAllProjects(),
-  ]);
+  const [featuredProjects, allProjects, featuredBlog, ...compactBlogs] =
+    await Promise.all([
+      getFeaturedProjects(4),
+      getAllProjects(),
+      getFeaturedBlogPost(),
+      getBlogMetaBySlug("safe-order-creation-idempotency-transactions"),
+      getBlogMetaBySlug("cursor-pagination-product-listing-api"),
+      getBlogMetaBySlug("url-shortener-caching"),
+    ]);
+  const compactBlogPosts = compactBlogs.filter((p) => p != null);
 
   const contributions = getCachedContributions(GITHUB_USERNAME);
 
@@ -62,101 +75,105 @@ export default async function Home() {
       {/* Hero — no card, direct on page ground */}
       <FadeIn>
         <div className="space-y-6">
-          {/* Contribution graph — compact strip, no months, no footer */}
-          <Suspense fallback={<GitHubContributionsFallback />}>
-            <GitHubContributions
-              contributions={contributions}
-              githubProfileUrl={GITHUB_PROFILE_URL}
-              hideFooter
-              hideMonthLabels
-              blockSize={14}
-              blockMargin={3}
-            />
-          </Suspense>
-
-          {/* Identity row: circular photo left + name/tagline right */}
-          <div className="flex items-center gap-5 sm:gap-6">
-            <div
-              className="shrink-0 overflow-hidden rounded-full"
-              style={{
-                boxShadow:
-                  "0 0 0 2px var(--gl-bg), 0 0 0 4px var(--gl-primary)",
-              }}
-            >
-              <Image
-                src="/images/square.png"
-                alt={profile.name}
-                width={80}
-                height={80}
-                className="h-20 w-20 object-cover object-top"
+          {/* Visual identity cluster: graph and photo/name are one unit */}
+          <div className="space-y-4">
+            <Suspense fallback={<GitHubContributionsFallback />}>
+              <GitHubContributions
+                contributions={contributions}
+                githubProfileUrl={GITHUB_PROFILE_URL}
+                hideFooter
+                hideMonthLabels
+                blockSize={14}
+                blockMargin={3}
               />
-            </div>
+            </Suspense>
 
-            <div className="min-w-0 space-y-1">
-              <div className="flex flex-wrap items-center gap-2.5">
-                <h1 className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-gl-text sm:text-[24px]">
-                  {profile.name}
-                </h1>
-                {profile.availableForWork && (
-                  <div className="inline-flex items-center gap-1.5 rounded-full bg-[#0d2e1e] px-2.5 py-0.5 text-[11px] font-medium text-gl-success">
-                    <span className="inline-flex h-1.5 w-1.5 rounded-full bg-gl-success shadow-[0_0_0_3px_rgba(105,181,152,0.15)]" />
-                    Open to work
-                  </div>
-                )}
+            <div className="flex items-center gap-5 sm:gap-6">
+              <div
+                className="shrink-0 overflow-hidden rounded-full"
+                style={{
+                  boxShadow:
+                    "0 0 0 2px var(--gl-bg), 0 0 0 4px var(--gl-primary)",
+                }}
+              >
+                <Image
+                  src="/images/square.png"
+                  alt={profile.name}
+                  width={80}
+                  height={80}
+                  className="h-20 w-20 object-cover object-top"
+                />
               </div>
-              <p className="text-[15px] text-gl-text-faint">
-                Building reliable backend systems.
-              </p>
+
+              <div className="min-w-0 space-y-1">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <h1 className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-gl-text sm:text-[24px]">
+                    {profile.name}
+                  </h1>
+                  {profile.availableForWork && (
+                    <span className="inline-flex items-center rounded-full bg-[#1a3a28] px-2.5 py-1 text-[11px] font-bold tracking-[0.06em] uppercase text-[#a0dcb8]">
+                      Open to work
+                    </span>
+                  )}
+                </div>
+                <p className="text-[15px] text-gl-text-faint">
+                  <TypewriterText
+                    text="Turning ideas into working software."
+                    delay={500}
+                    speed={48}
+                  />
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* Info rows — 2-column grid with icon boxes */}
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {infoRows.map((row, i) => {
-              const Icon = row.icon;
-              return (
-                <div
-                  key={i}
-                  className="flex items-center gap-2.5 text-[14px] text-gl-text-muted"
-                >
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-gl-border bg-gl-surface-2">
-                    <Icon className="h-3.5 w-3.5 text-gl-text-faint" />
+          {/* Facts and links cluster: info rows, divider, social pills */}
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {infoRows.map((row, i) => {
+                const Icon = row.icon;
+                return (
+                  <div
+                    key={i}
+                    className="flex items-center gap-2.5 text-[14px] text-gl-text-muted"
+                  >
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-gl-border bg-gl-surface-2">
+                      <Icon className="h-3.5 w-3.5 text-gl-text-faint" />
+                    </div>
+                    <span>{row.text}</span>
                   </div>
-                  <span>{row.text}</span>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+
+            <div className="h-px bg-gl-border" />
+
+            <div className="flex flex-wrap gap-2">
+              {heroSocials.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={social.label}
+                    className="inline-flex items-center gap-2 rounded-full border border-gl-border bg-gl-surface-2 px-3.5 py-1.5 text-[12px] font-medium text-gl-text-muted transition-colors hover:border-[rgba(255,255,255,0.15)] hover:text-gl-text"
+                  >
+                    <Icon className="h-3.5 w-3.5 shrink-0" />
+                    {social.label}
+                  </a>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Divider */}
-          <div className="h-px bg-gl-border" />
-
-          {/* Social links — 3 labeled pills in one row */}
-          <div className="flex flex-wrap gap-2">
-            {heroSocials.map((social) => {
-              const Icon = social.icon;
-              return (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={social.label}
-                  className="inline-flex items-center gap-2 rounded-full border border-gl-border bg-gl-surface-2 px-3.5 py-1.5 text-[12px] font-medium text-gl-text-muted transition-colors hover:border-[rgba(255,255,255,0.15)] hover:text-gl-text"
-                >
-                  <Icon className="h-3.5 w-3.5 shrink-0" />
-                  {social.label}
-                </a>
-              );
-            })}
-          </div>
-
-          {/* About */}
-          <div className="space-y-3 pt-1">
+          {/* About — extra breathing room before written content */}
+          <div className="space-y-4 pt-2">
             <h2 className="text-[22px] font-bold tracking-[-0.02em] text-gl-text">
               About
             </h2>
-            <ul className="space-y-2.5">
+            <ul className="space-y-3">
               {heroBioPoints.map((point) => (
                 <li
                   key={point}
@@ -172,22 +189,25 @@ export default async function Home() {
       </FadeIn>
 
       {/* Projects */}
-      <FadeIn delay={160}>
-        <Section title="Project Portfolio">
+      <Section title="Project Portfolio">
+        <FadeIn>
           <p className="text-[16px] leading-[1.7] text-gl-text-muted">
             Each entry gives a quick project overview and links to the full
             implementation notes, constraints, and outcomes.
           </p>
-          <ProjectGrid featured={featuredProjects} all={allProjects} />
-        </Section>
-      </FadeIn>
+        </FadeIn>
+        <ProjectGrid featured={featuredProjects} all={allProjects} />
+      </Section>
 
       {/* Experience */}
-      <FadeIn delay={240}>
-        <Section title="Experience">
-          <WorkExperience className="w-full" experiences={WORK_EXPERIENCE} />
-        </Section>
-      </FadeIn>
+      <Section title="Experience">
+        <WorkExperience className="w-full" experiences={WORK_EXPERIENCE} />
+      </Section>
+
+      {/* Writing */}
+      <Section title="Writing">
+        <HomeBlogSection featured={featuredBlog} compact={compactBlogPosts} />
+      </Section>
     </div>
   );
 }

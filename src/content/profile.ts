@@ -25,7 +25,7 @@ export const profile = {
     "Owns responsibilities end to end with clear accountability.",
     "Collaborates well and adapts quickly when priorities change.",
   ],
-  availableForWork: true,
+  availableForWork: false,
 };
 
 export const socials = [

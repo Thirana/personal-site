@@ -14,6 +14,7 @@ export type ContentMeta = {
   appliesTo: string[];
   takeaway?: string;
   project?: string;
+  featured?: boolean;
 };
 
 export type ProjectStatus = "Live" | "Ongoing" | "WIP" | "Paused" | "Completed";
@@ -115,6 +116,7 @@ function normalizeMeta(
     appliesTo: toStringArray(data.appliesTo),
     takeaway: typeof data.takeaway === "string" ? data.takeaway : undefined,
     project: typeof data.project === "string" ? data.project : undefined,
+    featured: typeof data.featured === "boolean" ? data.featured : false,
   };
 }
 
@@ -321,6 +323,11 @@ export async function getAllBlogPosts() {
   }
 
   return getAllBlogPostsCached();
+}
+
+export async function getFeaturedBlogPost(): Promise<ContentMeta | null> {
+  const posts = await getAllBlogPosts();
+  return posts.find((p) => p.featured) ?? null;
 }
 
 export async function getAllProjects() {

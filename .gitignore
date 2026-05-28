@@ -43,5 +43,8 @@ next-env.d.ts
 # local agent session guides
 AGENTS.md
 
+# impeccable skill working files
+.impeccable/
+
 # local planning notes
 docs/professional-grade-vercel-roadmap.md

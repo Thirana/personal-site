@@ -35,9 +35,11 @@ export function FadeIn({
     <div
       ref={ref}
       className={cn(
-        "transition-[opacity,transform] duration-[450ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]",
-        "motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0",
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[14px]",
+        "transition-[opacity,transform,filter] duration-[700ms] ease-[cubic-bezier(0.25,1,0.5,1)]",
+        "motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 motion-reduce:[filter:blur(0px)]",
+        visible
+          ? "opacity-100 translate-y-0 [filter:blur(0px)]"
+          : "opacity-0 translate-y-[14px] [filter:blur(6px)]",
         className,
       )}
       style={delay > 0 ? { transitionDelay: `${delay}ms` } : undefined}
