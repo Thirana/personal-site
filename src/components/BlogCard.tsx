@@ -38,7 +38,7 @@ export default function BlogCard({ post }: BlogCardProps) {
         </Link>
 
         {/* Summary */}
-        <p className="text-[15px] leading-[1.7] text-gl-text">{post.summary}</p>
+        <p className="text-[16px] leading-[1.7] text-gl-text">{post.summary}</p>
 
         {/* Tags */}
         {post.tags.length > 0 ? (

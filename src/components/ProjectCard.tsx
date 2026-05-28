@@ -57,7 +57,7 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
         </div>
 
         {/* Summary */}
-        <p className="text-[15px] leading-[1.7] text-gl-text pl-10">
+        <p className="pl-10 text-[16px] leading-[1.7] text-gl-text">
           {project.summary}
         </p>
 
@@ -67,7 +67,7 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
             {visibleConstraints.map((constraint) => (
               <li
                 key={constraint}
-                className="flex gap-2.5 text-[14px] text-gl-text"
+                className="flex gap-2.5 text-[15px] text-gl-text"
               >
                 <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-gl-primary" />
                 <span>{constraint}</span>

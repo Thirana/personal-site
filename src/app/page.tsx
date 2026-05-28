@@ -31,7 +31,8 @@ export default async function Home() {
   const contributions = getCachedContributions(GITHUB_USERNAME);
 
   const currentEmployer = WORK_EXPERIENCE.find((e) => e.isCurrentEmployer);
-  const currentTitle = currentEmployer?.positions[0]?.title;
+  const currentTitle =
+    currentEmployer?.role?.title ?? currentEmployer?.positions[0]?.title;
   const currentCompany = currentEmployer?.companyName;
 
   const infoRows = [
@@ -103,7 +104,7 @@ export default async function Home() {
                   </div>
                 )}
               </div>
-              <p className="text-[14px] text-gl-text-faint">
+              <p className="text-[15px] text-gl-text-faint">
                 Building reliable backend systems.
               </p>
             </div>
@@ -116,7 +117,7 @@ export default async function Home() {
               return (
                 <div
                   key={i}
-                  className="flex items-center gap-2.5 text-[13px] text-gl-text-muted"
+                  className="flex items-center gap-2.5 text-[14px] text-gl-text-muted"
                 >
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-gl-border bg-gl-surface-2">
                     <Icon className="h-3.5 w-3.5 text-gl-text-faint" />
@@ -159,7 +160,7 @@ export default async function Home() {
               {heroBioPoints.map((point) => (
                 <li
                   key={point}
-                  className="flex items-start gap-2.5 text-[14px] leading-[1.7] text-gl-text-muted"
+                  className="flex items-start gap-2.5 text-[16px] leading-[1.7] text-gl-text-muted"
                 >
                   <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-gl-primary" />
                   <span>{point}</span>
@@ -173,7 +174,7 @@ export default async function Home() {
       {/* Projects */}
       <FadeIn delay={160}>
         <Section title="Project Portfolio">
-          <p className="text-[15px] leading-[1.65] text-gl-text-muted">
+          <p className="text-[16px] leading-[1.7] text-gl-text-muted">
             Each entry gives a quick project overview and links to the full
             implementation notes, constraints, and outcomes.
           </p>

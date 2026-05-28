@@ -5,15 +5,19 @@ export const WORK_EXPERIENCE: ExperienceItemType[] = [
     id: "zoomi-softlab",
     companyName: "ZOOMi Softlab",
     isCurrentEmployer: true,
+    role: {
+      title: "Software Engineer Trainee",
+      employmentPeriod: { start: "09.2025" },
+      employmentType: "Full-time",
+    },
     positions: [
       {
-        id: "zoomi-se-trainee",
-        title: "Software Engineer Trainee",
-        employmentPeriod: "Sep 2025 - Present",
-        employmentType: "Full-time",
+        id: "zoomi-eks-migration",
+        title: "Multi-Tenant AWS EKS Migration",
         icon: "code",
+        isExpanded: true,
         description:
-          "#### Multi-Tenant AWS EKS Migration (GitOps & DevOps)\n\n- Migrated customers from EC2 deployments to a multi-tenant AWS EKS platform using namespace isolation and shared cluster components.\n- Implemented GitOps deployments with Argo CD and Helm, plus automated tenant onboarding, reducing provisioning time from ~3-4 minutes to ~2 minutes.\n- Designed secure secret management with AWS Secrets Manager and External Secrets Operator.\n- Implemented autoscaling with Karpenter and achieved ~40% infrastructure cost reduction.\n\n#### Admin Dashboard for EKS Tenants (Internal Tool)\n\n- Built an internal admin dashboard to monitor EKS tenants and visualize usage and activity metrics.\n- Implemented authentication using access and refresh tokens.\n- Integrated backend APIs with TanStack Query for efficient data fetching and caching.",
+          "- Migrated customers from EC2 to a multi-tenant AWS EKS platform using namespace isolation and shared cluster components.\n- Implemented GitOps with Argo CD and Helm; automated tenant onboarding to cut provisioning time from approximately 3-4 minutes to 2 minutes.\n- Designed secret management with AWS Secrets Manager and External Secrets Operator; achieved approximately 40% cost reduction with Karpenter autoscaling.",
         skills: [
           "AWS EKS",
           "Kubernetes",
@@ -21,12 +25,32 @@ export const WORK_EXPERIENCE: ExperienceItemType[] = [
           "Helm",
           "Argo CD",
           "Karpenter",
-          "React",
-          "TanStack Query",
-          "Express",
-          "MongoDB",
+          "Docker",
         ],
-        isExpanded: true,
+      },
+      {
+        id: "zoomi-sso-migration",
+        title: "Multi-Tenant SSO Migration",
+        icon: "code",
+        description:
+          "- Re-architected a single-tenant SSO backend into a scalable multi-tenant system with JWT authentication and refresh token rotation across tenants.\n- Designed fine-grained authorization with RBAC and ABAC, supporting custom dynamic roles per tenant.",
+        skills: ["NestJS", "TypeScript", "MongoDB", "JWT", "RBAC"],
+      },
+      {
+        id: "zoomi-admin-dashboard",
+        title: "Admin Dashboard for EKS Tenants",
+        icon: "code",
+        description:
+          "- Built an internal admin dashboard to monitor EKS tenant health and customer metrics with a scalable component architecture.\n- Implemented access and refresh token authentication, and integrated backend APIs with TanStack Query.",
+        skills: ["React", "Next.js", "NestJS", "MongoDB", "TanStack Query"],
+      },
+      {
+        id: "zoomi-etl-pipeline",
+        title: "QuickBooks to BigQuery Serverless ETL",
+        icon: "code",
+        description:
+          "- Architected a serverless ETL pipeline on GCP using Cloud Run Jobs and GCP Workflows, replacing a Fivetran integration and cutting monthly costs from approximately $1,000 to $80-100.\n- Provisioned infrastructure with Terraform and implemented Python-based pipeline logic across extraction, normalization, loading, and transformation stages.",
+        skills: ["GCP", "Cloud Run", "BigQuery", "Python", "Terraform", "DBT"],
       },
     ],
   },
@@ -37,16 +61,16 @@ export const WORK_EXPERIENCE: ExperienceItemType[] = [
       {
         id: "lseg-intern",
         title: "Intern - Software Engineering",
-        employmentPeriod: "Apr 2024 - Dec 2024",
+        employmentPeriod: { start: "04.2024", end: "12.2024" },
         employmentType: "Internship",
         icon: "code",
         description:
-          "- Worked with AWS services (S3, EC2, EMR, SQS, Lambda) to build and maintain scalable data processing systems.\n- Developed and maintained ETL pipelines with Apache Airflow for processing financial data.\n- Contributed to system design discussions and produced technical documentation to support data platform workflows.",
+          "- Worked with AWS services (S3, EC2, EMR, SQS, Lambda) alongside Apache Airflow and Scala to develop and maintain scalable ETL pipelines for processing financial data.\n- Prepared technical documentation and system design artifacts to support data platform workflows and knowledge sharing.",
         skills: [
           "AWS",
           "Apache Airflow",
           "ETL Pipelines",
-          "System Design",
+          "Scala",
           "Technical Documentation",
         ],
       },

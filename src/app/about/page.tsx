@@ -97,10 +97,10 @@ export default async function AboutPage() {
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-gl-text-faint">
                   {`0${index + 1}`}
                 </p>
-                <h3 className="text-[15px] font-bold tracking-[-0.013em] text-gl-text">
+                <h3 className="text-[15px] font-semibold tracking-[-0.015em] text-gl-text">
                   {item.title}
                 </h3>
-                <p className="text-[13px] leading-[1.65] text-gl-text-muted">
+                <p className="text-[15px] leading-[1.65] text-gl-text-muted">
                   {item.description}
                 </p>
               </article>
@@ -119,7 +119,7 @@ export default async function AboutPage() {
                 {aboutCta.title}
               </h2>
             </div>
-            <p className="text-[15px] leading-[1.65] text-gl-text-muted">
+            <p className="text-[16px] leading-[1.65] text-gl-text-muted">
               {aboutCta.message}
             </p>
             <div className="flex flex-wrap gap-2">
