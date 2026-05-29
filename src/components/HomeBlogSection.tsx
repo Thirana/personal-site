@@ -51,12 +51,14 @@ export function HomeBlogSection({ featured, compact }: Props) {
               <p className="font-mono text-[11px] tabular-nums text-gl-text-faint">
                 {formatDate(featured.date)}
               </p>
-              <Link
-                href={`/blog/${featured.slug}` as Route<string>}
-                className="block text-[22px] font-bold leading-tight tracking-[-0.02em] text-gl-text transition-colors hover:text-gl-primary focus-visible:outline-none"
-              >
-                {featured.title}
-              </Link>
+              <h3 className="text-[22px] font-bold leading-tight tracking-[-0.02em]">
+                <Link
+                  href={`/blog/${featured.slug}` as Route<string>}
+                  className="text-gl-text transition-colors hover:text-gl-primary"
+                >
+                  {featured.title}
+                </Link>
+              </h3>
               <p className="text-[16px] leading-[1.7] text-gl-text-muted">
                 {featured.summary}
               </p>
@@ -76,7 +78,7 @@ export function HomeBlogSection({ featured, compact }: Props) {
               <div className="pt-1">
                 <Link
                   href={`/blog/${featured.slug}` as Route<string>}
-                  className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover focus-visible:outline-none"
+                  className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover"
                 >
                   Read article
                   <ArrowUpRight className="h-3.5 w-3.5" />
@@ -106,7 +108,7 @@ export function HomeBlogSection({ featured, compact }: Props) {
         >
           <Link
             href="/blog"
-            className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover focus-visible:outline-none"
+            className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover"
           >
             All writing
             <ArrowUpRight className="h-3.5 w-3.5" />
@@ -157,7 +159,7 @@ function CompactBlogRow({ post }: { post: ContentMeta }) {
             </p>
             <Link
               href={`/blog/${post.slug}` as Route<string>}
-              className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover focus-visible:outline-none"
+              className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover"
             >
               Read article
               <ArrowUpRight className="h-3.5 w-3.5" />

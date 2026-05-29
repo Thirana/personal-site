@@ -148,12 +148,14 @@ export default function MermaidDiagram({
               </Button>
             </DialogTrigger>
           </div>
-          <MermaidCanvas
-            chart={chart}
-            renderId={`${renderBaseId}-inline`}
-            ariaLabel="Mermaid diagram"
-            className="[&_svg]:mx-auto [&_svg]:block [&_svg]:h-auto [&_svg]:max-w-none [&_svg]:min-w-[760px] md:[&_svg]:min-w-0"
-          />
+          <div className="overflow-x-auto">
+            <MermaidCanvas
+              chart={chart}
+              renderId={`${renderBaseId}-inline`}
+              ariaLabel="Mermaid diagram"
+              className="[&_svg]:mx-auto [&_svg]:block [&_svg]:h-auto [&_svg]:max-w-none [&_svg]:min-w-[760px] md:[&_svg]:min-w-0"
+            />
+          </div>
         </div>
       </div>
 

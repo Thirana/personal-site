@@ -67,7 +67,17 @@ export default async function Home() {
       text: "BSc (Hons) in Computer Engineering",
     },
     { icon: MapPin, text: "Colombo, Sri Lanka" },
-    { icon: Phone, text: "+94 71 459 4040" },
+    {
+      icon: Phone,
+      text: (
+        <a
+          href="tel:+94714594040"
+          className="transition-colors hover:text-gl-text"
+        >
+          +94 71 459 4040
+        </a>
+      ),
+    },
   ];
 
   return (
@@ -77,16 +87,19 @@ export default async function Home() {
         <div className="space-y-6">
           {/* Visual identity cluster: graph and photo/name are one unit */}
           <div className="space-y-4">
-            <Suspense fallback={<GitHubContributionsFallback />}>
-              <GitHubContributions
-                contributions={contributions}
-                githubProfileUrl={GITHUB_PROFILE_URL}
-                hideFooter
-                hideMonthLabels
-                blockSize={14}
-                blockMargin={3}
-              />
-            </Suspense>
+            {/* Mobile: full-bleed cover zone flush with navbar */}
+            <div className="max-sm:-mx-6 max-sm:-mt-6 max-sm:overflow-hidden">
+              <Suspense fallback={<GitHubContributionsFallback />}>
+                <GitHubContributions
+                  contributions={contributions}
+                  githubProfileUrl={GITHUB_PROFILE_URL}
+                  hideFooter
+                  hideMonthLabels
+                  blockSize={14}
+                  blockMargin={3}
+                />
+              </Suspense>
+            </div>
 
             <div className="flex items-center gap-5 sm:gap-6">
               <div

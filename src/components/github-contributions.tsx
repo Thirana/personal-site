@@ -54,7 +54,7 @@ export function GitHubContributions({
         fontSize={fontSize}
       >
         <ContributionGraphCalendar
-          className="no-scrollbar px-2"
+          className="no-scrollbar sm:px-2"
           title="GitHub Contributions"
           hideMonthLabels={hideMonthLabels}
         >
@@ -84,7 +84,7 @@ export function GitHubContributions({
           <ContributionGraphFooter className="px-2">
             <ContributionGraphTotalCount>
               {({ totalCount, year }) => (
-                <div className="text-[12px] text-[#8c9690]">
+                <div className="text-[12px] text-gl-text-faint">
                   {totalCount.toLocaleString("en")} contributions in {year} on{" "}
                   <a
                     className="text-gl-text underline underline-offset-2 hover:text-gl-primary transition-colors"

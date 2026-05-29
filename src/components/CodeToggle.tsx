@@ -1,16 +1,26 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useState } from "react";
 import { ChevronDown, Code2 } from "lucide-react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import type { CSSProperties } from "react";
+import { cn } from "@/lib/utils";
+
+const SyntaxHighlighter = dynamic(
+  () => import("react-syntax-highlighter").then((m) => ({ default: m.Prism })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="min-h-[60px] animate-pulse rounded-lg bg-gl-surface-2" />
+    ),
+  },
+);
 
 const githubDarkDimmed: Record<string, CSSProperties> = {
   'code[class*="language-"]': {
@@ -80,15 +90,15 @@ export default function CodeToggle({
             type="button"
             variant="outline"
             size="sm"
-            className="w-full justify-between border-gl-border bg-gl-surface-2 font-mono text-xs text-gl-text-muted hover:text-gl-text"
+            className="h-auto w-full items-start justify-between whitespace-normal text-left border-gl-border bg-gl-surface-2 py-2 font-mono text-xs text-gl-text-muted hover:text-gl-text"
           >
-            <span className="inline-flex items-center gap-2">
-              <Code2 className="h-3.5 w-3.5" />
-              {title}
+            <span className="flex min-w-0 flex-1 items-start gap-2">
+              <Code2 className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+              <span>{title}</span>
             </span>
             <ChevronDown
               className={cn(
-                "h-4 w-4 transition-transform duration-200",
+                "ml-2 mt-0.5 h-4 w-4 shrink-0 transition-transform duration-200",
                 open && "rotate-180",
               )}
             />
