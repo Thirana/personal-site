@@ -77,16 +77,19 @@ export default async function Home() {
         <div className="space-y-6">
           {/* Visual identity cluster: graph and photo/name are one unit */}
           <div className="space-y-4">
-            <Suspense fallback={<GitHubContributionsFallback />}>
-              <GitHubContributions
-                contributions={contributions}
-                githubProfileUrl={GITHUB_PROFILE_URL}
-                hideFooter
-                hideMonthLabels
-                blockSize={14}
-                blockMargin={3}
-              />
-            </Suspense>
+            {/* Mobile: full-bleed cover zone flush with navbar */}
+            <div className="max-sm:-mx-6 max-sm:-mt-6 max-sm:overflow-hidden">
+              <Suspense fallback={<GitHubContributionsFallback />}>
+                <GitHubContributions
+                  contributions={contributions}
+                  githubProfileUrl={GITHUB_PROFILE_URL}
+                  hideFooter
+                  hideMonthLabels
+                  blockSize={14}
+                  blockMargin={3}
+                />
+              </Suspense>
+            </div>
 
             <div className="flex items-center gap-5 sm:gap-6">
               <div

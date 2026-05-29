@@ -176,7 +176,7 @@ export function ExperienceItem({
       </div>
 
       {/* Positions / project rows */}
-      <div className="relative space-y-4 before:absolute before:left-3 before:h-full before:w-px before:bg-gl-border">
+      <div className="relative space-y-6 before:absolute before:left-3 before:h-full before:w-px before:bg-gl-border">
         {experience.positions.map((position) => (
           <ExperiencePositionItem key={position.id} position={position} />
         ))}
@@ -282,14 +282,14 @@ export function ExperiencePositionItem({
 
         <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
           {position.description && (
-            <Prose className="pt-2 pl-9">
+            <Prose className="pt-2 pl-6">
               <ReactMarkdown>{position.description}</ReactMarkdown>
             </Prose>
           )}
         </CollapsibleContent>
 
         {Array.isArray(position.skills) && position.skills.length > 0 && (
-          <ul className="not-prose flex flex-wrap gap-1.5 pt-3 pl-9">
+          <ul className="not-prose flex flex-wrap gap-1.5 pt-2 pl-6">
             {position.skills.map((skill, index) => (
               <li key={index} className="flex">
                 <Skill>{skill}</Skill>

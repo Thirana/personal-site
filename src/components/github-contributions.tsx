@@ -54,7 +54,7 @@ export function GitHubContributions({
         fontSize={fontSize}
       >
         <ContributionGraphCalendar
-          className="no-scrollbar px-2"
+          className="no-scrollbar sm:px-2"
           title="GitHub Contributions"
           hideMonthLabels={hideMonthLabels}
         >

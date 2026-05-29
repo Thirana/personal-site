@@ -41,31 +41,31 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
       <FadeIn delay={Math.min(index * 110, 360)}>
         <div className="space-y-4">
           {/* Number + title + status */}
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-gl-border bg-gl-surface-2">
-                <span className="font-mono text-[11px] font-semibold text-[#b8b0e0]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-              </div>
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-gl-border bg-gl-surface-2">
+              <span className="font-mono text-[11px] font-semibold text-[#b8b0e0]">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+            </div>
+            <div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
               <Link
                 href={projectPath}
                 className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-gl-text transition-colors hover:text-gl-primary focus-visible:outline-none"
               >
                 {project.title}
               </Link>
+              <StatusBadge status={project.status} />
             </div>
-            <StatusBadge status={project.status} />
           </div>
 
           {/* Summary */}
-          <p className="pl-10 text-[16px] leading-[1.7] text-gl-text">
+          <p className="sm:pl-10 text-[16px] leading-[1.7] text-gl-text">
             {project.summary}
           </p>
 
           {/* Constraints */}
           {visibleConstraints.length > 0 ? (
-            <ul className="space-y-1.5 pl-10">
+            <ul className="space-y-1.5 sm:pl-10">
               {visibleConstraints.map((constraint) => (
                 <li
                   key={constraint}
@@ -80,7 +80,7 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 
           {/* Tags */}
           {allTags.length > 0 ? (
-            <div className="flex flex-wrap gap-1.5 pl-10">
+            <div className="flex flex-wrap gap-1.5 sm:pl-10">
               {allTags.map((tag) => (
                 <Tag
                   key={tag}
@@ -94,7 +94,7 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
           ) : null}
 
           {/* CTAs */}
-          <div className="flex flex-wrap items-center gap-4 pl-10 pt-1">
+          <div className="flex flex-wrap items-center gap-4 sm:pl-10 pt-1">
             <Link
               href={projectPath}
               className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover"
