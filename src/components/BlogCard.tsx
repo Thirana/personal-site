@@ -30,12 +30,14 @@ export default function BlogCard({ post }: BlogCardProps) {
     <div className="group py-8 first:pt-2">
       <div className="space-y-4">
         {/* Title */}
-        <Link
-          href={`/blog/${post.slug}` as Route<string>}
-          className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-gl-text transition-colors hover:text-gl-primary focus-visible:outline-none"
-        >
-          {post.title}
-        </Link>
+        <h2 className="text-[22px] font-bold leading-tight tracking-[-0.02em]">
+          <Link
+            href={`/blog/${post.slug}` as Route<string>}
+            className="text-gl-text transition-colors hover:text-gl-primary"
+          >
+            {post.title}
+          </Link>
+        </h2>
 
         {/* Summary */}
         <p className="text-[16px] leading-[1.7] text-gl-text">{post.summary}</p>
@@ -59,7 +61,7 @@ export default function BlogCard({ post }: BlogCardProps) {
         <div className="flex items-center gap-4 pt-1">
           <Link
             href={`/blog/${post.slug}` as Route<string>}
-            className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover focus-visible:outline-none"
+            className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover"
           >
             Read article
             <ArrowUpRight className="h-3.5 w-3.5" />

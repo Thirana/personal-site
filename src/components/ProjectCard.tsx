@@ -48,12 +48,14 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
               </span>
             </div>
             <div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
-              <Link
-                href={projectPath}
-                className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-gl-text transition-colors hover:text-gl-primary focus-visible:outline-none"
-              >
-                {project.title}
-              </Link>
+              <h2 className="text-[22px] font-bold leading-tight tracking-[-0.02em]">
+                <Link
+                  href={projectPath}
+                  className="text-gl-text transition-colors hover:text-gl-primary"
+                >
+                  {project.title}
+                </Link>
+              </h2>
               <StatusBadge status={project.status} />
             </div>
           </div>

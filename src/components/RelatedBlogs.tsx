@@ -43,12 +43,14 @@ export default function RelatedBlogs({ posts }: RelatedBlogsProps) {
         {posts.map((post) => (
           <div key={post.slug} className="py-6 first:pt-2">
             <div className="space-y-3">
-              <Link
-                href={`/blog/${post.slug}` as Route<string>}
-                className="block text-[18px] font-bold tracking-[-0.015em] text-gl-text transition-colors hover:text-gl-primary focus-visible:outline-none"
-              >
-                {post.title}
-              </Link>
+              <h3 className="text-[18px] font-bold tracking-[-0.015em]">
+                <Link
+                  href={`/blog/${post.slug}` as Route<string>}
+                  className="text-gl-text transition-colors hover:text-gl-primary"
+                >
+                  {post.title}
+                </Link>
+              </h3>
 
               <p className="text-[14px] leading-[1.65] text-gl-text">
                 {post.summary}
@@ -70,7 +72,7 @@ export default function RelatedBlogs({ posts }: RelatedBlogsProps) {
 
               <Link
                 href={`/blog/${post.slug}` as Route<string>}
-                className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover focus-visible:outline-none"
+                className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gl-primary transition-colors hover:text-gl-primary-hover"
               >
                 Read article
                 <ArrowUpRight className="h-3.5 w-3.5" />

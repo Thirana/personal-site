@@ -113,12 +113,9 @@ export default async function AboutPage() {
       <FadeIn delay={340}>
         <div className="rounded-2xl border border-gl-border bg-gl-surface p-6 shadow-gl">
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="h-[18px] w-[3px] rounded-full bg-gl-primary" />
-              <h2 className="text-[17px] font-bold tracking-[-0.015em] text-gl-text">
-                {aboutCta.title}
-              </h2>
-            </div>
+            <h2 className="text-[17px] font-bold tracking-[-0.015em] text-gl-text">
+              {aboutCta.title}
+            </h2>
             <p className="text-[16px] leading-[1.65] text-gl-text-muted">
               {aboutCta.message}
             </p>
@@ -129,7 +126,7 @@ export default async function AboutPage() {
                   href={link.href}
                   target={link.external ? "_blank" : undefined}
                   rel={link.external ? "noreferrer" : undefined}
-                  className="glass-btn-primary inline-flex min-h-11 items-center justify-center rounded-[10px] px-5 text-[14px] font-semibold focus-visible:outline-none"
+                  className="glass-btn-primary inline-flex min-h-11 items-center justify-center rounded-[10px] px-5 text-[14px] font-semibold"
                 >
                   {link.label}
                 </a>

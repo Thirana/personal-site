@@ -61,7 +61,7 @@ export default function Nav() {
             type="button"
             variant="outline"
             size="icon"
-            className="h-9 w-9 border-gl-border bg-gl-surface text-gl-text-muted hover:bg-gl-surface-2 hover:text-gl-text sm:hidden"
+            className="h-11 w-11 border-gl-border bg-gl-surface text-gl-text-muted hover:bg-gl-surface-2 hover:text-gl-text sm:hidden"
             aria-label="Open navigation menu"
           >
             <Menu className="h-4 w-4" />

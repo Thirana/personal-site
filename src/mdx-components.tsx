@@ -63,7 +63,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     blockquote: ({ className, ...props }) => (
       <blockquote
-        className={`mt-2 mb-6 rounded-r-xl border-l-[3px] border-gl-primary bg-gl-surface px-5 py-4 not-italic text-gl-text [&>p]:m-0 [&>p+p]:mt-3 ${
+        className={`mt-2 mb-6 rounded-xl border border-gl-border bg-gl-surface px-5 py-4 not-italic text-gl-text [&>p]:m-0 [&>p+p]:mt-3 ${
           className ?? ""
         }`}
         {...props}

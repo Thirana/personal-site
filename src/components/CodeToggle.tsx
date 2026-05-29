@@ -1,16 +1,26 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useState } from "react";
 import { ChevronDown, Code2 } from "lucide-react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import type { CSSProperties } from "react";
+import { cn } from "@/lib/utils";
+
+const SyntaxHighlighter = dynamic(
+  () => import("react-syntax-highlighter").then((m) => ({ default: m.Prism })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="min-h-[60px] animate-pulse rounded-lg bg-gl-surface-2" />
+    ),
+  },
+);
 
 const githubDarkDimmed: Record<string, CSSProperties> = {
   'code[class*="language-"]': {

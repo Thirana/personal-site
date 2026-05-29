@@ -27,7 +27,7 @@ export default function EvidenceLinks({
           href={item.href}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-lg border border-gl-border-strong/50 bg-gl-surface px-2.5 py-1.5 font-mono text-[11px] font-semibold text-gl-text transition-colors hover:border-gl-border-strong hover:bg-gl-surface-2 focus-visible:outline-none"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-gl-border-strong/50 bg-gl-surface px-2.5 py-2.5 font-mono text-[11px] font-semibold text-gl-text transition-colors hover:border-gl-border-strong hover:bg-gl-surface-2"
         >
           {item.label}
           <ExternalLink className="h-3 w-3" />

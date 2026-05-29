@@ -67,7 +67,17 @@ export default async function Home() {
       text: "BSc (Hons) in Computer Engineering",
     },
     { icon: MapPin, text: "Colombo, Sri Lanka" },
-    { icon: Phone, text: "+94 71 459 4040" },
+    {
+      icon: Phone,
+      text: (
+        <a
+          href="tel:+94714594040"
+          className="transition-colors hover:text-gl-text"
+        >
+          +94 71 459 4040
+        </a>
+      ),
+    },
   ];
 
   return (
